@@ -1,31 +1,41 @@
 public class Cell {
-    private int n;
-    private int m;
+
+    private int i;
+
+    private int j;
     private int value;
 
-    public Cell(int n, int m,int value) {
-        this.n = n;
-        this.m = m;
+    public Cell(int i, int j, int value) {
+        this.i = i;
+        this.j = j;
         this.value = value;
     }
 
-    public int getN() {
-        return n;
+    public boolean isAlive()
+    {
+        return value != 0;
     }
 
-    public int getM() {
-        return m;
+    public int getI() {
+        return i;
+    }
+
+    public int getJ() {
+        return j;
     }
 
     public int getValue() {
         return value;
     }
 
-    private void live() {
+
+    public void live()
+    {
         this.value = 1;
     }
 
-    private void die() {
+    public void die()
+    {
         this.value = 0;
     }
 }
