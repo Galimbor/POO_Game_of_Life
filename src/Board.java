@@ -15,7 +15,7 @@ public class Board {
             for(int m = 0; m < columns; m++)
                 provGrid[k][m] = new Cell(k,m,input[k][m]);
         this.grid = cloneGrid(provGrid);
-        List test = new ArrayList()List<>();
+        List test = new ArrayList();
     }
 
     private static Cell[][] cloneGrid(Cell[][] grid)

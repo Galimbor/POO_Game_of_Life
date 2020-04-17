@@ -1,19 +1,19 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Client {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int[][] arr = new int[1000][1000];
-        int i = 0,j;
+        ArrayList<String> input = new ArrayList<>();
         while(sc.hasNextLine())
-        {   j=0;
-            String input [] = sc.nextLine().split("");
-            for(String token : input)
-            {
-                arr[i][j++] = Integer.parseInt(token);
-            }
-            i++;
+        {
+            input.add(sc.nextLine());
         }
+
+        BidimensionalMatrix game = new BidimensionalMatrix(input);
+        System.out.print(game.toString());
     }
 }
