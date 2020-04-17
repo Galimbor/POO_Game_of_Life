@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Scanner;
 
 public class Client {
@@ -8,12 +6,11 @@ public class Client {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         ArrayList<String> input = new ArrayList<>();
-        while(sc.hasNextLine())
-        {
+        while (sc.hasNextLine()) {
             input.add(sc.nextLine());
         }
-
-        BidimensionalMatrix game = new BidimensionalMatrix(input);
-        System.out.print(game.toString());
+        BidimensionalMatrix<Integer> game = new BidimensionalMatrix<>(input);
+        game.resize(game.rows+1,game.columns+1);
+        System.out.println(game.toString());
     }
 }
