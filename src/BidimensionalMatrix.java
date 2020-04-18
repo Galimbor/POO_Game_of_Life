@@ -7,7 +7,7 @@ public class BidimensionalMatrix<T> implements IMatrix<T> {
     T[][] matrix;
     int rows;
     int columns;
-    List<LivingCell> livingCells;
+    ArrayList<LivingCell> livingCells;
 
     @SuppressWarnings("unchecked")
     public BidimensionalMatrix(ArrayList<String> input) {
@@ -143,4 +143,26 @@ public class BidimensionalMatrix<T> implements IMatrix<T> {
     }
 
     //TODO check board method using getNeighboorsCount and resize
+    @SuppressWarnings("unchecked")
+    public void getNextGeneration() {
+        T[][] expanded = cloneMatrixv2(this.matrix, 1, 1, this.rows + 2, this.rows + 2);
+        T[][] result = cloneMatrixv2(this.matrix, 1, 1, this.rows + 2, this.rows + 2);
+        for (int i = 0; i < expanded.length; i++) {
+            for (int j = 0; j < expanded[0].length; j++) {
+                int neighboors = getNeighboorsCountv2(expanded, i, j);
+                if (String.valueOf(expanded[i][j]).equals("1") && (neighboors < 2 || neighboors > 3)) {
+                    //System.out.println("i was alive, my position is " + i + " " + j + " and I have " + neighboors + " neighboors");
+                    result[i][j] = (T) "0";
+                } else if (String.valueOf(expanded[i][j]).equals("0") && neighboors == 3) {
+                    //System.out.println("i was dead, my position is " + i + " " + j + " and I have " + neighboors + " neighboors");
+                    result[i][j] = (T) "1";
+                } else {
+                }
+
+            }
+        }
+        this.rows = result.length;
+        this.columns = result[0].length;
+        this.matrix = cloneMatrix(result, 0, 0, 0, this.rows, this.columns);
+    }
 }
