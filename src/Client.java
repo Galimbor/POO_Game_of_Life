@@ -10,7 +10,9 @@ public class Client {
             input.add(sc.nextLine());
         }
         BidimensionalMatrix<Integer> game = new BidimensionalMatrix<>(input);
-        game.resize(game.rows+1,game.columns+1);
+        System.out.print(game.toString());
+        game.resize(game.rows,game.columns);
+        System.out.println("----------------------------");
         System.out.println(game.toString());
     }
 }

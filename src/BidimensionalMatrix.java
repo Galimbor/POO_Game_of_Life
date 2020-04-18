@@ -26,17 +26,6 @@ public class BidimensionalMatrix<T> implements IMatrix<T> {
                 }
             }
         }
-
-//        T[][] clone;
-//        clone = cloneMatrix(matrix,rows+2,columns+2);
-//        StringBuilder result = new StringBuilder();
-//        for (int i = 0; i < rows+2; i++) {
-//            for (int j = 0; j < columns+2; j++) {
-//                result.append(clone[i][j]);
-//            }
-//            result.append("\n");
-//        }
-//        System.out.println(result.toString());
     }
 
     public String toString() {
@@ -81,28 +70,37 @@ public class BidimensionalMatrix<T> implements IMatrix<T> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void resize(int rows, int columns) {                    //TODO ter em conta ao lado que quer expandir
+    public void resize(int rows, int columns) {
         if (rows >= this.rows && columns >= this.columns) {
+
             this.rows = rows;
             this.columns = columns;
-            this.matrix = cloneMatrix(matrix,rows,columns);
+            this.matrix = cloneMatrixv2(matrix, 1, 1, this.rows, this.columns);
+
         } else {//Exception}
         }
     }
 
+    //TODO resize para os lados
 
-    public int getNeighboorsCountv2(int row, int column) {              //TODO implementar
+    //resize extende linha de baixo this.matrix = cloneMatrixv2(matrix,0,0,rows+1,columns);
+    //resize extende linha de cima  this.matrix = cloneMatrixv2(matrix,0,1,rows+1,columns);
+    //resize extende coluna da direita this.matrix = cloneMatrixv2(matrix,0,0,rows,columns+1);
+    //resize extende coluna da esquerda this.matrix = cloneMatrixv2(matrix,1,0,rows,columns+1);
+
+
+    public int getNeighboorsCountv2(T[][] m, int row, int column) {
         int neighboors = 0;
         int minRow = row == 0 ? 0 : row - 1;
-        int maxRow = row == (this.rows - 1) ? (this.rows - 1) : row + 1;
+        int maxRow = row == (m[0].length - 1) ? (m[0].length - 1) : row + 1;
         int minCol = column == 0 ? 0 : column - 1;
-        int maxCol = column == (this.columns - 1) ? (this.columns - 1) : column + 1;
-        for (int i = minRow; i < maxRow; i++) {
-            for (int j = minCol; j < maxCol; j++)
-                neighboors += (int) matrix[row][j];
+        int maxCol = column == (m.length - 1) ? (m.length - 1) : column + 1;
+        for (int i = minRow; i <= maxRow; i++) {
+            for (int j = minCol; j <= maxCol; j++) {
+                neighboors += Integer.parseInt((String) m[i][j]);
+            }
         }
-        neighboors -= (int) matrix[row][column];
+        neighboors -= Integer.parseInt((String) m[row][column]);
         return neighboors;
     }
 
@@ -114,19 +112,35 @@ public class BidimensionalMatrix<T> implements IMatrix<T> {
         int maxCol = column == (this.columns - 1) ? (this.columns - 1) : column + 1;
         for (int i = minRow; i < maxRow; i++) {
             for (int j = minCol; j < maxCol; j++)
-                neighboors += (int) matrix[row][j];
+                neighboors += Integer.parseInt((String) matrix[row][j]);
         }
-        neighboors -= (int) matrix[row][column];
+        neighboors -= Integer.parseInt((String) matrix[row][column]);
         return neighboors;
     }
 
-    private T[][] cloneMatrix(T[][] matrix,int height, int width) {
-        @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
+    private T[][] cloneMatrix(T[][] matrix, int index, int srcPos, int destPos, int height, int width) {
         T[][] copiedMatrix = (T[][]) new Object[height][width];
-        int i = 0;
         for (T[] clonableMatrix : matrix) {
-            System.arraycopy(clonableMatrix, 0, copiedMatrix[i++], 0, matrix[0].length);
+            System.arraycopy(clonableMatrix, 0, copiedMatrix[index++], 0, matrix[0].length);
         }
         return copiedMatrix;
     }
+
+    @SuppressWarnings("unchecked")
+    private T[][] cloneMatrixv2(T[][] matrix, int destRPos, int destCPos, int height, int width) {
+        T[][] copiedMatrix = (T[][]) new Object[height][width];
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if (i >= destCPos && i < matrix[0].length + destCPos && j >= destRPos && j < matrix.length + destRPos) {
+                    copiedMatrix[i][j] = matrix[i - destCPos][j - destRPos];
+                } else {
+                    copiedMatrix[i][j] = (T) "0";
+                }
+            }
+        }
+        return copiedMatrix;
+    }
+
+    //TODO check board method using getNeighboorsCount and resize
 }
