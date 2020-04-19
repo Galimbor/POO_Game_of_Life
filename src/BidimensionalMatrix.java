@@ -21,7 +21,7 @@ public class BidimensionalMatrix<T> implements IMatrix<T> {
                 String[] line = iterator.next().split("");
                 for (int j = 0; j < columns; j++) {
                     matrix[i][j] = (T) line[j];
-                    if (Integer.parseInt((String) matrix[i][j]) == 1)
+                    if (matrix[i][j] == "1")
                         livingCells.add(new LivingCell(i, j));
                 }
             }
@@ -93,9 +93,9 @@ public class BidimensionalMatrix<T> implements IMatrix<T> {
     public int getNeighboorsCountv2(T[][] m, int row, int column) {
         int neighboors = 0;
         int minRow = row == 0 ? 0 : row - 1;
-        int maxRow = row == (m[0].length - 1) ? (m[0].length - 1) : row + 1;
+        int maxRow = row == (m.length - 1) ? (m.length - 1) : row + 1;
         int minCol = column == 0 ? 0 : column - 1;
-        int maxCol = column == (m.length - 1) ? (m.length - 1) : column + 1;
+        int maxCol = column == (m[0].length - 1) ? (m[0].length - 1) : column + 1;
         for (int i = minRow; i <= maxRow; i++) {
             for (int j = minCol; j <= maxCol; j++) {
                 neighboors += Integer.parseInt((String) m[i][j]);
@@ -111,8 +111,8 @@ public class BidimensionalMatrix<T> implements IMatrix<T> {
         int maxRow = row == (this.rows - 1) ? (this.rows - 1) : row + 1;
         int minCol = column == 0 ? 0 : column - 1;
         int maxCol = column == (this.columns - 1) ? (this.columns - 1) : column + 1;
-        for (int i = minRow; i < maxRow; i++) {
-            for (int j = minCol; j < maxCol; j++)
+        for (int i = minRow; i <= maxRow; i++) {
+            for (int j = minCol; j <= maxCol; j++)
                 neighboors += Integer.parseInt((String) matrix[row][j]);
         }
         neighboors -= Integer.parseInt((String) matrix[row][column]);
@@ -133,8 +133,8 @@ public class BidimensionalMatrix<T> implements IMatrix<T> {
         T[][] copiedMatrix = (T[][]) new Object[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if ((i >= destCPos && i < matrix.length + destRPos) && (j >= destRPos && j < matrix[0].length +  destCPos)) {
-                    //ystem.out.println("i = " + i + ", j = " + j);
+                if ((i >= destCPos && i < matrix.length + destRPos) && (j >= destRPos && j < matrix[0].length + destCPos)) {
+                    //System.out.println("i = " + i + ", j = " + j);
                     copiedMatrix[i][j] = matrix[i + srcRPos - destRPos][j + srcCPos - destCPos];
 //                    System.out.println(copiedMatrix[i][j]);
                 } else {
@@ -147,7 +147,7 @@ public class BidimensionalMatrix<T> implements IMatrix<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public void resizev2(T[][] matrix,int srcRPos, int srcCPos, int destRPos, int destCPos, int rows, int columns) {
+    public void resizev2(T[][] matrix, int srcRPos, int srcCPos, int destRPos, int destCPos, int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
         this.matrix = cloneMatrixv2(matrix, srcRPos, srcCPos, destRPos, destCPos, this.rows, this.columns);
@@ -157,8 +157,8 @@ public class BidimensionalMatrix<T> implements IMatrix<T> {
     //TODO check board method using getNeighboorsCount and resize
     @SuppressWarnings("unchecked")
     public void getNextGeneration() {
-        T[][] expanded = cloneMatrixv2(this.matrix, 0, 0, 1, 1, this.rows + 2, this.rows + 2);
-        T[][] result = cloneMatrixv2(this.matrix, 0, 0, 1, 1, this.rows + 2, this.rows + 2);
+        T[][] expanded = cloneMatrixv2(this.matrix, 0, 0, 1, 1, this.rows + 2, this.columns + 2);
+        T[][] result = cloneMatrixv2(this.matrix, 0, 0, 1, 1, this.rows + 2, this.columns + 2);
         int addBotLine = 1;
         int addUpLine = 1;
         int addRightColumn = 1;
@@ -176,9 +176,9 @@ public class BidimensionalMatrix<T> implements IMatrix<T> {
                         addUpLine = 0;
                     else if (i == expanded.length - 1)
                         addBotLine = 0;
-                    else if (j == 0)
+                    if (j == 0)
                         addLeftColumn = 0;
-                    else if (j == expanded[0].length)
+                    else if (j == expanded[0].length -1)
                         addRightColumn = 0;
                 } else {
                 }
@@ -189,9 +189,11 @@ public class BidimensionalMatrix<T> implements IMatrix<T> {
 //        System.out.println("addRightColumn = " + addRightColumn);
 //        System.out.println("addLeftColumn = " + addLeftColumn);
         this.rows = result.length - addUpLine - addBotLine;
-        this.columns = result[0].length - addRightColumn - addRightColumn;
-        this.matrix = cloneMatrixv2(result, addUpLine, addLeftColumn, 0, 0, result.length - addUpLine - addBotLine, result[0].length - addRightColumn - addRightColumn);
+        this.columns = result[0].length - addRightColumn - addLeftColumn;
+        this.matrix = cloneMatrixv2(result, addUpLine, addLeftColumn, 0, 0, this.rows, this.columns);
         //this.resizev2(result,addUpLine,addLeftColumn,0,0,result.length - addUpLine - addBotLine,result[0].length - addRightColumn - addRightColumn);
-        //System.out.println(result[0].length);
+//        System.out.println("result columns = " + this.columns);
+//        System.out.println("result rows = " + this.rows);
+//        System.out.println("result[0].length = " + result[0].length);
     }
 }
