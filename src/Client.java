@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Client {
@@ -10,7 +11,10 @@ public class Client {
             input.add(sc.nextLine());
         }
         BidimensionalMatrix<Integer> game = new BidimensionalMatrix<>(input);
-        game.resize(game.rows+1,game.columns+1);
+        System.out.print(game.toString());
+        System.out.println("----------------------------");
+        game.getNextGeneration();
         System.out.println(game.toString());
+
     }
 }
