@@ -1,0 +1,114 @@
+Index: src/BidimensionalMatrix.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import java.util.ArrayList;\nimport java.util.Iterator;\nimport java.util.List;\n\npublic class BidimensionalMatrix<T> implements IMatrix<T> {\n\n    T[][] matrix;\n    int rows;\n    int columns;\n    ArrayList<LivingCell> livingCells;\n\n    @SuppressWarnings(\"unchecked\")\n    public BidimensionalMatrix(ArrayList<String> input) {\n        this.rows = input.size();\n        this.columns = input.get(0).split(\"\").length;\n        this.matrix = (T[][]) new Object[rows][columns];\n        this.livingCells = new ArrayList<>();\n        Iterator<String> iterator = input.iterator();\n        while (iterator.hasNext()) {\n            for (int i = 0; i < rows; i++) {\n                String[] line = iterator.next().split(\"\");\n                for (int j = 0; j < columns; j++) {\n                    matrix[i][j] = (T) line[j];\n                    if (Integer.parseInt((String) matrix[i][j]) == 1)\n                        livingCells.add(new LivingCell(i, j));\n                }\n            }\n        }\n    }\n\n    public String toString() {\n        StringBuilder result = new StringBuilder();\n        for (int i = 0; i < rows; i++) {\n            for (int j = 0; j < columns; j++) {\n                result.append(matrix[i][j]);\n            }\n            result.append(\"\\n\");\n        }\n        return result.toString();\n    }\n\n    @Override\n    public void setElement(int i, int j) {\n\n    }\n\n    @Override\n    public T getElement(int i, int j) {\n        return null;\n    }\n\n    @Override\n    public int getRows() {\n        return rows;\n    }\n\n    @Override\n    public int getColumns() {\n        return columns;\n    }\n\n    @Override\n    public List<T> getWholeColumn(int column) {\n        return null;\n    }\n\n    @Override\n    public List<T> getWholeRow(int row) {\n        return null;\n    }\n\n    @Override\n    public void resize(int rows, int columns) {\n        if (rows >= this.rows && columns >= this.columns) {\n\n            this.rows = rows;\n            this.columns = columns;\n            this.matrix = cloneMatrixv2(matrix, 1, 1, this.rows, this.columns);\n\n        } else {//Exception}\n        }\n    }\n\n    //TODO resize para os lados\n\n    //resize extende linha de baixo this.matrix = cloneMatrixv2(matrix,0,0,rows+1,columns);\n    //resize extende linha de cima  this.matrix = cloneMatrixv2(matrix,0,1,rows+1,columns);\n    //resize extende coluna da direita this.matrix = cloneMatrixv2(matrix,0,0,rows,columns+1);\n    //resize extende coluna da esquerda this.matrix = cloneMatrixv2(matrix,1,0,rows,columns+1);\n\n\n    public int getNeighboorsCountv2(T[][] m, int row, int column) {\n        int neighboors = 0;\n        int minRow = row == 0 ? 0 : row - 1;\n        int maxRow = row == (m[0].length - 1) ? (m[0].length - 1) : row + 1;\n        int minCol = column == 0 ? 0 : column - 1;\n        int maxCol = column == (m.length - 1) ? (m.length - 1) : column + 1;\n        for (int i = minRow; i <= maxRow; i++) {\n            for (int j = minCol; j <= maxCol; j++) {\n                neighboors += Integer.parseInt((String) m[i][j]);\n            }\n        }\n        neighboors -= Integer.parseInt((String) m[row][column]);\n        return neighboors;\n    }\n\n    public int getNeighboorsCount(int row, int column) {\n        int neighboors = 0;\n        int minRow = row == 0 ? 0 : row - 1;\n        int maxRow = row == (this.rows - 1) ? (this.rows - 1) : row + 1;\n        int minCol = column == 0 ? 0 : column - 1;\n        int maxCol = column == (this.columns - 1) ? (this.columns - 1) : column + 1;\n        for (int i = minRow; i < maxRow; i++) {\n            for (int j = minCol; j < maxCol; j++)\n                neighboors += Integer.parseInt((String) matrix[row][j]);\n        }\n        neighboors -= Integer.parseInt((String) matrix[row][column]);\n        return neighboors;\n    }\n\n    @SuppressWarnings(\"unchecked\")\n    private T[][] cloneMatrix(T[][] matrix, int index, int srcPos, int destPos, int height, int width) {\n        T[][] copiedMatrix = (T[][]) new Object[height][width];\n        for (T[] clonableMatrix : matrix) {\n            System.arraycopy(clonableMatrix, 0, copiedMatrix[index++], 0, matrix[0].length);\n        }\n        return copiedMatrix;\n    }\n\n    @SuppressWarnings(\"unchecked\")\n    private T[][] cloneMatrixv2(T[][] matrix, int destRPos, int destCPos, int height, int width) {\n        T[][] copiedMatrix = (T[][]) new Object[height][width];\n        for (int i = 0; i < height; i++) {\n            for (int j = 0; j < width; j++) {\n                if (i >= destCPos && i < matrix[0].length + destCPos && j >= destRPos && j < matrix.length + destRPos) {\n                    copiedMatrix[i][j] = matrix[i - destCPos][j - destRPos];\n                } else {\n                    copiedMatrix[i][j] = (T) \"0\";\n                }\n            }\n        }\n        return copiedMatrix;\n    }\n\n    //TODO check board method using getNeighboorsCount and resize\n    @SuppressWarnings(\"unchecked\")\n    public void getNextGeneration() {\n        T[][] expanded = cloneMatrixv2(this.matrix, 1, 1, this.rows + 2, this.rows + 2);\n        T[][] result = cloneMatrixv2(this.matrix, 1, 1, this.rows + 2, this.rows + 2);\n        for (int i = 0; i < expanded.length; i++) {\n            for (int j = 0; j < expanded[0].length; j++) {\n                int neighboors = getNeighboorsCountv2(expanded, i, j);\n                if (String.valueOf(expanded[i][j]).equals(\"1\") && (neighboors < 2 || neighboors > 3)) {\n                    //System.out.println(\"i was alive, my position is \" + i + \" \" + j + \" and I have \" + neighboors + \" neighboors\");\n                    result[i][j] = (T) \"0\";\n                } else if (String.valueOf(expanded[i][j]).equals(\"0\") && neighboors == 3) {\n                    //System.out.println(\"i was dead, my position is \" + i + \" \" + j + \" and I have \" + neighboors + \" neighboors\");\n                    result[i][j] = (T) \"1\";\n                } else {\n                }\n\n            }\n        }\n        this.rows = result.length;\n        this.columns = result[0].length;\n        this.matrix = cloneMatrix(result, 0, 0, 0, this.rows, this.columns);\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/BidimensionalMatrix.java	(revision 071ba0fc9c3c1ace922603cb0a66307fe594f6ba)
++++ src/BidimensionalMatrix.java	(date 1587254223311)
+@@ -70,15 +70,12 @@
+     }
+ 
+     @Override
+-    public void resize(int rows, int columns) {
+-        if (rows >= this.rows && columns >= this.columns) {
+-
+-            this.rows = rows;
+-            this.columns = columns;
+-            this.matrix = cloneMatrixv2(matrix, 1, 1, this.rows, this.columns);
++    @SuppressWarnings("unchecked")
++    public void resize(int srcRPos, int srcCPos, int destRPos, int destCPos, int rows, int columns) {
++        this.rows = rows;
++        this.columns = columns;
++        this.matrix = cloneMatrixv2(matrix, srcRPos, srcCPos, destRPos, destCPos, this.rows, this.columns);
+ 
+-        } else {//Exception}
+-        }
+     }
+ 
+     //TODO resize para os lados
+@@ -87,6 +84,10 @@
+     //resize extende linha de cima  this.matrix = cloneMatrixv2(matrix,0,1,rows+1,columns);
+     //resize extende coluna da direita this.matrix = cloneMatrixv2(matrix,0,0,rows,columns+1);
+     //resize extende coluna da esquerda this.matrix = cloneMatrixv2(matrix,1,0,rows,columns+1);
++    //resize suprime linha de baixo this.matrix = cloneMatrixv2(matrix,0,0,rows-1,columns);
++    //resize suprime linha de cima  this.matrix = cloneMatrixv2(matrix,0,1,rows-1,columns);
++    //resize suprime coluna da direita this.matrix = cloneMatrixv2(matrix,0,0,rows,columns-1);
++    //resize suprime coluna da esquerda this.matrix = cloneMatrixv2(matrix,1,0,rows,columns-1);
+ 
+ 
+     public int getNeighboorsCountv2(T[][] m, int row, int column) {
+@@ -128,12 +129,12 @@
+     }
+ 
+     @SuppressWarnings("unchecked")
+-    private T[][] cloneMatrixv2(T[][] matrix, int destRPos, int destCPos, int height, int width) {
++    private T[][] cloneMatrixv2(T[][] matrix, int srcRPos, int srcCPos, int destRPos, int destCPos, int height, int width) {
+         T[][] copiedMatrix = (T[][]) new Object[height][width];
+         for (int i = 0; i < height; i++) {
+             for (int j = 0; j < width; j++) {
+                 if (i >= destCPos && i < matrix[0].length + destCPos && j >= destRPos && j < matrix.length + destRPos) {
+-                    copiedMatrix[i][j] = matrix[i - destCPos][j - destRPos];
++                    copiedMatrix[i][j] = matrix[i + srcRPos - destRPos][j + srcCPos - destCPos];
+                 } else {
+                     copiedMatrix[i][j] = (T) "0";
+                 }
+@@ -145,8 +146,12 @@
+     //TODO check board method using getNeighboorsCount and resize
+     @SuppressWarnings("unchecked")
+     public void getNextGeneration() {
+-        T[][] expanded = cloneMatrixv2(this.matrix, 1, 1, this.rows + 2, this.rows + 2);
+-        T[][] result = cloneMatrixv2(this.matrix, 1, 1, this.rows + 2, this.rows + 2);
++        T[][] expanded = cloneMatrixv2(this.matrix, 0, 0, 1, 1, this.rows + 2, this.rows + 2);
++        T[][] result = cloneMatrixv2(this.matrix, 0, 0, 1, 1, this.rows + 2, this.rows + 2);
++        int addBotLine = 1;
++        int addUpLine = 1;
++        int addRightColumn = 1;
++        int addLeftColumn = 1;
+         for (int i = 0; i < expanded.length; i++) {
+             for (int j = 0; j < expanded[0].length; j++) {
+                 int neighboors = getNeighboorsCountv2(expanded, i, j);
+@@ -156,13 +161,20 @@
+                 } else if (String.valueOf(expanded[i][j]).equals("0") && neighboors == 3) {
+                     //System.out.println("i was dead, my position is " + i + " " + j + " and I have " + neighboors + " neighboors");
+                     result[i][j] = (T) "1";
++                    if(i == 0)
++                        addUpLine = 0;
++                    else if (i == expanded.length -1)
++                        addBotLine = 0;
++                    else if (j == 0)
++                        addLeftColumn = 0;
++                    else if (j == expanded[0].length)
++                        addRightColumn = 0;
+                 } else {
+                 }
+-
+             }
+         }
+-        this.rows = result.length;
+-        this.columns = result[0].length;
+-        this.matrix = cloneMatrix(result, 0, 0, 0, this.rows, this.columns);
++        this.rows = result.length - addUpLine - 1;
++        this.columns = result[0].length - addRightColumn - 1;
++        this.matrix = cloneMatrixv2(result,addUpLine,addLeftColumn,0,0,this.rows,this.columns);
+     }
+ }
+Index: src/IMatrix.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import java.util.List;\n\npublic interface IMatrix<T> {\n\n    public void setElement(int i, int j);\n\n    public T getElement(int i, int j);\n\n    public int getRows();\n\n    public int getColumns();\n\n    public List<T> getWholeColumn(int column);\n\n    public List<T> getWholeRow(int row);\n\n    public void resize(int rows, int columns);\n\n    public String toString();\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/IMatrix.java	(revision 071ba0fc9c3c1ace922603cb0a66307fe594f6ba)
++++ src/IMatrix.java	(date 1587250650077)
+@@ -14,7 +14,7 @@
+ 
+     public List<T> getWholeRow(int row);
+ 
+-    public void resize(int rows, int columns);
++    public void resize(int srcRPos,int srcCPos,int destRPos, int destCPos,int rows, int columns);
+ 
+     public String toString();
+ 
