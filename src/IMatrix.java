@@ -14,7 +14,7 @@ public interface IMatrix<T> {
 
     public List<T> getWholeRow(int row);
 
-    public void resize(int rows, int columns);
+    public void resize(int srcRPos,int srcCPos,int destRPos ,int destCPos,int rows, int columns);
 
     public String toString();
 
