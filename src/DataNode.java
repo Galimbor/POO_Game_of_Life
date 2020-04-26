@@ -1,14 +1,13 @@
-//public class DataNode extends Node{
-//
-////    private Cell value;
-////
-////    public DataNode(Cell value, Node east, Node south)
-////    {
-////        super(south, east);
-////        this.value = value;
-////    }
-////
-////    public Cell getValue() {
-////        return value;
-////    }
-//}
+public class DataNode<T> extends Node{
+
+    private T value;
+
+    public DataNode(Node south, Node east, T value) {
+        super(south, east);
+        this.value = value;
+    }
+
+    public T getValue() {
+        return value;
+    }
+}

@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class BidimensionalMatrix<T> implements IMatrix<T> {
 
@@ -26,6 +27,7 @@ public class BidimensionalMatrix<T> implements IMatrix<T> {
                 }
             }
         }
+
     }
 
     public String toString() {
