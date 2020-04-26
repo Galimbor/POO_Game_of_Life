@@ -7,6 +7,18 @@ abstract class Node {
         this.east = east;
     }
 
+    public Node() {
+
+    }
+
+    public void setSouth(Node south) {
+        this.south = south;
+    }
+
+    public void setEast(Node east) {
+        this.east = east;
+    }
+
     public Node getSouth() {
         return south;
     }
@@ -14,4 +26,13 @@ abstract class Node {
     public Node getEast() {
         return east;
     }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "south=" + south +
+                ", east=" + east +
+                '}';
+    }
+
 }

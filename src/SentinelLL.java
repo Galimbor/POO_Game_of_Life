@@ -1,5 +1,7 @@
+import java.util.Iterator;
+import java.util.ListIterator;
 
-public class SentinelLL {
+public class SentinelLL implements Iterable {
 
     public SentinelNode head;
     public SentinelNode tail;
@@ -27,11 +29,13 @@ public class SentinelLL {
     void linkLast(SentinelNode e) {
         final SentinelNode l = tail;
         tail = e;
-        if (l == null)
+        if (l == null) {
             head = e;
+            e.next = e;
+        }
         else {
             l.next = e;
-            tail.next = head;
+            e.next = head;
         }
         size++;
     }
@@ -108,6 +112,10 @@ public class SentinelLL {
         x.south = element.south;
     }
 
+    private SentinelLL self()
+    {
+        return this;
+    }
 
 
     /*******************************************************
@@ -120,11 +128,64 @@ public class SentinelLL {
         private SentinelNode next;
         private int number;
 
-        public SentinelNode(Node south, Node east , SentinelNode next, int number) {
-            super(south,east);
-            this.next = next;
+        public SentinelNode( int number) {
+            super();
             this.number = number;
         }
+
+        @Override
+        public void setEast(Node east) {
+            super.setEast(east);
+        }
+
+        @Override
+        public void setSouth(Node south) {
+            super.setSouth(south);
+        }
+
+        public void setNext(SentinelNode next) {
+            this.next = next;
+        }
+
+        @Override
+        public String toString() {
+            return "SentinelNode{" +
+                    "next=" + next +
+                    ", number=" + number +
+                    '}';
+        }
+    }
+
+    private class SentinelLLIterator implements Iterator<SentinelNode> {
+
+        private SentinelLL current = self();
+
+        private int nextIndex = 0;
+
+
+        @Override
+        public boolean hasNext() {
+            return nextIndex < size;
+        }
+
+        @Override
+        public SentinelNode next()
+        {
+            SentinelNode result =  current.get(nextIndex);
+            nextIndex++;
+            return result;
+        }
+
+        @Override
+        public void remove()
+        {
+            throw new UnsupportedOperationException();
+        }
+    }
+    @Override
+    public Iterator<SentinelNode> iterator()
+    {
+        return new SentinelLLIterator();
     }
 
 }

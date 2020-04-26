@@ -10,4 +10,21 @@ public class DataNode<T> extends Node{
     public T getValue() {
         return value;
     }
+
+    @Override
+    public void setSouth(Node south) {
+        super.setSouth(south);
+    }
+
+    @Override
+    public void setEast(Node east) {
+        super.setEast(east);
+    }
+
+    @Override
+    public String toString() {
+        return "DataNode{" +
+                "value=" + value +
+                '}';
+    }
 }
