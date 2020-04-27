@@ -24,7 +24,7 @@ public class Client {
         Iterator<SentinelLL.SentinelNode> test = game.getMatrix().iterator();
         while(test.hasNext())
         {
-
+            //test
             SentinelLL.SentinelNode currentSentinel = test.next();
             Node token = currentSentinel;
             while(token.east != currentSentinel ) {
