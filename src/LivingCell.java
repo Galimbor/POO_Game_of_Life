@@ -36,4 +36,6 @@ public class LivingCell {
         return i == that.i &&
                 j == that.j;
     }
+
+
 }
