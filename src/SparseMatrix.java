@@ -9,7 +9,7 @@ public class SparseMatrix implements IMatrix {
     private int rows;
     private int columns;
 
-    //Make sure to fix SentinelNodes south and north(they need to point to sentinel at the beginning).
+
     public SparseMatrix(ArrayList<String> input) {
         this.rows = input.size();
         this.columns = input.get(0).split("").length;
@@ -17,6 +17,9 @@ public class SparseMatrix implements IMatrix {
         for(int i = 0; i < Math.max(this.rows,this.columns); i++)
         {
             matrix.add(new SentinelLL.SentinelNode(i));
+            matrix.get(i).setSouth(matrix.get(i));
+            matrix.get(i).setEast(matrix.get(i));
+
         }
         Iterator<String> iterator = input.iterator();
         while (iterator.hasNext()) {
@@ -26,7 +29,7 @@ public class SparseMatrix implements IMatrix {
                     if (line[j].equals("1"))
                     {
                         SentinelLL.SentinelNode row = matrix.get(i);
-                        if(row.east == null)
+                        if(row.east == row)
                             row.setEast(new DataNode<LivingCell>(null,row,new LivingCell(i,j)));
                         else
                         {
@@ -36,7 +39,7 @@ public class SparseMatrix implements IMatrix {
                             data.setEast(new DataNode<LivingCell>(null,row, new LivingCell(i,j)));
                         }
                         SentinelLL.SentinelNode column = matrix.get(j);
-                        if(column.south == null) {
+                        if(column.south == column) {
                             DataNode result = (DataNode) getElement(i, j);
                             column.setSouth(result);
                             result.setSouth(column);
@@ -60,22 +63,20 @@ public class SparseMatrix implements IMatrix {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Object getElement(int i, int j) {
+    public DataNode<LivingCell> getElement(int i, int j) {
         SentinelLL.SentinelNode currentRow = matrix.get(i);
         Node token = currentRow;
-        DataNode<LivingCell> data = null;
-        LivingCell result = null;
+        DataNode<LivingCell> result = null;
         while(token.east != currentRow)
         {
-            data = (DataNode<LivingCell>) token.east;
+            DataNode<LivingCell> data = (DataNode<LivingCell>) token.getEast();
             if(data.getValue().getJ() == j) {
-                result = data.getValue();
+                result = data;
                 break;
             }
+            token = token.east;
         }
         return result;
-
-
     }
 
 
@@ -90,10 +91,10 @@ public class SparseMatrix implements IMatrix {
 
         for (int k = minRow; k <= maxRow; k++) {
             for (int m = minCol; m <= maxCol; m++)
-                if(getElement(k,m).getClass() == LivingCell.class) neighbours++;
+                if(getElement(k,m).getValue().getClass() == LivingCell.class) neighbours++;
         }
 
-        if(getElement(i,j).getClass() == LivingCell.class) neighbours--;
+        if(getElement(i,j).getValue().getClass() == LivingCell.class) neighbours--;
 
         return neighbours;
     }
