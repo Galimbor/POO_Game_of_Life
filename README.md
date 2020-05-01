@@ -13,7 +13,8 @@
 + Go to VCS -> Git -> Branches... -> + New Branch -> Enter the name of your branch and create.
 + Start working
 + After your work is done click on the green arrow -> Write your commit message under "Commit Message", make sure your commiting to the branch you just created (you can confirm this by looking above "Commit Message")
-+ Click on Commit.
++ Look at the Commit button below, click on the arrow at the right end of the button and click "Commit and Push..."
+
 
 
 *github is optional at the moment.
