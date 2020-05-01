@@ -129,7 +129,6 @@ public class SentinelLL implements Iterable {
         private int number;
 
         public SentinelNode( int number) {
-            super();
             this.number = number;
         }
 
