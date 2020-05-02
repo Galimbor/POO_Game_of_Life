@@ -1,7 +1,7 @@
 import java.util.Iterator;
 
 
-public class SentinelLL implements Iterable {
+public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
 
     public SentinelNode head;
     public SentinelNode tail;
@@ -116,10 +116,11 @@ public class SentinelLL implements Iterable {
 
 
     /*******************************************************
-     *
-     *  The  Sentinel Node class
-     *
-     ********************************************************/
+     *                                                     *
+     *              The  Sentinel Node class               *
+     *                                                     *
+     *******************************************************/
+
     public static class SentinelNode extends Node {
 
         private SentinelNode next;

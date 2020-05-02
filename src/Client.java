@@ -1,3 +1,4 @@
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Iterator;
@@ -18,7 +19,7 @@ public class Client {
 //            game.getNextGeneration();
 //            System.out.println(game.toString());
 //        }
-        SparseMatrix game = new SparseMatrix(input);
+        SparseMatrix<Node> game = new SparseMatrix<>(input);
 
         Iterator<SentinelLL.SentinelNode> test = game.getMatrix().iterator();
         while (test.hasNext()) {
@@ -30,16 +31,21 @@ public class Client {
                 token = token.east;
             }
             System.out.println();
-
-
-            //game.resize(1,1,0,0,game.rows-2,game.columns-2);
-            //game.resize(1,1,0,0,game.rows-2,game.columns-2);
-            //resize suprime linha de baixo game.resize(0,0,0,0,game.rows-1,game.columns);
-            //resize suprime linha de cima  game.resize(1,0,0,0,game.rows-1,game.columns);
-            //resize suprime coluna da direita game.resize(0,0,0,0,game.rows,game.columns-1);
-            //resize suprime coluna da esquerda game.resize(0,1,0,0,game.rows,game.columns-1);
-
-
         }
+        System.out.print(game.toString());
+        DataNode<Node> a = game.getElement(0,1);
+        game.deleteDataNode(a);
+        System.out.println("--------------------------");
+        System.out.println(game.toString());
+        //System.out.println(game.getElement(1,2).toString());
     }
+
+    //game.resize(1,1,0,0,game.rows-2,game.columns-2);
+    //game.resize(1,1,0,0,game.rows-2,game.columns-2);
+    //resize suprime linha de baixo game.resize(0,0,0,0,game.rows-1,game.columns);
+    //resize suprime linha de cima  game.resize(1,0,0,0,game.rows-1,game.columns);
+    //resize suprime coluna da direita game.resize(0,0,0,0,game.rows,game.columns-1);
+    //resize suprime coluna da esquerda game.resize(0,1,0,0,game.rows,game.columns-1);
+
+
 }
