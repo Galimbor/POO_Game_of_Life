@@ -97,11 +97,14 @@ public class SparseMatrix<T> implements IMatrix<DataNode<T>> {
     @SuppressWarnings("unchecked")
     public void addDataNode(int i, int j) {
         SentinelLL.SentinelNode row = getMatrix().get(i);
-
         //System.out.println("My i is " + i + " and my sentinelNode is" + row.getNumber());
-        if (row.getEast() == row)
+        if (row.getEast() == row) {
+            //System.out.println("Adding one with" + i + " " + j);
             row.setEast(new DataNode<>(null, row, new LivingCell(i, j)));
+        }
         else {
+            //System.out.println("Adding on existing one with" + i + " " + j);
+            //System.out.println(getElement(i,j));
             Node data = row.getEast();
             while (data.getEast() != row)
                 data = data.east;
@@ -109,7 +112,6 @@ public class SparseMatrix<T> implements IMatrix<DataNode<T>> {
         }
         SentinelLL.SentinelNode column = getMatrix().get(j);
         if (column.south == column) {
-            System.out.println("My special position is " + i + " " + j);
             DataNode<T> result = getElement(i, j);
             column.setSouth(result);
             result.setSouth(column);
@@ -145,41 +147,39 @@ public class SparseMatrix<T> implements IMatrix<DataNode<T>> {
         return neighbours;
     }
 
+    private void redefineBorders(int i, int j)
+    {
+        if(i < this.startingRow  )
+        {
+            --this.startingRow;
+        }
+        if(i > this.rows - 1  )
+        {
+            ++this.rows;
+        }
+        if(j < this.startingColumn)
+        {
+            --this.startingColumn;
+        }
+        if( j > this.columns - 1  )
+        {
+            ++this.columns;
+        }
+    }
 
     private void resize(int i, int j)
     {
-        System.out.println("Number of startingrows is " + this.startingRow + " number of startingcolumns is " + this.startingColumn);
-        System.out.println("My position is " + i + " " + j + "and my rows/colums is " + this.rows + " " + this.columns );
-        if(i < this.startingRow && !( this.matrix.existsSentinelNumber(i) && this.matrix.get(i).south == this.matrix.get(i) ) )
+       // System.out.println("Number of startingrows is " + this.startingRow + " number of startingcolumns is " + this.startingColumn);
+        //System.out.println("My position is " + i + " " + j + "and my rows/colums is " + this.rows + " " + this.columns );
+        if( !this.matrix.existsSentinelNumber(i) )
         {
-            System.out.println("The startingrow is " + this.startingRow);
-            --this.startingRow;
-            System.out.println("The startingrow is " + this.startingRow);
-            System.out.println("Added upperline on position" + i +" " + j);
             this.matrix.addFirst(new SentinelLL.SentinelNode(i));
             this.matrix.get(i).setSouth(this.matrix.get(i));
             this.matrix.get(i).setEast(this.matrix.get(i));
         }
-        if(i > this.rows - 1 && !( this.matrix.existsSentinelNumber(i) && this.matrix.get(i).south == this.matrix.get(i) ) )
+        if( !this.matrix.existsSentinelNumber(j) )
         {
-            System.out.println("Added bottomline on position" + i +" " + j);
-            ++this.rows;
-            this.matrix.add(new SentinelLL.SentinelNode(i));
-            this.matrix.get(i).setSouth(matrix.get(i));
-            this.matrix.get(i).setEast(matrix.get(i));
-        }
-        if(j < this.startingColumn  && !( this.matrix.existsSentinelNumber(j) && this.matrix.get(j).east == this.matrix.get(j)))
-        {
-            System.out.println("Added leftcolumn on position" + i +" " + j);
-            --this.startingColumn;
-            this.matrix.addFirst(new SentinelLL.SentinelNode(j));
-            this.matrix.get(j).setSouth(matrix.get(j));
-            this.matrix.get(j).setEast(matrix.get(j));
-        }
-        if( j > this.columns - 1 && !( this.matrix.existsSentinelNumber(j) && this.matrix.get(j).east == this.matrix.get(j)) )
-        {
-            System.out.println("Added rightcolumn on position" + i +" " + j);
-            ++this.columns;
+
             this.matrix.add(new SentinelLL.SentinelNode(j));
             this.matrix.get(j).setSouth(matrix.get(j));
             this.matrix.get(j).setEast(matrix.get(j));
@@ -197,21 +197,44 @@ public class SparseMatrix<T> implements IMatrix<DataNode<T>> {
                 //System.out.println("I'm stuck with ashamd" + i + " and " + j );
                 if (this.getElement(i, j) == null && neighbours == 3) {
                     //System.out.println("Found 0 with " + neighbours);
+                    next.redefineBorders(i,j);
                     next.resize(i,j);
                   //  System.out.println("I'm stuck between Resize");
                     next.addDataNode(i, j);
-                    System.out.println(next.getElement(i,j));
+                   // System.out.println(next.getElement(i,j));
+                    //System.out.println(next.getElement(1,-1));
+                    //System.out.println(next.getElement(1,1));
                    // System.out.println("I'm stuck at DataNode");
                 } else if ((this.getElement(i, j) != null) && (neighbours >= 2 && neighbours <= 3)) {
                    // System.out.println("Found 1 with " + neighbours);
                     //next.resize(i,j);
                     next.addDataNode(i, j);
+                    //System.out.println(next.getElement(1,-1));
+                    //System.out.println(next.getElement(1,1));
                 } else {
                     //do nothing
                 }
             }
 
+
         }
+        //DataNode<LivingCell> test = (DataNode<LivingCell>) next.getMatrix().get(1).getEast().getEast();
+        //System.out.println(test);
+        //System.out.println(next.getMatrix().size);
+       // System.out.println(this.matrix.existsSentinelNumber(1));
+//        Iterator<SentinelLL.SentinelNode> test = next.getMatrix().iterator();
+//        while (test.hasNext()) {
+//            //test
+//            SentinelLL.SentinelNode currentSentinel = test.next();
+//            Node token = currentSentinel;
+//            while (token.east != currentSentinel) {
+//                System.out.print(" " + token.east + " ");
+//                token = token.east;
+//            }
+//            System.out.println();
+//        }
+        //System.out.println("Testing: " + next.toString());
+        //System.out.println("Valid point is " + next.getElement(1,-1));
         return next;
     }
 
@@ -263,9 +286,11 @@ public class SparseMatrix<T> implements IMatrix<DataNode<T>> {
     @Override
     public String toString() {
         String result = "";
-        System.out.println("In toString : Starting column is: " + this.startingColumn + "and Column is~: " + this.columns );
+       // System.out.println(getElement(1,-1));
+       // System.out.println("In toString : Starting column is: " + this.startingColumn + "and Column is~: " + this.columns );
         for (int i = this.startingRow; i < this.getRows(); i++) {
             for (int j = this.startingColumn; j < this.getColumns(); j++) {
+                //System.out.println(this.getElement(i,j));
                 if (this.getElement(i, j) == null)
                     result = result.concat("0");
                 else if (this.getElement(i, j).getClass() == DataNode.class) {

@@ -25,8 +25,8 @@ public class Client {
 //        System.out.println(game.getNeighbours(1,1));
         for (int i = 0; i < gen; i++) {
             //System.out.println("Number of sentinelnodes is " + game.getMatrix().size);
-            System.out.println("Number of rows is " + game.getRows() + " Columns is " + game.getColumns());
-            System.out.println(game.getStartingRow() + " " + game.getStartingColumn());
+            //System.out.println("Number of rows is " + game.getRows() + " Columns is " + game.getColumns());
+            //System.out.println(game.getStartingRow() + " " + game.getStartingColumn());
             game = game.nextGen();
             System.out.println(game.toString());
 
