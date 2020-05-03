@@ -22,6 +22,48 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
     }
 
 
+    public boolean existsSentinelNumber(int number)
+    {
+        SentinelNode x = head;
+        boolean result = false;
+        for (int i = 0; i < this.size; i++) {
+            if (x.getNumber() == number) {
+                result = true;
+                break;
+            }
+            x = x.next;
+        }
+        return result;
+    }
+
+
+
+    /**
+     * Links e as first element.
+     * There needs to already be an element here. Might change this later.
+     */
+    private void linkFirst(SentinelNode e) {
+        final SentinelNode f = head;
+        e.next = f;
+        head = e;
+        tail.next = head;
+        size++;
+    }
+
+
+
+
+    /**
+     * Inserts the specified element at the beginning of this list.
+     *
+     * @param e the element to add
+     */
+    public void addFirst(SentinelNode e) {
+        linkFirst(e);
+    }
+
+
+
     /**
      * Links e as last element of the list.
      */
@@ -78,7 +120,6 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
      */
 
     public SentinelNode get(int index) {
-        checkElementIndex(index);
         return returnSentinelNode(index);
     }
 
@@ -89,8 +130,9 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
     SentinelNode returnSentinelNode(int index) {
         // assert isElementIndex(index);
         SentinelNode x = head;
-        for (int i = 0; i < index; i++)
+        while(x.getNumber() != index) {
             x = x.next;
+        }
         return x;
 
     }
@@ -145,6 +187,10 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
             this.next = next;
         }
 
+        public int getNumber() {
+            return number;
+        }
+
         @Override
         public String toString() {
             return "SentinelNode{" +
@@ -158,7 +204,7 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
 
         private SentinelLL current = self();
 
-        private int nextIndex = 0;
+        private int nextIndex = head.getNumber();
 
 
         @Override
