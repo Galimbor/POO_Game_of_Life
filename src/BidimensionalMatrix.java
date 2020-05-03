@@ -8,7 +8,7 @@ public class BidimensionalMatrix<T> implements IMatrix<T> {
     T[][] matrix;
     int rows;
     int columns;
-    ArrayList<LivingCell> livingCells;
+    List<LivingCell> livingCells;
 
     @SuppressWarnings("unchecked")
     public BidimensionalMatrix(ArrayList<String> input) {
@@ -180,7 +180,7 @@ public class BidimensionalMatrix<T> implements IMatrix<T> {
                         addBotLine = 0;
                     if (j == 0)
                         addLeftColumn = 0;
-                    else if (j == expanded[0].length -1)
+                    else if (j == expanded[0].length - 1)
                         addRightColumn = 0;
                 } else {
                 }

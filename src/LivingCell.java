@@ -2,10 +2,8 @@ import java.util.Objects;
 
 public class LivingCell {
 
-
-
-    private int i;
-    private int j;
+    private final int i;
+    private final int j;
 
     public LivingCell(int i, int j) {
         this.i = i;

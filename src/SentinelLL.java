@@ -1,14 +1,13 @@
 import java.util.Iterator;
 
 
-public class SentinelLL implements Iterable {
+public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
 
     public SentinelNode head;
     public SentinelNode tail;
     int size;
 
-    public SentinelLL()
-    {
+    public SentinelLL() {
         this.head = null;
         this.tail = null;
     }
@@ -32,8 +31,7 @@ public class SentinelLL implements Iterable {
         if (l == null) {
             head = e;
             e.next = e;
-        }
-        else {
+        } else {
             l.next = e;
             e.next = head;
         }
@@ -41,13 +39,14 @@ public class SentinelLL implements Iterable {
     }
 
 
+
     /**
      * Appends the specified SentinelNode to the end of this list.
+     *
      * @param node node to be appended to this list
      */
 
-    public void add(SentinelNode node)
-    {
+    public void add(SentinelNode node) {
         linkLast(node);
     }
 
@@ -90,9 +89,9 @@ public class SentinelLL implements Iterable {
     SentinelNode returnSentinelNode(int index) {
         // assert isElementIndex(index);
         SentinelNode x = head;
-            for (int i = 0; i < index; i++)
-                x =  x.next;
-            return x;
+        for (int i = 0; i < index; i++)
+            x = x.next;
+        return x;
 
     }
 
@@ -101,7 +100,7 @@ public class SentinelLL implements Iterable {
      * Replaces the element at the specified position in this list with the
      * specified element.
      *
-     * @param index of the SentinelNode to replace
+     * @param index   of the SentinelNode to replace
      * @param element to be stored at the specified position
      * @throws IndexOutOfBoundsException
      */
@@ -112,23 +111,23 @@ public class SentinelLL implements Iterable {
         x.south = element.south;
     }
 
-    private SentinelLL self()
-    {
+    private SentinelLL self() {
         return this;
     }
 
 
     /*******************************************************
-     *
-     *  The  Sentinel Node class
-     *
-     ********************************************************/
+     *                                                     *
+     *              The  Sentinel Node class               *
+     *                                                     *
+     *******************************************************/
+
     public static class SentinelNode extends Node {
 
         private SentinelNode next;
         private int number;
 
-        public SentinelNode( int number) {
+        public SentinelNode(int number) {
             this.number = number;
         }
 
@@ -168,22 +167,20 @@ public class SentinelLL implements Iterable {
         }
 
         @Override
-        public SentinelNode next()
-        {
-            SentinelNode result =  current.get(nextIndex);
+        public SentinelNode next() {
+            SentinelNode result = current.get(nextIndex);
             nextIndex++;
             return result;
         }
 
         @Override
-        public void remove()
-        {
+        public void remove() {
             throw new UnsupportedOperationException();
         }
     }
+
     @Override
-    public Iterator<SentinelNode> iterator()
-    {
+    public Iterator<SentinelNode> iterator() {
         return new SentinelLLIterator();
     }
 

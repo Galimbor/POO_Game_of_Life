@@ -1,4 +1,4 @@
-public class DataNode<T> extends Node{
+public class DataNode<T> extends Node {
 
     private T value;
 
