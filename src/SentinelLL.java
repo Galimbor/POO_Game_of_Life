@@ -1,12 +1,17 @@
 import java.util.Iterator;
 
-
+/***
+ *
+ */
 public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
 
     public SentinelNode head;
     public SentinelNode tail;
     int size;
 
+    /***
+     *
+     */
     public SentinelLL() {
         this.head = null;
         this.tail = null;
@@ -19,6 +24,45 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
      */
     public int size() {
         return size;
+    }
+
+
+    public boolean existsSentinelNumber(int number) {
+        SentinelNode x = head;
+        boolean result = false;
+        for (int i = 0; i < this.size; i++) {
+            if (x.getNumber() == number) {
+                result = true;
+                break;
+            }
+            x = x.next;
+        }
+        return result;
+    }
+
+
+    /**
+     * Links e as first element.
+     * There needs to already be an element here. Might change this later.
+     */
+    private void linkFirst(SentinelNode e) {
+        final SentinelNode f = head;
+        e.next = f;
+        head = e;
+        tail.next = head;
+        size++;
+    }
+
+
+    /**
+     * Inserts the specified element at the beginning of this list.
+     *
+     * @param e the element to add
+     */
+    public void addFirst(SentinelNode e) {
+        e.setEast(e);
+        e.setSouth(e);
+        linkFirst(e);
     }
 
 
@@ -39,7 +83,6 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
     }
 
 
-
     /**
      * Appends the specified SentinelNode to the end of this list.
      *
@@ -47,26 +90,11 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
      */
 
     public void add(SentinelNode node) {
+        node.setSouth(node);
+        node.setEast(node);
         linkLast(node);
     }
 
-
-    /**
-     * Checks if the passed index is the index of an element.
-     */
-    private boolean isElementIndex(int index) {
-        return index >= 0 && index < size;
-    }
-
-
-    /**
-     * The same as isElementIndex.
-     * Throws @IndexOutOfBoundsException() if index is is not an element index.
-     */
-    private void checkElementIndex(int index) {
-        if (!isElementIndex(index))
-            throw new IndexOutOfBoundsException();
-    }
 
 
     /**
@@ -77,22 +105,70 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
      * @throws IndexOutOfBoundsException if index is not valid.
      */
 
-    public SentinelNode get(int index) {
-        checkElementIndex(index);
+    public SentinelNode getSentinel(int index) {
         return returnSentinelNode(index);
     }
 
+    /***
+     *
+     * @param head
+     */
+    public void setHead(SentinelNode head) {
+        this.head = head;
+    }
+
+    /***
+     *
+     * @param tail
+     */
+    public void setTail(SentinelNode tail) {
+        this.tail = tail;
+    }
+
+    /***
+     *
+     * @param size
+     */
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    /***
+     *
+     * @return
+     */
+    public SentinelNode getHead() {
+        return head;
+    }
+
+    /***
+     *
+     * @return
+     */
+    public SentinelNode getTail() {
+        return tail;
+    }
+
+    /***
+     *
+     * @return
+     */
+    public int getSize() {
+        return size;
+    }
 
     /**
      * Returns the (non-null) SentinelNodeNode at the specified element index.
      */
     SentinelNode returnSentinelNode(int index) {
-        // assert isElementIndex(index);
         SentinelNode x = head;
-        for (int i = 0; i < index; i++)
+        for (int i = 0; i < this.size; i++) {
+            if (x.getNumber() == index)
+                return x;
             x = x.next;
-        return x;
-
+        }
+       //TODO throw exception sentinel not found
+        return null; //to erase
     }
 
 
@@ -105,7 +181,6 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
      * @throws IndexOutOfBoundsException
      */
     public void set(int index, SentinelNode element) {
-        checkElementIndex(index);
         SentinelNode x = returnSentinelNode(index);
         x.east = element.south;
         x.south = element.south;
@@ -122,29 +197,63 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
      *                                                     *
      *******************************************************/
 
+    /***
+     *
+     */
     public static class SentinelNode extends Node {
 
+        /***
+         *
+         */
         private SentinelNode next;
         private int number;
 
+        /***
+         *
+         * @param number
+         */
         public SentinelNode(int number) {
             this.number = number;
         }
 
+        /***
+         *
+         * @param east
+         */
         @Override
         public void setEast(Node east) {
             super.setEast(east);
         }
 
+        /***
+         *
+         * @param south
+         */
         @Override
         public void setSouth(Node south) {
             super.setSouth(south);
         }
 
+        /***
+         *
+         * @param next
+         */
         public void setNext(SentinelNode next) {
             this.next = next;
         }
 
+        /***
+         *
+         * @return
+         */
+        public int getNumber() {
+            return number;
+        }
+
+        /***
+         *
+         * @return
+         */
         @Override
         public String toString() {
             return "SentinelNode{" +
@@ -154,31 +263,48 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
         }
     }
 
+    /***
+     *
+     */
     private class SentinelLLIterator implements Iterator<SentinelNode> {
 
         private SentinelLL current = self();
 
-        private int nextIndex = 0;
+        private int nextIndex = head.getNumber();
 
-
+        /***
+         *
+         * @return
+         */
         @Override
         public boolean hasNext() {
             return nextIndex < size;
         }
 
+        /***
+         *
+         * @return
+         */
         @Override
         public SentinelNode next() {
-            SentinelNode result = current.get(nextIndex);
+            SentinelNode result = current.getSentinel(nextIndex);
             nextIndex++;
             return result;
         }
 
+        /***
+         *
+         */
         @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
     }
 
+    /***
+     *
+     * @return
+     */
     @Override
     public Iterator<SentinelNode> iterator() {
         return new SentinelLLIterator();

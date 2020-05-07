@@ -1,20 +1,24 @@
 import java.util.List;
 
-public interface IMatrix<T> {
+public interface IMatrix<D,L> {
 
-    public void setElement(int i, int j);
+    public void setElement(int i, int j,L value);
 
-    public T getElement(int i, int j);
+    public D getElement(int i, int j);
 
     public int getRows();
 
     public int getColumns();
 
-    public List<T> getWholeColumn(int column);
+    public void setRows(int rows);
 
-    public List<T> getWholeRow(int row);
+    public void setColumns(int columns);
 
-    public void resize(int srcRPos, int srcCPos, int destRPos, int destCPos, int rows, int columns);
+    public List<D> getWholeColumn(int column);
+
+    public List<D> getWholeRow(int row);
+
+    public void resize(int i, int j);
 
     public String toString();
 
