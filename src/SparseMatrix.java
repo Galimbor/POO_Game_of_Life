@@ -167,9 +167,7 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
     }
 
     /***
-     * nao esquecer de explicar o return null. Ele e aceitavel atendendo ao facto de
-     * termos excecoes para todos os casos que nao devem acontecer, neste caso pode acontecer null pois
-     * os metodos estao preparados para lidar com o null deste metodo. Outra opcao seria criar um DataNode vazio e retorna-lo.
+     * mind the return null. Dont forget to explain
      * @param i
      * @param j
      * @return

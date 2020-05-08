@@ -13,14 +13,6 @@ public class Client {
         }
         SparseMatrix<LivingCell> game = new SparseMatrix<>(input);
         game.showNextGenerations(gen);
-
-//        try {
-//            SparseMatrix<String> test = new SparseMatrix<>(0, 4, 2, 1);
-//            System.out.println(test.toString());
-//        }
-//        catch (SparseMatrixException sE) {
-//            sE.printStackTrace();
-//        }
     }
 
 

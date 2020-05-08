@@ -19,7 +19,6 @@ public class SparseMatrixTest {
         new SparseMatrix<String>(0, 0, 1, -1);
     }
 
-
     //rows <=0 && columns <= 0
     @Test(expected = SparseMatrixException.class)
     public void testConstructor2() throws SparseMatrixException, SentinelLLException {
@@ -48,16 +47,15 @@ public class SparseMatrixTest {
     @Test(expected = SparseMatrixException.class)
     public void testDeleteDataNode1() throws SparseMatrixException, SentinelLLException {
         SparseMatrix<Integer> test = new SparseMatrix<>(0, 0, 2, 2);
-        test.deleteDataNode(3,3);
+        test.deleteDataNode(3, 3);
     }
-
 
     @Test(expected = SparseMatrixException.class)
     public void testDeleteDataNodeInput0() throws SparseMatrixException, SentinelLLException {
         ArrayList<String> input = new ArrayList<>();
         input.add("101");
         SparseMatrix<Integer> test = new SparseMatrix<>(input);
-        test.deleteDataNode(0,1);
+        test.deleteDataNode(0, 1);
     }
 
     @Test(expected = SparseMatrixException.class)
@@ -66,7 +64,7 @@ public class SparseMatrixTest {
         input.add("1111");
         input.add("1010");
         SparseMatrix<Integer> test = new SparseMatrix<>(input);
-        test.deleteDataNode(1,3);
+        test.deleteDataNode(1, 3);
     }
 
     @Test(expected = SparseMatrixException.class)
@@ -75,18 +73,20 @@ public class SparseMatrixTest {
         input.add("1111");
         input.add("1010");
         SparseMatrix<Integer> test = new SparseMatrix<>(input);
-        test.deleteDataNode(1,1);
+        test.deleteDataNode(1, 1);
     }
 
 
+    //generation == 0
     @Test(expected = SparseMatrixException.class)
-    public void testShowNextGenerations0() throws SentinelLLException,SparseMatrixException,CloneNotSupportedException {
+    public void testShowNextGenerations0() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
         SparseMatrix<Integer> test = new SparseMatrix<>(0, 0, 2, 2);
         test.showNextGenerations(0);
     }
 
+    //generation < 0
     @Test(expected = SparseMatrixException.class)
-    public void testShowNextGenerations1() throws SentinelLLException,SparseMatrixException,CloneNotSupportedException {
+    public void testShowNextGenerations1() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(0, 0, 2, 2);
         test.showNextGenerations(-5);
     }
@@ -120,7 +120,6 @@ public class SparseMatrixTest {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
         assertEquals(test.nextGeneration().toString(), "000\n111\n000\n");
     }
-
 
 
     @Test
@@ -324,18 +323,6 @@ public class SparseMatrixTest {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
         assertEquals(test.nextGeneration().toString(), "0000\n0010\n0001\n0111\n");
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

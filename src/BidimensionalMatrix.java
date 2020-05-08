@@ -162,7 +162,7 @@
 //
 //    }
 //
-//    //TODO check board method using getNeighboorsCount and resize
+
 //    @SuppressWarnings("unchecked")
 //    public void getNextGeneration() {
 //        T[][] expanded = cloneMatrixv2(this.matrix, 0, 0, 1, 1, this.rows + 2, this.columns + 2);
