@@ -2,127 +2,234 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class SparseMatrix<T> implements IMatrix<DataNode<T>> {
-
+/***
+ *
+ * @param <L>
+ */
+public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
     private SentinelLL matrix;
     private int rows;
     private int columns;
-
     private int startingRow;
     private int startingColumn;
 
-
-
+    /***
+     *
+     * @param input
+     */
     public SparseMatrix(ArrayList<String> input) {
-        this.startingColumn = 0;
-        this.startingRow = 0;
-        this.rows = input.size();
-        this.columns = input.get(0).split("").length;
-        this.matrix = new SentinelLL();
-        for (int i = 0; i < Math.max(this.rows, this.columns); i++) {
-            matrix.add(new SentinelLL.SentinelNode(i));
-            matrix.get(i).setSouth(matrix.get(i));
-            matrix.get(i).setEast(matrix.get(i));
+        setStartingRow(0);
+        setStartingColumn(0);
+        setRows(input.size());
+        setColumns(input.get(0).split("").length);
+        setMatrix(input);
+    }
 
+    /**
+     * @param startingRow
+     * @param startingColumn
+     * @param rows
+     * @param columns
+     */
+    public SparseMatrix(int startingRow, int startingColumn, int rows, int columns) {
+        setStartingColumn(startingColumn);
+        setStartingRow(startingRow);
+        setRows(rows);
+        setColumns(columns);
+        setMatrix();
+    }
+
+    /***
+     *
+     */
+    public void setMatrix() {
+        this.matrix = new SentinelLL();
+        for (int i = Math.min(this.startingRow, startingColumn); i < Math.max(this.rows, this.columns); i++) {
+            this.matrix.add(new SentinelLL.SentinelNode(i));
         }
+    }
+
+    /***
+     *
+     * @param input
+     */
+    @SuppressWarnings("unchecked")
+    public void setMatrix(ArrayList<String> input) {
+        setMatrix();
         Iterator<String> iterator = input.iterator();
         while (iterator.hasNext()) {
-            for (int i = 0; i < rows; i++) {
+            for (int i = 0; i < this.rows; i++) {
                 String[] line = iterator.next().split("");
-                for (int j = 0; j < columns; j++) {
+                for (int j = 0; j < this.columns; j++) {
                     if (line[j].equals("1")) {
-                        addDataNode(i, j);
+                        setElement(i, j, (L) "add");
                     }
                 }
             }
-
         }
     }
 
 
-    public SparseMatrix(int startingRow, int startingColumn, int rows, int columns) {
-        this.startingColumn = startingColumn;
-        this.startingRow = startingRow;
-        this.rows = rows;
+    /***
+     *
+     * @param rows
+     */
+    @Override
+    public void setRows(int rows) 
+    {
+      this.rows = rows;
+    }
+
+    
+    }
+
+    /***
+     *
+     * @param columns
+     */
+    @Override
+    public void setColumns(int columns) {
         this.columns = columns;
-        this.matrix = new SentinelLL();
-        for (int i = Math.min(this.startingRow,this.startingColumn); i < Math.max(this.rows, this.columns); i++) {
-            matrix.add(new SentinelLL.SentinelNode(i));
-            matrix.get(i).setSouth(matrix.get(i));
-            matrix.get(i).setEast(matrix.get(i));
+    }
+
+    /***
+     *
+     * @param startingRow
+     */
+    public void setStartingRow(int startingRow) {
+        this.startingRow = startingRow;
+    }
+
+    /***
+     *
+     * @param startingColumn
+     */
+    public void setStartingColumn(int startingColumn) {
+        this.startingColumn = startingColumn;
+    }
+
+    /***
+     *
+     * @param i
+     * @param j
+     * @param value
+     */
+    @Override
+    public void setElement(int i, int j, L value) {
+        String arg = (String) value;
+        if (arg.equals("delete"))
+            deleteDataNode(i, j);
+        else if (arg.equals("add"))
+            addDataNode(i, j);
+        else {
+            //TODO Throw exception
         }
     }
 
+    /***
+     *
+     * @return
+     */
+    public SentinelLL getMatrix() {
+        return this.matrix;
+    }
 
-//    @SuppressWarnings("unchecked")
-//    public Object clone() throws CloneNotSupportedException {
-//        SparseMatrix<T> newSparse = (SparseMatrix<T>) super.clone();
-//        newSparse.matrix = (SentinelLL) getMatrix().clone();
-//        return newSparse;
-//    }
+    /***
+     *
+     * @return
+     */
+    @Override
+    public int getRows() {
+        return this.rows;
+    }
 
+    /***
+     *
+     * @return
+     */
+    @Override
+    public int getColumns() {
+        return this.columns;
+    }
+
+    /***
+     *
+     * @return
+     */
+    public int getStartingColumn() {
+        return startingColumn;
+    }
+
+    /***
+     *
+     * @return
+     */
+    public int getStartingRow() {
+        return startingRow;
+    }
+
+    /***
+     *
+     * @param i
+     * @param j
+     * @return
+     */
     @SuppressWarnings("unchecked")
     @Override
-    public DataNode<T> getElement(int i, int j) {
-        //System.out.println("I'm trying to find " + i);
-        if(!matrix.existsSentinelNumber(i)) return null;
-        SentinelLL.SentinelNode currentRow = matrix.get(i);
+    public DataNode<L> getElement(int i, int j) {
+        if (!matrix.existsSentinelNumber(i))
+            return null;
+        SentinelLL.SentinelNode currentRow = this.matrix.getSentinel(i);
         Node token = currentRow;
         DataNode<LivingCell> result = null;
-        while (token.east != currentRow) {
+        while (token.getEast() != currentRow) {
             DataNode<LivingCell> data = (DataNode<LivingCell>) token.getEast();
-            if (data.getValue().getJ() == j) {
+            if (data.getJ() == j) {
                 result = data;
                 break;
             }
-            token = token.east;
+            token = token.getEast();
         }
-        return (DataNode<T>) result;
+        return (DataNode<L>) result;
     }
 
+    /***
+     *
+     * @param column
+     * @return
+     */
+    @Override
     @SuppressWarnings("unchecked")
-    public void deleteDataNode(DataNode<T> dataNode) {
-        DataNode<LivingCell> node = (DataNode<LivingCell>) dataNode;
-        //        if (currentRow.east == currentRow) {
-//            System.exit(0);
-//        } //TODO throw Exception if DataNode is not found
-        Node current = this.getMatrix().get(node.getValue().getI());
-        while (current.getEast() != node) {
-            current = current.getEast();
-        }
-        Node deleteNode = current.getEast();
-        current.setEast(deleteNode.east);
+    public List<DataNode<L>> getWholeColumn(int column) {
+        ArrayList<DataNode<L>> result = new ArrayList<>();
+        SentinelLL.SentinelNode sentinel = matrix.getSentinel(column);
+        while (sentinel.getSouth() != sentinel)
+            result.add((DataNode<L>) sentinel.getSouth());
+        return result;
     }
 
+    /***
+     *
+     * @param row
+     * @return
+     */
+    @Override
     @SuppressWarnings("unchecked")
-    public void addDataNode(int i, int j) {
-        SentinelLL.SentinelNode row = getMatrix().get(i);
 
-        //System.out.println("My i is " + i + " and my sentinelNode is" + row.getNumber());
-        if (row.getEast() == row)
-            row.setEast(new DataNode<>(null, row, new LivingCell(i, j)));
-        else {
-            Node data = row.getEast();
-            while (data.getEast() != row)
-                data = data.east;
-            data.setEast(new DataNode<>(null, row, new LivingCell(i, j)));
-        }
-        SentinelLL.SentinelNode column = getMatrix().get(j);
-        if (column.south == column) {
-            System.out.println("My special position is " + i + " " + j);
-            DataNode<T> result = getElement(i, j);
-            column.setSouth(result);
-            result.setSouth(column);
-        } else {
-            Node data = column.getSouth();
-            while (data.getSouth() != column)
-                data = data.getSouth();
-            DataNode<T> result = getElement(i, j);
-            data.setSouth(result);
-            result.setSouth(column);
-        }
+    public List<DataNode<L>> getWholeRow(int row) {
+        ArrayList<DataNode<L>> result = new ArrayList<>();
+        SentinelLL.SentinelNode sentinel = matrix.getSentinel(row);
+        while (sentinel.getSouth() != sentinel)
+            result.add((DataNode<L>) sentinel.getEast());
+        return result;
     }
 
+    /***
+     *
+     * @param i
+     * @param j
+     * @return
+     */
     public int getNeighbours(int i, int j) {
         //System.out.println("My coordinates are " + i + " " + j);
         int neighbours = 0;
@@ -133,7 +240,6 @@ public class SparseMatrix<T> implements IMatrix<DataNode<T>> {
 
         for (int k = minRow; k <= maxRow; k++) {
             for (int m = minCol; m <= maxCol; m++) {
-                //System.out.println(k + " " + m);
                 if (getElement(k, m) != null)
                     neighbours++;
             }
@@ -144,6 +250,25 @@ public class SparseMatrix<T> implements IMatrix<DataNode<T>> {
 
         return neighbours;
     }
+
+
+    /***
+     *
+     * @param i
+     * @param j
+     */
+    private void redefineBorders(int i, int j) {
+        if (i < this.startingRow) {
+            --this.startingRow;
+        }
+        if (i > this.rows - 1) {
+            ++this.rows;
+        }
+        if (j < this.startingColumn) {
+            --this.startingColumn;
+        }
+        if (j > this.columns - 1) {
+            ++this.columns;
 
 
     private void resize(int i, int j)
@@ -188,89 +313,141 @@ public class SparseMatrix<T> implements IMatrix<DataNode<T>> {
 
 
 
-    public SparseMatrix<T> nextGen() {
-        SparseMatrix<T> next = new SparseMatrix<>(this.startingRow,this.startingColumn,this.rows, this.columns);
+
+    /***
+     *
+     * @param i
+     * @param j
+     */
+    @Override
+    public void resize(int i, int j) {
+        if (!this.matrix.existsSentinelNumber(i)) {
+            this.matrix.addFirst(new SentinelLL.SentinelNode(i));
+        }
+        if (!this.matrix.existsSentinelNumber(j)) {
+            this.matrix.add(new SentinelLL.SentinelNode(j));
+        }
+    }
+
+    /***
+     *
+     * @param i
+     * @param j
+     */
+    @SuppressWarnings("unchecked")
+    public void deleteDataNode(int i, int j) {
+        DataNode<LivingCell> node = (DataNode<LivingCell>) getElement(i, j);
+        //        if (currentRow.east == currentRow) {
+//            System.exit(0);
+//        } //TODO throw Exception if DataNode is not found treated in getElement.
+        Node currentRow = this.matrix.getSentinel(node.getI());
+        while (currentRow.getEast() != node) {
+            currentRow = currentRow.east;
+        }
+        currentRow.setEast(node.east);
+        Node currentColumn = this.matrix.getSentinel(node.getJ());
+        while (currentColumn.getSouth() != node) {
+            currentColumn = currentColumn.south;
+        }
+        currentColumn.setSouth(node.south);
+    }
+
+    /***
+     *
+     * @param i
+     * @param j
+     */
+    public void addDataNode(int i, int j) {
+        SentinelLL.SentinelNode row = this.matrix.getSentinel(i);
+        if (row.getEast() == row) {
+            row.setEast(new DataNode<>(null, row, i, j, new LivingCell()));
+        } else {
+            Node data = row.east;
+            while (data.getEast() != row)
+                data = data.east;
+            data.setEast(new DataNode<>(null, row, i, j, new LivingCell()));
+        }
+        SentinelLL.SentinelNode column = this.matrix.getSentinel(j);
+        if (column.south == column) {
+            DataNode<L> result = getElement(i, j);
+            column.setSouth(result);
+            result.setSouth(column);
+        } else {
+            Node data = column.south;
+            while (data.getSouth() != column)
+                data = data.south;
+            DataNode<L> result = getElement(i, j);
+            data.setSouth(result);
+            result.setSouth(column);
+        }
+    }
+
+    /***
+     *
+     * @return
+     * @throws CloneNotSupportedException
+     */
+    @SuppressWarnings("unchecked")
+    public SparseMatrix<L> nextGeneration() throws CloneNotSupportedException {
+        SparseMatrix<L> next = (SparseMatrix<L>) this.clone();
         for (int i = this.startingRow - 1; i < this.rows + 1; i++) {
             for (int j = this.startingColumn - 1; j < this.columns + 1; j++) {
-                //System.out.println("My i is " + i + "and my j is "+ j);
                 int neighbours = this.getNeighbours(i, j);
-                //System.out.println("I'm stuck with ashamd" + i + " and " + j );
                 if (this.getElement(i, j) == null && neighbours == 3) {
-                    //System.out.println("Found 0 with " + neighbours);
-                    next.resize(i,j);
-                  //  System.out.println("I'm stuck between Resize");
-                    next.addDataNode(i, j);
-                    System.out.println(next.getElement(i,j));
-                   // System.out.println("I'm stuck at DataNode");
-                } else if ((this.getElement(i, j) != null) && (neighbours >= 2 && neighbours <= 3)) {
-                   // System.out.println("Found 1 with " + neighbours);
-                    //next.resize(i,j);
-                    next.addDataNode(i, j);
-                } else {
-                    //do nothing
+                    next.redefineBorders(i, j);
+                    next.resize(i, j);
+                    next.setElement(i, j, (L) "add");
+                } else if ((this.getElement(i, j) != null) && (neighbours < 2 || neighbours > 3)) {
+                    next.setElement(i, j, (L) "delete");
                 }
             }
-
         }
         return next;
     }
 
+    @SuppressWarnings("unchecked")
+    public void showNextGenerations(int generations) throws CloneNotSupportedException {
+        SparseMatrix<L> output = (SparseMatrix<L>) this.clone();
+        for (int i = 0; i < generations - 1; i++) {
+            output = output.nextGeneration();
+            System.out.println(output);
+        }
+        System.out.print(output.nextGeneration());
+    }
 
-    public SentinelLL getMatrix() {
-        return this.matrix;
+    /***
+     *
+     * @return
+     * @throws CloneNotSupportedException
+     */
+    @SuppressWarnings("unchecked")
+    public Object clone() throws CloneNotSupportedException {
+        SparseMatrix<L> newSparse = (SparseMatrix<L>) super.clone();
+        newSparse.setMatrix();
+        for (int i = this.startingRow; i < this.rows; i++) {
+            for (int j = this.startingColumn; j < this.columns; j++) {
+                if (this.getElement(i, j) != null) {
+                    newSparse.setElement(i, j, (L) "add");
+                }
+            }
+        }
+        return newSparse;
     }
 
 
-    @Override
-    public void setElement(int i, int j) {
-
-    }
-
-
-    @Override
-    public int getRows() {
-        return this.rows;
-    }
-
-    @Override
-    public int getColumns() {
-        return this.columns;
-    }
-
-    @Override
-    public List getWholeColumn(int column) {
-        return null;
-    }
-
-    @Override
-    public List getWholeRow(int row) {
-        return null;
-    }
-
-    @Override
-    public void resize(int srcRPos, int srcCPos, int destRPos, int destCPos, int rows, int columns) {
-
-    }
-
-    public int getStartingColumn() {
-        return startingColumn;
-    }
-
-    public int getStartingRow() {
-        return startingRow;
-    }
-
+    /***
+     *
+     * @return
+     */
     @Override
     public String toString() {
         String result = "";
-        System.out.println("In toString : Starting column is: " + this.startingColumn + "and Column is~: " + this.columns );
-        for (int i = this.startingRow; i < this.getRows(); i++) {
-            for (int j = this.startingColumn; j < this.getColumns(); j++) {
+        for (int i = this.startingRow; i < this.rows; i++) {
+            for (int j = this.startingColumn; j < this.columns; j++) {
                 if (this.getElement(i, j) == null)
                     result = result.concat("0");
                 else if (this.getElement(i, j).getClass() == DataNode.class) {
                     result = result.concat("1");
-                } else { //do nothing
                 }
             }
             result = result.concat("\n");
