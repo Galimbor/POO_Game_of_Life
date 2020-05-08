@@ -1,39 +1,341 @@
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class SparseMatrixTest {
 
+
     //rows <= 0
     @Test(expected = SparseMatrixException.class)
     public void testConstructor0() throws SparseMatrixException, SentinelLLException {
-        new SparseMatrix<String>(0,0,-1,1);
+        new SparseMatrix<String>(0, 0, -1, 1);
     }
 
     //columns <= 0
     @Test(expected = SparseMatrixException.class)
     public void testConstructor1() throws SparseMatrixException, SentinelLLException {
-        new SparseMatrix<String>(0,0,1,-1);
+        new SparseMatrix<String>(0, 0, 1, -1);
     }
 
 
     //rows <=0 && columns <= 0
     @Test(expected = SparseMatrixException.class)
     public void testConstructor2() throws SparseMatrixException, SentinelLLException {
-        new SparseMatrix<String>(0,0,-1,-1);
+        new SparseMatrix<String>(0, 0, -1, -1);
     }
 
     //startingRow >= rows
     @Test(expected = SparseMatrixException.class)
     public void testConstructor3() throws SparseMatrixException, SentinelLLException {
-        new SparseMatrix<String>(2,0,1,1);
+        new SparseMatrix<String>(2, 0, 1, 1);
     }
 
     //startingColumn >= columns
     @Test(expected = SparseMatrixException.class)
     public void testConstructor4() throws SparseMatrixException, SentinelLLException {
-        new SparseMatrix<String>(0,2,1,1);
+        new SparseMatrix<String>(0, 2, 1, 1);
     }
+
+
+    @Test(expected = SparseMatrixException.class)
+    public void testDeleteDataNode0() throws SparseMatrixException, SentinelLLException {
+        SparseMatrix<Integer> test = new SparseMatrix<>(0, 0, 2, 2);
+        test.deleteDataNode(0, 0);
+    }
+
+    @Test(expected = SparseMatrixException.class)
+    public void testDeleteDataNode1() throws SparseMatrixException, SentinelLLException {
+        SparseMatrix<Integer> test = new SparseMatrix<>(0, 0, 2, 2);
+        test.deleteDataNode(3,3);
+    }
+
+
+    @Test(expected = SparseMatrixException.class)
+    public void testDeleteDataNodeInput0() throws SparseMatrixException, SentinelLLException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("101");
+        SparseMatrix<Integer> test = new SparseMatrix<>(input);
+        test.deleteDataNode(0,1);
+    }
+
+    @Test(expected = SparseMatrixException.class)
+    public void testDeleteDataNodeInput1() throws SparseMatrixException, SentinelLLException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("1111");
+        input.add("1010");
+        SparseMatrix<Integer> test = new SparseMatrix<>(input);
+        test.deleteDataNode(1,3);
+    }
+
+    @Test(expected = SparseMatrixException.class)
+    public void testDeleteDataNodeInput2() throws SparseMatrixException, SentinelLLException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("1111");
+        input.add("1010");
+        SparseMatrix<Integer> test = new SparseMatrix<>(input);
+        test.deleteDataNode(1,1);
+    }
+
+
+    @Test(expected = SparseMatrixException.class)
+    public void testShowNextGenerations0() throws SentinelLLException,SparseMatrixException,CloneNotSupportedException {
+        SparseMatrix<Integer> test = new SparseMatrix<>(0, 0, 2, 2);
+        test.showNextGenerations(0);
+    }
+
+    @Test(expected = SparseMatrixException.class)
+    public void testShowNextGenerations1() throws SentinelLLException,SparseMatrixException,CloneNotSupportedException {
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(0, 0, 2, 2);
+        test.showNextGenerations(-5);
+    }
+
+    @Test
+    public void testToStringInput0_0() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("010");
+        input.add("010");
+        input.add("010");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "000\n111\n000\n");
+    }
+
+    @Test
+    public void testToStringInput0_1() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("000");
+        input.add("111");
+        input.add("000");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "010\n010\n010\n");
+    }
+
+    @Test
+    public void testToStringInput0_2() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("010");
+        input.add("010");
+        input.add("010");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "000\n111\n000\n");
+    }
+
+
+
+    @Test
+    public void testToStringInput1_0() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("1");
+        input.add("1");
+        input.add("1");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "000\n111\n000\n");
+    }
+
+    @Test
+    public void testToStringInput1_1() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("000");
+        input.add("111");
+        input.add("000");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "010\n010\n010\n");
+    }
+
+    @Test
+    public void testToStringInput1_2() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("010");
+        input.add("010");
+        input.add("010");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "000\n111\n000\n");
+    }
+
+    @Test
+    public void testToStringInput2_0() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("111");
+        input.add("100");
+        input.add("010");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "010\n110\n101\n000\n");
+    }
+
+    @Test
+    public void testToStringInput2_1() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("010");
+        input.add("110");
+        input.add("101");
+        input.add("000");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "110\n101\n100\n000\n");
+    }
+
+    @Test
+    public void testToStringInput2_2() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("110");
+        input.add("101");
+        input.add("100");
+        input.add("000");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "0110\n1100\n0010\n0000\n");
+    }
+
+    @Test
+    public void testToStringInput2_3() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("0110");
+        input.add("1100");
+        input.add("0010");
+        input.add("0000");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "1110\n1000\n0100\n0000\n");
+    }
+
+    @Test
+    public void testToStringInput3_0() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("101");
+        input.add("000");
+        input.add("101");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "000\n000\n000\n");
+    }
+
+    @Test
+    public void testToStringInput4_0() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("11");
+        input.add("11");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "11\n11\n");
+    }
+
+
+    @Test
+    public void testToStringInput5_0() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("110");
+        input.add("001");
+        input.add("110");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "010\n001\n010\n");
+    }
+
+    @Test
+    public void testToStringInput5_1() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("010");
+        input.add("001");
+        input.add("010");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "000\n011\n000\n");
+    }
+
+    @Test
+    public void testToStringInput5_2() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("000");
+        input.add("011");
+        input.add("000");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "000\n000\n000\n");
+    }
+
+    @Test
+    public void testToStringInput6_0() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("000000");
+        input.add("001100");
+        input.add("010000");
+        input.add("001100");
+        input.add("000000");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "000000\n001000\n010000\n001000\n000000\n");
+    }
+
+    @Test
+    public void testToStringInput6_1() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("000000");
+        input.add("001000");
+        input.add("010000");
+        input.add("001000");
+        input.add("000000");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "000000\n000000\n011000\n000000\n000000\n");
+    }
+
+    @Test
+    public void testToStringInput6_2() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("000000");
+        input.add("000000");
+        input.add("011000");
+        input.add("000000");
+        input.add("000000");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "000000\n000000\n000000\n000000\n000000\n");
+    }
+
+    @Test
+    public void testToStringInput7_0() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("010");
+        input.add("001");
+        input.add("111");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "000\n101\n011\n010\n");
+    }
+
+    @Test
+    public void testToStringInput7_1() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("000");
+        input.add("101");
+        input.add("011");
+        input.add("010");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "000\n001\n101\n011\n");
+    }
+
+    @Test
+    public void testToStringInput7_2() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("000");
+        input.add("001");
+        input.add("101");
+        input.add("011");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "0000\n0100\n0011\n0110\n");
+    }
+
+    @Test
+    public void testToStringInput7_3() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("0000");
+        input.add("0100");
+        input.add("0011");
+        input.add("0110");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.nextGeneration().toString(), "0000\n0010\n0001\n0111\n");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

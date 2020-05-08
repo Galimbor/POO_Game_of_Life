@@ -2,7 +2,6 @@
 public class LivingCell {
 
     public LivingCell() {
-
     }
 
     @Override

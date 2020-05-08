@@ -255,14 +255,14 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
      * @param j
      */
     private void redefineBorders(int i, int j) {
-        if (i + this.startingRow == -1) {  //can only grow if in outerlay not further
+        if (i == this.startingRow - 1) {  //can only grow if in outerlay not further
             --this.startingRow;
-        } else if (i - (this.rows - 1) == 1) { //can only grow if in outerlay not further
+        } else if (i == this.rows) { //can only grow if in outerlay not further
             ++this.rows;
         }
-        if (j + this.startingColumn == -1) { //can only grow if in outerlay not further
+        if (j == this.startingColumn - 1) { //can only grow if in outerlay not further
             --this.startingColumn;
-        } else if (j - (this.columns - 1) == 1) { //can only grow if in outerlay not further
+        } else if (j == this.columns) { //can only grow if in outerlay not further
             ++this.columns;
         }
     }
@@ -290,7 +290,7 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
      * @param j
      */
     @SuppressWarnings("unchecked")
-    private void deleteDataNode(int i, int j) throws SparseMatrixException, SentinelLLException {
+    public void deleteDataNode(int i, int j) throws SparseMatrixException, SentinelLLException {
         DataNode<LivingCell> node = (DataNode<LivingCell>) getElement(i, j);
         if (node == null)
             throw new SparseMatrixException("Trying to delete, DataNode not found");
@@ -311,7 +311,7 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
      * @param i
      * @param j
      */
-    private void addDataNode(int i, int j, L content) throws SentinelLLException {
+    public void addDataNode(int i, int j, L content) throws SentinelLLException {
         Node row = this.matrix.getSentinel(i);
         if (row.getEast() == row) {
             row.setEast(new DataNode<>(null, row, i, j, content));
@@ -414,7 +414,7 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
                         result = result.concat("1");
                     }
                 } catch (SentinelLLException e) {
-                    System.out.println(e.toString());
+                    e.printStackTrace();
                 }
             }
             result = result.concat("\n");
