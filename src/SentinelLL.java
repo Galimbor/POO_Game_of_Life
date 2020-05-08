@@ -45,9 +45,9 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
      * Links e as first element.
      * There needs to already be an element here. Might change this later.
      */
+    //TODO review change  final SentinelNode f = head;
     private void linkFirst(SentinelNode e) {
-        final SentinelNode f = head;
-        e.next = f;
+        e.next = head;
         head = e;
         tail.next = head;
         size++;
@@ -69,7 +69,7 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
     /**
      * Links e as last element of the list.
      */
-    void linkLast(SentinelNode e) {
+    private void linkLast(SentinelNode e) {
         final SentinelNode l = tail;
         tail = e;
         if (l == null) {
@@ -160,7 +160,7 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
     /**
      * Returns the (non-null) SentinelNodeNode at the specified element index.
      */
-    SentinelNode returnSentinelNode(int index) {
+    private SentinelNode returnSentinelNode(int index) {
         SentinelNode x = head;
         for (int i = 0; i < this.size; i++) {
             if (x.getNumber() == index)
@@ -206,7 +206,7 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
          *
          */
         private SentinelNode next;
-        private int number;
+        private final int number;
 
         /***
          *
@@ -268,7 +268,7 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
      */
     private class SentinelLLIterator implements Iterator<SentinelNode> {
 
-        private SentinelLL current = self();
+        private final SentinelLL current = self();
 
         private int nextIndex = head.getNumber();
 

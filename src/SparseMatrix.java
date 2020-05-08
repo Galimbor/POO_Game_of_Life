@@ -224,7 +224,7 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
      * @param j
      * @return
      */
-    public int getNeighbours(int i, int j) {
+    private int getNeighbours(int i, int j) {
         int neighbours = 0;
         int minRow = i < startingRow ? startingRow : i - 1;
         int maxRow = i > (this.rows - 1) ? (this.rows - 1) : i + 1;
@@ -251,14 +251,12 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
     private void redefineBorders(int i, int j) {
         if (i < this.startingRow) {
             --this.startingRow;
-        }
-        if (i > this.rows - 1) {
+        } else if (i > this.rows - 1) {
             ++this.rows;
         }
         if (j < this.startingColumn) {
             --this.startingColumn;
-        }
-        if (j > this.columns - 1) {
+        } else if (j > this.columns - 1) {
             ++this.columns;
         }
     }
@@ -276,6 +274,7 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
         if (!this.matrix.existsSentinelNumber(j)) {
             this.matrix.add(new SentinelLL.SentinelNode(j));
         }
+        redefineBorders(i, j);
     }
 
     /***
@@ -284,7 +283,7 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
      * @param j
      */
     @SuppressWarnings("unchecked")
-    public void deleteDataNode(int i, int j) {
+    private void deleteDataNode(int i, int j) {
         DataNode<LivingCell> node = (DataNode<LivingCell>) getElement(i, j);
         //        if (currentRow.east == currentRow) {
 //            System.exit(0);
@@ -306,7 +305,7 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
      * @param i
      * @param j
      */
-    public void addDataNode(int i, int j) {
+    private void addDataNode(int i, int j) {
         SentinelLL.SentinelNode row = this.matrix.getSentinel(i);
         if (row.getEast() == row) {
             row.setEast(new DataNode<>(null, row, i, j, new LivingCell()));
@@ -343,7 +342,6 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
             for (int j = this.startingColumn - 1; j < this.columns + 1; j++) {
                 int neighbours = this.getNeighbours(i, j);
                 if (this.getElement(i, j) == null && neighbours == 3) {
-                    next.redefineBorders(i, j);
                     next.resize(i, j);
                     next.setElement(i, j, (L) "add");
                 } else if ((this.getElement(i, j) != null) && (neighbours < 2 || neighbours > 3)) {
@@ -364,13 +362,14 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
         System.out.print(output.nextGeneration());
     }
 
+
     /***
      *
      * @return
      * @throws CloneNotSupportedException
      */
     @SuppressWarnings("unchecked")
-    public Object clone() throws CloneNotSupportedException {
+    protected Object clone() throws CloneNotSupportedException {
         SparseMatrix<L> newSparse = (SparseMatrix<L>) super.clone();
         newSparse.setMatrix();
         for (int i = this.startingRow; i < this.rows; i++) {

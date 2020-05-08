@@ -1,3 +1,4 @@
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,7 +11,10 @@ public class Client {
         while (sc.hasNextLine()) {
             input.add(sc.nextLine());
         }
+//        long currentTime = System.currentTimeMillis();
         SparseMatrix<LivingCell> game = new SparseMatrix<>(input);
         game.showNextGenerations(gen);
+//        long elapsedTime = System.currentTimeMillis() - currentTime;
+//        System.out.println(elapsedTime + "ms");
     }
 }
