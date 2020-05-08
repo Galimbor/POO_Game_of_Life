@@ -17,15 +17,15 @@ public class Client {
         //game.showNextGenerations(gen);
 //        long elapsedTime = System.currentTimeMillis() - currentTime;
 //        System.out.println(elapsedTime + "ms");
-//        SparseMatrix<LivingCell> game = new SparseMatrix<>(input);
-//        game.showNextGenerations(gen);
-        try {
-            SparseMatrix<String> test = new SparseMatrix<>(0, 0, 2, 1);
-            System.out.println(test.toString());
-        }
-        catch (SparseMatrixException sE) {
-            System.out.println(sE.toString());
-        }
+        SparseMatrix<LivingCell> game = new SparseMatrix<>(input);
+        game.showNextGenerations(gen);
+//        try {
+//            SparseMatrix<String> test = new SparseMatrix<>(0, 4, 2, 1);
+//            System.out.println(test.toString());
+//        }
+//        catch (SparseMatrixException sE) {
+//            sE.printStackTrace();
+//        }
     }
 
 

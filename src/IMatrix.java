@@ -4,7 +4,7 @@ public interface IMatrix<D,L> {
 
     public void setElement(int i, int j,L value) throws Exception;
 
-    public D getElement(int i, int j);
+    public D getElement(int i, int j) throws SentinelLLException;
 
     public int getRows();
 
@@ -14,11 +14,11 @@ public interface IMatrix<D,L> {
 
     public void setColumns(int columns) throws Exception;
 
-    public List<D> getWholeColumn(int column);
+    public List<D> getWholeColumn(int column) throws SentinelLLException;
 
-    public List<D> getWholeRow(int row);
+    public List<D> getWholeRow(int row) throws SentinelLLException;
 
-    public void resize(int i, int j);
+    public void resize(int i, int j) throws SentinelLLException;
 
     public String toString();
 

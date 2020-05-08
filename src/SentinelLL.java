@@ -1,112 +1,20 @@
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /***
  *
  */
-public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
+public class SentinelLL {
 
-    public SentinelNode head;
-    public SentinelNode tail;
-    int size;
+    private SentinelNode head;
+    private SentinelNode tail;
+    private int size;
 
     /***
      *
      */
     public SentinelLL() {
-        this.head = null;
-        this.tail = null;
-    }
 
-    /**
-     * Returns the number of elements in this list.
-     *
-     * @return the number of elements in this list
-     */
-    public int size() {
-        return size;
-    }
-
-
-    public boolean existsSentinelNumber(int number) {
-        SentinelNode x = head;
-        boolean result = false;
-        for (int i = 0; i < this.size; i++) {
-            if (x.getNumber() == number) {
-                result = true;
-                break;
-            }
-            x = x.next;
-        }
-        return result;
-    }
-
-
-    /**
-     * Links e as first element.
-     * There needs to already be an element here. Might change this later.
-     */
-    //TODO review change  final SentinelNode f = head;
-    private void linkFirst(SentinelNode e) {
-        e.next = head;
-        head = e;
-        tail.next = head;
-        size++;
-    }
-
-
-    /**
-     * Inserts the specified element at the beginning of this list.
-     *
-     * @param e the element to add
-     */
-    public void addFirst(SentinelNode e) {
-        e.setEast(e);
-        e.setSouth(e);
-        linkFirst(e);
-    }
-
-
-    /**
-     * Links e as last element of the list.
-     */
-    private void linkLast(SentinelNode e) {
-        final SentinelNode l = tail;
-        tail = e;
-        if (l == null) {
-            head = e;
-            e.next = e;
-        } else {
-            l.next = e;
-            e.next = head;
-        }
-        size++;
-    }
-
-
-    /**
-     * Appends the specified SentinelNode to the end of this list.
-     *
-     * @param node node to be appended to this list
-     */
-
-    public void add(SentinelNode node) {
-        node.setSouth(node);
-        node.setEast(node);
-        linkLast(node);
-    }
-
-
-
-    /**
-     * Returns the element at the specified position in this list.
-     *
-     * @param index of the SentinelNode to return
-     * @return the SentinelNode at the specified position in this list
-     * @throws IndexOutOfBoundsException if index is not valid.
-     */
-
-    public SentinelNode getSentinel(int index) {
-        return returnSentinelNode(index);
     }
 
     /***
@@ -129,7 +37,10 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
      *
      * @param size
      */
-    public void setSize(int size) {
+    public void setSize(int size) throws SentinelLLException {
+        if (size < 0) {
+            throw new SentinelLLException("size < 0");
+        }
         this.size = size;
     }
 
@@ -157,34 +68,111 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
         return size;
     }
 
+
+    /**
+     * Returns the element at the specified position in this list.
+     *
+     * @param number of the SentinelNode to return
+     * @return the SentinelNode at the specified position in this list
+     * @throws IndexOutOfBoundsException if number is not valid.
+     */
+
+    public SentinelNode getSentinel(int number) throws SentinelLLException {
+        return returnSentinelNode(number);
+    }
+
+
     /**
      * Returns the (non-null) SentinelNodeNode at the specified element index.
      */
-    private SentinelNode returnSentinelNode(int index) {
+    private SentinelNode returnSentinelNode(int index) throws SentinelLLException {
         SentinelNode x = head;
         for (int i = 0; i < this.size; i++) {
             if (x.getNumber() == index)
                 return x;
             x = x.next;
         }
-       //TODO throw exception sentinel not found
-        return null; //to erase
+        throw new SentinelLLException("SentinelNode not found");
+    }
+
+
+    public boolean existsSentinelNumber(int number) {
+        SentinelNode x = head;
+        boolean result = false;
+        for (int i = 0; i < this.size; i++) {
+            if (x.getNumber() == number) {
+                result = true;
+                break;
+            }
+            x = x.next;
+        }
+        return result;
     }
 
 
     /**
-     * Replaces the element at the specified position in this list with the
-     * specified element.
-     *
-     * @param index   of the SentinelNode to replace
-     * @param element to be stored at the specified position
-     * @throws IndexOutOfBoundsException
+     * Links e as first element.
+     * There needs to already be an element here. Might change this later.
      */
-    public void set(int index, SentinelNode element) {
-        SentinelNode x = returnSentinelNode(index);
-        x.east = element.south;
-        x.south = element.south;
+    //TODO review change  final SentinelNode f = head;
+    private void linkFirst(int e) {
+        SentinelLL.SentinelNode node = new SentinelNode(e);
+        node.setEast(node);
+        node.setSouth(node);
+        node.next = head;
+        head = node;
+        tail.next = head;
+        size++;
     }
+
+
+    /**
+     * Inserts the specified element at the beginning of this list.
+     *
+     * @param e the element to add
+     */
+    public void addFirst(int e) {
+        linkFirst(e);
+    }
+
+
+    /**
+     * Links e as last element of the list.
+     */
+    private void linkLast(int e) throws SentinelLLException {
+        final SentinelNode l = tail;
+        SentinelLL.SentinelNode node = new SentinelNode(e);
+        node.setSouth(node);
+        node.setEast(node);
+        tail = node;
+        if (l == null) {
+            head = node;
+            node.next = node;
+        } else {
+            l.next = node;
+            node.next = head;
+        }
+        size++;
+    }
+
+    public void addLast(int e) throws SentinelLLException {
+        linkLast(e);
+    }
+
+    public void remove(int e) throws SentinelLLException {
+        if (!existsSentinelNumber(e))
+            throw new SentinelLLException("trying to delete, SentinelNode not found");
+        SentinelNode x = head;
+        while (x.getNext().getNumber() != e) {
+            x = x.getNext();
+        }
+        if (x.next == getHead())
+            setHead(getHead().next);
+        if (x.next == getTail())
+            setTail(x);
+        x.next = x.getNext().next;
+    }
+
 
     private SentinelLL self() {
         return this;
@@ -200,7 +188,7 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
     /***
      *
      */
-    public static class SentinelNode extends Node {
+    private static class SentinelNode extends Node {
 
         /***
          *
@@ -223,6 +211,10 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
         @Override
         public void setEast(Node east) {
             super.setEast(east);
+        }
+
+        public SentinelNode getNext() {
+            return next;
         }
 
         /***
@@ -287,27 +279,15 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
          */
         @Override
         public SentinelNode next() {
-            SentinelNode result = current.getSentinel(nextIndex);
+            SentinelNode result = null;
+            try {
+                result = current.getSentinel(nextIndex);
+            } catch (SentinelLLException e) {
+                System.out.println(e.toString());
+            }
             nextIndex++;
             return result;
         }
 
-        /***
-         *
-         */
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
     }
-
-    /***
-     *
-     * @return
-     */
-    @Override
-    public Iterator<SentinelNode> iterator() {
-        return new SentinelLLIterator();
-    }
-
 }
