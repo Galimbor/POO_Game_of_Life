@@ -2,7 +2,7 @@ import java.util.List;
 
 public interface IMatrix<D,L> {
 
-    public void setElement(int i, int j,L value);
+    public void setElement(int i, int j,L value) throws Exception;
 
     public D getElement(int i, int j);
 
@@ -10,9 +10,9 @@ public interface IMatrix<D,L> {
 
     public int getColumns();
 
-    public void setRows(int rows);
+    public void setRows(int rows) throws Exception;
 
-    public void setColumns(int columns);
+    public void setColumns(int columns) throws Exception;
 
     public List<D> getWholeColumn(int column);
 
