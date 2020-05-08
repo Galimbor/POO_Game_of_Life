@@ -69,18 +69,13 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
         }
     }
 
-
     /***
      *
      * @param rows
      */
     @Override
-    public void setRows(int rows) 
-    {
-      this.rows = rows;
-    }
-
-    
+    public void setRows(int rows) {
+        this.rows = rows;
     }
 
     /***
@@ -215,7 +210,6 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
      */
     @Override
     @SuppressWarnings("unchecked")
-
     public List<DataNode<L>> getWholeRow(int row) {
         ArrayList<DataNode<L>> result = new ArrayList<>();
         SentinelLL.SentinelNode sentinel = matrix.getSentinel(row);
@@ -231,7 +225,6 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
      * @return
      */
     public int getNeighbours(int i, int j) {
-        //System.out.println("My coordinates are " + i + " " + j);
         int neighbours = 0;
         int minRow = i < startingRow ? startingRow : i - 1;
         int maxRow = i > (this.rows - 1) ? (this.rows - 1) : i + 1;
@@ -244,13 +237,11 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
                     neighbours++;
             }
         }
-
         if (matrix.existsSentinelNumber(i) && getElement(i, j) != null)
             neighbours--;
 
         return neighbours;
     }
-
 
     /***
      *
@@ -269,50 +260,8 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
         }
         if (j > this.columns - 1) {
             ++this.columns;
-
-
-    private void resize(int i, int j)
-    {
-        System.out.println("Number of startingrows is " + this.startingRow + " number of startingcolumns is " + this.startingColumn);
-        System.out.println("My position is " + i + " " + j + "and my rows/colums is " + this.rows + " " + this.columns );
-        if(i < this.startingRow && !( this.matrix.existsSentinelNumber(i) && this.matrix.get(i).south == this.matrix.get(i) ) )
-        {
-            System.out.println("The startingrow is " + this.startingRow);
-            --this.startingRow;
-            System.out.println("The startingrow is " + this.startingRow);
-            System.out.println("Added upperline on position" + i +" " + j);
-            this.matrix.addFirst(new SentinelLL.SentinelNode(i));
-            this.matrix.get(i).setSouth(this.matrix.get(i));
-            this.matrix.get(i).setEast(this.matrix.get(i));
-        }
-        if(i > this.rows - 1 && !( this.matrix.existsSentinelNumber(i) && this.matrix.get(i).south == this.matrix.get(i) ) )
-        {
-            System.out.println("Added bottomline on position" + i +" " + j);
-            ++this.rows;
-            this.matrix.add(new SentinelLL.SentinelNode(i));
-            this.matrix.get(i).setSouth(matrix.get(i));
-            this.matrix.get(i).setEast(matrix.get(i));
-        }
-        if(j < this.startingColumn  && !( this.matrix.existsSentinelNumber(j) && this.matrix.get(j).east == this.matrix.get(j)))
-        {
-            System.out.println("Added leftcolumn on position" + i +" " + j);
-            --this.startingColumn;
-            this.matrix.addFirst(new SentinelLL.SentinelNode(j));
-            this.matrix.get(j).setSouth(matrix.get(j));
-            this.matrix.get(j).setEast(matrix.get(j));
-        }
-        if( j > this.columns - 1 && !( this.matrix.existsSentinelNumber(j) && this.matrix.get(j).east == this.matrix.get(j)) )
-        {
-            System.out.println("Added rightcolumn on position" + i +" " + j);
-            ++this.columns;
-            this.matrix.add(new SentinelLL.SentinelNode(j));
-            this.matrix.get(j).setSouth(matrix.get(j));
-            this.matrix.get(j).setEast(matrix.get(j));
         }
     }
-
-
-
 
     /***
      *
@@ -433,7 +382,6 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
         }
         return newSparse;
     }
-
 
     /***
      *
