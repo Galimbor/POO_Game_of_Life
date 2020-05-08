@@ -27,7 +27,8 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
     }
 
 
-    public boolean existsSentinelNumber(int number) {
+    public boolean existsSentinelNumber(int number)
+    {
         SentinelNode x = head;
         boolean result = false;
         for (int i = 0; i < this.size; i++) {
@@ -54,12 +55,14 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
     }
 
 
+
     /**
      * Inserts the specified element at the beginning of this list.
      *
      * @param e the element to add
      */
     public void addFirst(SentinelNode e) {
+
         e.setEast(e);
         e.setSouth(e);
         linkFirst(e);
@@ -141,12 +144,12 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
         return head;
     }
 
-    /***
-     *
-     * @return
-     */
     public SentinelNode getTail() {
         return tail;
+
+    public SentinelNode get(int index) {
+        return returnSentinelNode(index);
+
     }
 
     /***
@@ -242,6 +245,7 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
             this.next = next;
         }
 
+
         /***
          *
          * @return
@@ -249,6 +253,7 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
         public int getNumber() {
             return number;
         }
+
 
         /***
          *
@@ -271,6 +276,7 @@ public class SentinelLL implements Iterable<SentinelLL.SentinelNode> {
         private SentinelLL current = self();
 
         private int nextIndex = head.getNumber();
+
 
         /***
          *
