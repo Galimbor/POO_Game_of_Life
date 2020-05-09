@@ -136,7 +136,7 @@ public class SentinelLL {
 
 
     /**
-     * Links e as last element of the list.
+     * Links "e" as last element of the list.
      */
     private void linkLast(int e) {
         final SentinelNode l = tail;

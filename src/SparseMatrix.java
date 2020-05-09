@@ -6,7 +6,7 @@ import java.util.List;
  *
  * @param <L>
  */
-public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
+public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     private SentinelLL matrix;
     private int rows;
     private int columns;
@@ -159,11 +159,17 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
 
     @Override
     public void setElement(int i, int j, L value) throws SentinelLLException {
-        if (getElement(i, j) == null) {
+        if (getDataNode(i, j) == null) {
             addDataNode(i, j, value);
         } else {
-            this.getElement(i, j).setValue(value);
+            this.getDataNode(i, j).setValue(value);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public L getElement(int i, int j) throws SentinelLLException {
+        DataNode result = getDataNode(i, j);
+        return (L) result.getValue();
     }
 
     /***
@@ -173,10 +179,9 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
      * @return
      */
     @SuppressWarnings("unchecked")
-    @Override
-    public DataNode<L> getElement(int i, int j) throws SentinelLLException {
+    public DataNode<L> getDataNode(int i, int j) throws SentinelLLException {
         if (!matrix.existsSentinelNumber(i)) {
-            return null;
+            throw new SentinelLLException("Sentinel Node does not exist!");
         }
         Node currentRow = this.matrix.getSentinel(i);
         Node token = this.matrix.getSentinel(i);
@@ -228,36 +233,26 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
         return result;
     }
 
+
     /***
      *
      * @param i
      * @param j
-     * @return
      */
-    public int getNeighbours(int i, int j) throws SentinelLLException {
-        int neighbours = 0;
-        int minRow = i < startingRow ? startingRow : i - 1;
-        int maxRow = i > (this.rows - 1) ? (this.rows - 1) : i + 1;
-        int minCol = j < startingColumn ? startingColumn : j - 1;
-        int maxCol = j > (this.columns - 1) ? (this.columns - 1) : j + 1;
-
-        for (int k = minRow; k <= maxRow; k++) {
-            for (int m = minCol; m <= maxCol; m++) {
-                if (getElement(k, m) != null)
-                    neighbours++;
-            }
+    private void redefineBorders(int i, int j) {
+        if (i < this.startingRow) {  //can only grow if in outerlay not further
+            this.startingRow = i;
+        } else if (i > this.rows - 1) { //can only grow if in outerlay not further
+            this.rows = i + 1;
         }
-        if (matrix.existsSentinelNumber(i) && getElement(i, j) != null)
-            neighbours--;
-
-        return neighbours;
+        if (j < this.startingColumn) { //can only grow if in outerlay not further
+            this.startingColumn = j;
+        } else if (j > this.columns - 1) { //can only grow if in outerlay not further
+            this.columns = j + 1;
+        }
     }
 
-    /***
-     *
-     * @param i
-     * @param j
-     */
+    /*
     private void redefineBorders(int i, int j) {
         if (i == this.startingRow - 1) {  //can only grow if in outerlay not further
             --this.startingRow;
@@ -270,6 +265,31 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
             ++this.columns;
         }
     }
+    */
+
+    private void addRemainingSentinels(int n, int m) {
+        if(n > rows - 1) {
+            for (int i = rows; i <= n; i++) {
+                this.matrix.addLast(i);
+            }
+        } else if (n < startingRow) {
+            for (int i = startingRow - 1; i >= n; i--) {
+                this.matrix.addFirst(i);
+            }
+        }
+
+        if(m > columns - 1) {
+            for (int i = columns; i <= m; i++) {
+                if(!this.matrix.existsSentinelNumber(i))
+                    this.matrix.addLast(i);
+            }
+        } else if (m < startingColumn) {
+            for (int i = startingColumn - 1; i >= m; i--) {
+                if(!this.matrix.existsSentinelNumber(i))
+                    this.matrix.addFirst(i);
+            }
+        }
+    }
 
     /***
      *
@@ -278,13 +298,14 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
      */
     @Override
     public void resize(int i, int j) throws SentinelLLException {
-        if (!this.matrix.existsSentinelNumber(i)) {
-            this.matrix.addFirst(i);
-        }
-        if (!this.matrix.existsSentinelNumber(j)) {
-            this.matrix.addLast(j);
-        }
-        //TODO maybe add Exception
+//        if (!this.matrix.existsSentinelNumber(i)) {
+//            this.matrix.addFirst(i);
+//        }
+//        if (!this.matrix.existsSentinelNumber(j)) {
+//            this.matrix.addLast(j);
+//        }
+// TODO maybe add Exception
+        addRemainingSentinels(i,j);
         redefineBorders(i, j);
     }
 
@@ -295,7 +316,7 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
      */
     @SuppressWarnings("unchecked")
     public void deleteDataNode(int i, int j) throws SparseMatrixException, SentinelLLException {
-        DataNode<LivingCell> node = (DataNode<LivingCell>) getElement(i, j);
+        DataNode<LivingCell> node = (DataNode<LivingCell>) getDataNode(i, j);
         if (node == null)
             throw new SparseMatrixException("Trying to delete, DataNode not found");
         Node currentRow = this.matrix.getSentinel(node.getI());
@@ -327,51 +348,17 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
         }
         Node column = this.matrix.getSentinel(j);
         if (column.south == column) {
-            DataNode<L> result = getElement(i, j);
+            DataNode<L> result = getDataNode(i, j);
             column.setSouth(result);
             result.setSouth(column);
         } else {
             Node data = column.south;
             while (data.getSouth() != column)
                 data = data.south;
-            DataNode<L> result = getElement(i, j);
+            DataNode<L> result = getDataNode(i, j);
             data.setSouth(result);
             result.setSouth(column);
         }
-    }
-
-    /***
-     *
-     * @return
-     * @throws CloneNotSupportedException
-     */
-    @SuppressWarnings("unchecked")
-    public SparseMatrix<L> nextGeneration() throws CloneNotSupportedException, SparseMatrixException, SentinelLLException {
-        SparseMatrix<L> next = (SparseMatrix<L>) this.clone();
-        for (int i = this.startingRow - 1; i < this.rows + 1; i++) {
-            for (int j = this.startingColumn - 1; j < this.columns + 1; j++) {
-                int neighbours = this.getNeighbours(i, j);
-                if (this.getElement(i, j) == null && neighbours == 3) {
-                    next.resize(i, j);
-                    next.addDataNode(i, j, (L) new LivingCell());
-                } else if ((this.getElement(i, j) != null) && (neighbours < 2 || neighbours > 3)) {
-                    next.deleteDataNode(i, j);
-                }
-            }
-        }
-        return next;
-    }
-
-    @SuppressWarnings("unchecked")
-    public void showNextGenerations(int generations) throws CloneNotSupportedException, SparseMatrixException, SentinelLLException {
-        if (generations <= 0)
-            throw new SparseMatrixException("generations must be >= 0");
-        SparseMatrix<L> output = (SparseMatrix<L>) this.clone();
-        for (int i = 0; i < generations - 1; i++) {
-            output = output.nextGeneration();
-            System.out.println(output.toString());
-        }
-        System.out.print(output.nextGeneration());
     }
 
 
@@ -391,7 +378,7 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
         for (int i = this.startingRow; i < this.rows; i++) {
             for (int j = this.startingColumn; j < this.columns; j++) {
                 try {
-                    if (this.getElement(i, j) != null) {
+                    if (this.getDataNode(i, j) != null) {
                         newSparse.setElement(i, j, (L) "add");
                     }
                 } catch (SentinelLLException e) {
@@ -412,7 +399,7 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
         for (int i = this.startingRow; i < this.rows; i++) {
             for (int j = this.startingColumn; j < this.columns; j++) {
                 try {
-                    DataNode<L> element = getElement(i,j);
+                    DataNode<L> element = getDataNode(i,j);
                     if (element == null)
                         result = result.concat("0");
                     else  {
@@ -426,4 +413,122 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
         }
         return result;
     }
+
+
+
+    /*******************************************************
+     *                                                     *
+     *              The Data Node class                    *
+     *                                                     *
+     *******************************************************/
+
+    /***
+     * Our DataNode Class holds information such as the int "i" and "j" that represents the position of the DataNode in
+     * the sparse matrix, a generic type stored in "value" and store as well two more important information, which are
+     * the Node "south" and "east". For these last two data members, we have the behavior that is the following:
+     *  - "are references to either the next non zero data node or to a sentinel node. The E of the last data node in a
+     *  given row points back to the sentinel node of its row. Similarly, S of the last data node in a given column
+     *  points back to the sentinel node of its column." - Professor Joao Valente Oliveira.
+     *  Where S and E indicates "south" and "east" respectively.
+     * @param <L>
+     */
+    private static class DataNode<L> extends Node {
+
+        private L value;
+        private int i;
+        private int j;
+
+        /***
+         * @param south
+         * @param east
+         * @param i
+         * @param j
+         * @param value
+         */
+        public DataNode(Node south, Node east, int i, int j, L value) {
+            super(south, east);
+            setI(i);
+            setJ(j);
+            setValue(value);
+        }
+
+        /***
+         *
+         * @return
+         */
+        public L getValue() {
+            return value;
+        }
+
+        /***
+         *
+         * @param value
+         */
+        public void setValue(L value) {
+            this.value = value;
+        }
+
+        /***
+         *
+         * @param i
+         */
+        public void setI(int i) {
+            this.i = i;
+        }
+
+        /***
+         *
+         * @param j
+         */
+        public void setJ(int j) {
+            this.j = j;
+        }
+
+        /***
+         *
+         * @return
+         */
+        public int getI() {
+            return i;
+        }
+
+        /***
+         *
+         * @return
+         */
+        public int getJ() {
+            return j;
+        }
+
+        /***
+         *
+         * @param south
+         */
+        @Override
+        public void setSouth(Node south) {
+            super.setSouth(south);
+        }
+
+        /***
+         *
+         * @param east
+         */
+        @Override
+        public void setEast(Node east) {
+            super.setEast(east);
+        }
+
+        /***
+         *
+         * @return
+         */
+        @Override
+        public String toString() {
+            return "DataNode{" +
+                    "value=" + value +
+                    '}';
+        }
+    }
+
+
 }
