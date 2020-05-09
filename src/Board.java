@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 
 public class Board {
@@ -9,25 +8,38 @@ public class Board {
         setBoardGame(input);
     }
 
+    public Board(SparseMatrix<LivingCell> matrix) throws SparseMatrixException, SentinelLLException {
+        setBoardGame(matrix);
+    }
+
     public SparseMatrix<LivingCell> getBoardGame() {
         return boardGame;
     }
 
-    private void setBoardGame(ArrayList<String> input) throws SentinelLLException, SparseMatrixException {
-        this.boardGame = new SparseMatrix<LivingCell>(input);
+    public void setBoardGame(ArrayList<String> input) throws SentinelLLException, SparseMatrixException {
+        this.boardGame = new SparseMatrix<>(input);
     }
 
-    private void setBoardGame(SparseMatrix<LivingCell> newGen) {
-        this.boardGame = newGen;
+
+    public void setBoardGame(SparseMatrix<LivingCell> matrix) {
+        this.boardGame = matrix;
     }
 
     public void displayBoard() {
         System.out.println(boardGame.toString());
     }
 
-    public void displayGeneration(int i) throws CloneNotSupportedException, SentinelLLException, SparseMatrixException {
-        showNextGenerations(i);
+    @SuppressWarnings("unchecked")
+    public void displayGenerations(int generations) throws CloneNotSupportedException, SentinelLLException, SparseMatrixException {
+        if (generations <= 0)
+            throw new SparseMatrixException("generations must be >= 0");
+        for (int i = 0; i < generations - 1; i++) {
+            nextGeneration();
+            System.out.println(boardGame.toString());
+        }
+        System.out.print(nextGeneration());
     }
+
 
     public boolean add(int i, int j) throws SentinelLLException {
         boardGame.resize(i, j);
@@ -36,9 +48,9 @@ public class Board {
     }
 
     public boolean remove(int i, int j) throws SentinelLLException, SparseMatrixException {
-        boardGame.resize(i,j);
-        if( boardGame.getElement(i,j) != null)
-            boardGame.deleteDataNode(i,j);
+        boardGame.resize(i, j);
+        if (boardGame.getElement(i, j) != null)
+            boardGame.deleteDataNode(i, j);
         return true;
     }
 
@@ -48,22 +60,21 @@ public class Board {
      * @param j
      * @return
      */
-    private int getNeighbours(int i, int j, SparseMatrix<LivingCell> tempBoard) throws SentinelLLException {
+    public int getNeighbours(int i, int j) throws SentinelLLException {
         int neighbours = 0;
-        int minRow = i < tempBoard.getStartingRow() ? tempBoard.getStartingRow() : i - 1;
-        int maxRow = i > (tempBoard.getRows() - 1) ? (tempBoard.getRows() - 1) : i + 1;
-        int minCol = j < tempBoard.getStartingColumn() ? tempBoard.getStartingColumn() : j - 1;
-        int maxCol = j > (tempBoard.getColumns() - 1) ? (tempBoard.getColumns() - 1) : j + 1;
+        int minRow = i < this.boardGame.getStartingRow() ? this.boardGame.getStartingRow() : i - 1;
+        int maxRow = i > (this.boardGame.getRows() - 1) ? (this.boardGame.getRows() - 1) : i + 1;
+        int minCol = j < this.boardGame.getStartingColumn() ? this.boardGame.getStartingColumn() : j - 1;
+        int maxCol = j > (this.boardGame.getColumns() - 1) ? (this.boardGame.getColumns() - 1) : j + 1;
 
         for (int k = minRow; k <= maxRow; k++) {
             for (int m = minCol; m <= maxCol; m++) {
-                if (tempBoard.getMatrix().existsSentinelNumber(k) && tempBoard.getDataNode(k, m) != null)
-                {
+                if (this.boardGame.getMatrix().existsSentinelNumber(k) && this.boardGame.getDataNode(k, m) != null) {
                     neighbours++;
                 }
             }
         }
-        if (tempBoard.getMatrix().existsSentinelNumber(i) && tempBoard.getDataNode(i, j) != null)
+        if (this.boardGame.getMatrix().existsSentinelNumber(i) && this.boardGame.getDataNode(i, j) != null)
             neighbours--;
 
         return neighbours;
@@ -75,38 +86,22 @@ public class Board {
      * @throws CloneNotSupportedException
      */
     @SuppressWarnings("unchecked")
-    public SparseMatrix<LivingCell> nextGeneration(SparseMatrix<LivingCell> tempBoard) throws CloneNotSupportedException,
-            SparseMatrixException,
-            SentinelLLException {
-        SparseMatrix<LivingCell> next = (SparseMatrix<LivingCell>) tempBoard.clone();
-        for (int i = tempBoard.getStartingRow() - 1; i < tempBoard.getRows() + 1; i++) {
-            for (int j = tempBoard.getStartingColumn() - 1; j < tempBoard.getColumns() + 1; j++) {
-                int neighbours = getNeighbours(i, j, tempBoard);
-                if ((!tempBoard.getMatrix().existsSentinelNumber(i) || tempBoard.getDataNode(i, j) == null) && neighbours == 3) {
+    public SparseMatrix<LivingCell> nextGeneration() throws CloneNotSupportedException, SparseMatrixException, SentinelLLException {
+        SparseMatrix<LivingCell> next = (SparseMatrix<LivingCell>) this.boardGame.clone();
+        for (int i = this.boardGame.getStartingRow() - 1; i < this.boardGame.getRows() + 1; i++) {
+            for (int j = this.boardGame.getStartingColumn() - 1; j < this.boardGame.getColumns() + 1; j++) {
+                int neighbours = getNeighbours(i, j);
+                if ((!this.boardGame.getMatrix().existsSentinelNumber(i) || this.boardGame.getDataNode(i, j) == null) && neighbours == 3) {
                     next.resize(i, j);
                     next.addDataNode(i, j, new LivingCell());
-                } else if (tempBoard.getMatrix().existsSentinelNumber(i) && (tempBoard.getDataNode(i, j) != null) && (neighbours < 2 || neighbours > 3)) {
+                } else if (this.boardGame.getMatrix().existsSentinelNumber(i) && (this.boardGame.getDataNode(i, j) != null) && (neighbours < 2 || neighbours > 3)) {
                     next.deleteDataNode(i, j);
                 }
             }
         }
+
         setBoardGame(next);
         return next;
     }
-
-    @SuppressWarnings("unchecked")
-    private void showNextGenerations(int generations) throws CloneNotSupportedException, SparseMatrixException,
-            SentinelLLException {
-        if (generations <= 0)
-            throw new SparseMatrixException("generations must be >= 0");
-        SparseMatrix<LivingCell> output = (SparseMatrix<LivingCell>) boardGame.clone();
-        for (int i = 0; i < generations - 1; i++) {
-            output = nextGeneration(output);
-            System.out.println(output.toString());
-        }
-        System.out.print(nextGeneration(output));
-    }
-
-
 
 }

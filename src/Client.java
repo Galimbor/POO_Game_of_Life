@@ -13,16 +13,8 @@ public class Client {
         while (sc.hasNextLine()) {
             input.add(sc.nextLine());
         }
-        /*
-        SparseMatrix<LivingCell> game = new SparseMatrix<>(input);
-//        game.showNextGenerations(gen);
-        ArrayList<LivingCell> column1 = (ArrayList<LivingCell>)game.getWholeRow(1);
-        System.out.println(column1);
-        */
-        Board GoL = new Board(input);
-        GoL.remove(0,1);
-        GoL.displayBoard();
-        //GoL.displayGeneration(gen);
+        Board board = new Board(input);
+        board.displayGenerations(gen);
 
     }
 

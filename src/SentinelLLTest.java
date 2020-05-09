@@ -24,10 +24,9 @@ public class SentinelLLTest {
     }
 
     @Test
-    public void testGetSentinel2(){
+    public void testGetSentinel2() {
 
     }
-
 
 
 }
