@@ -31,10 +31,16 @@ public class Board {
 
     public boolean add(int i, int j) throws SentinelLLException {
         boardGame.resize(i, j);
-        boardGame.addDataNode(i, j, new LivingCell());
+        boardGame.setElement(i, j, new LivingCell());
         return true;
     }
 
+    public boolean remove(int i, int j) throws SentinelLLException, SparseMatrixException {
+        boardGame.resize(i,j);
+        if( boardGame.getElement(i,j) != null)
+            boardGame.deleteDataNode(i,j);
+        return true;
+    }
 
     /***
      *

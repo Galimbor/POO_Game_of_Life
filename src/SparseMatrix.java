@@ -243,14 +243,15 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
         if (i < this.startingRow) {  //can only grow if in outerlay not further
             this.startingRow = i;
         } else if (i > this.rows - 1) { //can only grow if in outerlay not further
-            this.rows = i;
+            this.rows = i + 1;
         }
         if (j < this.startingColumn) { //can only grow if in outerlay not further
             this.startingColumn = j;
         } else if (j > this.columns - 1) { //can only grow if in outerlay not further
-            this.columns = j;
+            this.columns = j + 1;
         }
     }
+
     /*
     private void redefineBorders(int i, int j) {
         if (i == this.startingRow - 1) {  //can only grow if in outerlay not further
@@ -279,11 +280,13 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
 
         if(m > columns - 1) {
             for (int i = columns; i <= m; i++) {
-                this.matrix.addLast(i);
+                if(!this.matrix.existsSentinelNumber(i))
+                    this.matrix.addLast(i);
             }
         } else if (m < startingColumn) {
-            for (int i = startingColumn - 1; i >= n; i--) {
-                this.matrix.addFirst(i);
+            for (int i = startingColumn - 1; i >= m; i--) {
+                if(!this.matrix.existsSentinelNumber(i))
+                    this.matrix.addFirst(i);
             }
         }
     }
@@ -295,13 +298,14 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      */
     @Override
     public void resize(int i, int j) throws SentinelLLException {
-        if (!this.matrix.existsSentinelNumber(i)) {
-            this.matrix.addFirst(i);
-        }
-        if (!this.matrix.existsSentinelNumber(j)) {
-            this.matrix.addLast(j);
-        }
-        //TODO maybe add Exception
+//        if (!this.matrix.existsSentinelNumber(i)) {
+//            this.matrix.addFirst(i);
+//        }
+//        if (!this.matrix.existsSentinelNumber(j)) {
+//            this.matrix.addLast(j);
+//        }
+// TODO maybe add Exception
+        addRemainingSentinels(i,j);
         redefineBorders(i, j);
     }
 

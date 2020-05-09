@@ -20,7 +20,9 @@ public class Client {
         System.out.println(column1);
         */
         Board GoL = new Board(input);
-        GoL.displayGeneration(gen);
+        GoL.remove(0,1);
+        GoL.displayBoard();
+        //GoL.displayGeneration(gen);
 
     }
 
