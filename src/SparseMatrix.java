@@ -240,6 +240,19 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      * @param j
      */
     private void redefineBorders(int i, int j) {
+        if (i < this.startingRow) {  //can only grow if in outerlay not further
+            this.startingRow = i;
+        } else if (i > this.rows - 1) { //can only grow if in outerlay not further
+            this.rows = i;
+        }
+        if (j < this.startingColumn) { //can only grow if in outerlay not further
+            this.startingColumn = j;
+        } else if (j > this.columns - 1) { //can only grow if in outerlay not further
+            this.columns = j;
+        }
+    }
+    /*
+    private void redefineBorders(int i, int j) {
         if (i == this.startingRow - 1) {  //can only grow if in outerlay not further
             --this.startingRow;
         } else if (i == this.rows) { //can only grow if in outerlay not further
@@ -249,6 +262,29 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
             --this.startingColumn;
         } else if (j == this.columns) { //can only grow if in outerlay not further
             ++this.columns;
+        }
+    }
+    */
+
+    private void addRemainingSentinels(int n, int m) {
+        if(n > rows - 1) {
+            for (int i = rows; i <= n; i++) {
+                this.matrix.addLast(i);
+            }
+        } else if (n < startingRow) {
+            for (int i = startingRow - 1; i >= n; i--) {
+                this.matrix.addFirst(i);
+            }
+        }
+
+        if(m > columns - 1) {
+            for (int i = columns; i <= m; i++) {
+                this.matrix.addLast(i);
+            }
+        } else if (m < startingColumn) {
+            for (int i = startingColumn - 1; i >= n; i--) {
+                this.matrix.addFirst(i);
+            }
         }
     }
 

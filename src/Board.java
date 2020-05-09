@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 
 public class Board {
@@ -27,6 +28,13 @@ public class Board {
     public void displayGeneration(int i) throws CloneNotSupportedException, SentinelLLException, SparseMatrixException {
         showNextGenerations(i);
     }
+
+    public boolean add(int i, int j) throws SentinelLLException {
+        boardGame.resize(i, j);
+        boardGame.addDataNode(i, j, new LivingCell());
+        return true;
+    }
+
 
     /***
      *
