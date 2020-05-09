@@ -6,6 +6,8 @@ import static org.junit.Assert.*;
 
 public class BoardTest {
 
+
+
     @Test
     public void testGetNeighbours0() throws SentinelLLException, SparseMatrixException {
         ArrayList<String> input = new ArrayList<>();

@@ -6,6 +6,24 @@ import static org.junit.Assert.*;
 
 public class SparseMatrixTest {
 
+    @Test(expected = SparseMatrixException.class)
+    public void testConstructorString0() throws SparseMatrixException, SentinelLLException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("111");
+        input.add("10");
+        input.add("000");
+        new SparseMatrix<>(input);
+    }
+
+
+    @Test(expected = SparseMatrixException.class)
+    public void testConstructorString2() throws SparseMatrixException, SentinelLLException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("111");
+        input.add("1");
+        input.add("000");
+        new SparseMatrix<>(input);
+    }
 
     //rows <= 0
     @Test(expected = SparseMatrixException.class)
@@ -37,6 +55,26 @@ public class SparseMatrixTest {
         new SparseMatrix<String>(0, 2, 1, 1);
     }
 
+    @Test(expected = SparseMatrixException.class)
+    public void testGetElementEx0() throws SparseMatrixException, SentinelLLException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("111");
+        input.add("010");
+        input.add("000");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        test.getElement(1, 2);
+    }
+
+    @Test(expected = SparseMatrixException.class)
+    public void testGetElementEx1() throws SparseMatrixException, SentinelLLException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("111");
+        input.add("100");
+        input.add("010");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        test.getElement(1, 1);
+    }
+
 
     @Test
     public void testGetElement0() throws SparseMatrixException, SentinelLLException {
@@ -46,9 +84,7 @@ public class SparseMatrixTest {
         input.add("000");
         SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
         assertEquals(test.getElement(1, 1).getClass(), LivingCell.class);
-        assertEquals(test.getElement(0,0).getClass(),LivingCell.class);
-        assertNull(test.getElement(1,0).getClass());
-        assertNull(test.getElement(2,2));
+        assertEquals(test.getElement(0, 0).getClass(), LivingCell.class);
     }
 
     @Test
@@ -58,10 +94,8 @@ public class SparseMatrixTest {
         input.add("100");
         input.add("010");
         SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
-        assertNull(test.getElement(1, 2));
-        assertNull(test.getElement(2, 2));
-        assertNotNull(test.getElement(0, 1));
-        assertNotNull(test.getElement(1, 0));
+        assertEquals(test.getElement(0, 1).getClass(), LivingCell.class);
+        assertEquals(test.getElement(1, 0).getClass(), LivingCell.class);
     }
 
     @Test
@@ -118,9 +152,11 @@ public class SparseMatrixTest {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
         test.resize(-1, 0);
         assertEquals(test.getStartingRow(), -1);
-        assertEquals(test.getRows(), 3);
+        assertEquals(test.getEndRow(), 2);
         assertEquals(test.getStartingColumn(), 0);
-        assertEquals(test.getColumns(), 3);
+        assertEquals(test.getEndColumn(), 2);
+        assertEquals(test.getRows(),4);
+        assertEquals(test.getColumns(),3);
     }
 
     @Test // resize 1 right
@@ -132,9 +168,11 @@ public class SparseMatrixTest {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
         test.resize(0, 3);
         assertEquals(test.getStartingRow(), 0);
-        assertEquals(test.getRows(), 3);
+        assertEquals(test.getEndRow(), 2);
         assertEquals(test.getStartingColumn(), 0);
-        assertEquals(test.getColumns(), 4);
+        assertEquals(test.getEndColumn(), 3);
+        assertEquals(test.getRows(),3);
+        assertEquals(test.getColumns(),4);
     }
 
     @Test //resize 1 left
@@ -146,9 +184,11 @@ public class SparseMatrixTest {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
         test.resize(0, -1);
         assertEquals(test.getStartingRow(), 0);
-        assertEquals(test.getRows(), 3);
+        assertEquals(test.getEndRow(), 2);
         assertEquals(test.getStartingColumn(), -1);
-        assertEquals(test.getColumns(), 3);
+        assertEquals(test.getEndColumn(), 2);
+        assertEquals(test.getRows(),3);
+        assertEquals(test.getColumns(),4);
     }
 
     @Test // resize 1 bottom
@@ -160,9 +200,11 @@ public class SparseMatrixTest {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
         test.resize(3, 2);
         assertEquals(test.getStartingRow(), 0);
-        assertEquals(test.getRows(), 4);
+        assertEquals(test.getEndRow(), 3);
         assertEquals(test.getStartingColumn(), 0);
-        assertEquals(test.getColumns(), 3);
+        assertEquals(test.getEndColumn(), 2);
+        assertEquals(test.getRows(),4);
+        assertEquals(test.getColumns(),3);
     }
 
 
@@ -177,9 +219,11 @@ public class SparseMatrixTest {
         test.resize(3, -1);
         test.resize(2, 3);
         assertEquals(test.getStartingRow(), -1);
-        assertEquals(test.getRows(), 4);
+        assertEquals(test.getEndRow(), 3);
         assertEquals(test.getStartingColumn(), -1);
-        assertEquals(test.getColumns(), 4);
+        assertEquals(test.getEndColumn(), 3);
+        assertEquals(test.getRows(),5);
+        assertEquals(test.getColumns(),5);
     }
 
     @Test //does not resize
@@ -203,7 +247,7 @@ public class SparseMatrixTest {
         test.deleteDataNode(0, 0);
     }
 
-    @Test(expected = SparseMatrixException.class)
+    @Test(expected = SentinelLLException.class)
     public void testDeleteDataNode1() throws SparseMatrixException, SentinelLLException {
         SparseMatrix<Integer> test = new SparseMatrix<>(0, 0, 2, 2);
         test.deleteDataNode(3, 3);
@@ -258,7 +302,6 @@ public class SparseMatrixTest {
     }
 
 
-
     @Test
     @SuppressWarnings("unchecked")
     public void testClone0() throws CloneNotSupportedException, SentinelLLException, SparseMatrixException {
@@ -269,7 +312,7 @@ public class SparseMatrixTest {
         SparseMatrix<Integer> test = new SparseMatrix<>(input);
         SparseMatrix<Integer> clone = (SparseMatrix<Integer>) test.clone();
         clone.addDataNode(1, 1, 1);
-        assertNotEquals(test.getElement(1, 1), clone.getElement(1, 1));
+        assertNotEquals(test.getDataNode(1, 1), clone.getDataNode(1, 1));
     }
 
     @Test
@@ -281,8 +324,8 @@ public class SparseMatrixTest {
         SparseMatrix<Integer> test = new SparseMatrix<>(input);
         SparseMatrix<Integer> clone = (SparseMatrix<Integer>) test.clone();
         clone.deleteDataNode(1, 1);
-        assertNotEquals(test.getElement(1, 1), clone.getElement(1, 1));
-        assertNull(clone.getElement(1, 1));
+        assertNotEquals(test.getDataNode(1, 1), clone.getDataNode(1, 1));
+        assertNull(clone.getDataNode(1, 1));
     }
 
     @Test
@@ -293,9 +336,7 @@ public class SparseMatrixTest {
         SparseMatrix<Integer> test = new SparseMatrix<>(input);
         SparseMatrix<Integer> clone = (SparseMatrix<Integer>) test.clone();
         clone.addDataNode(0, 0, 1);
-        assertNotEquals(test.getElement(0, 0), clone.getElement(0, 0));
-        assertNotEquals(clone.getElement(0, 0), null);
+        assertNotEquals(test.getDataNode(0, 0), clone.getDataNode(0, 0));
+        assertNotEquals(clone.getDataNode(0, 0), null);
     }
-
-
 }

@@ -88,8 +88,8 @@ public class Board {
     @SuppressWarnings("unchecked")
     public SparseMatrix<LivingCell> nextGeneration() throws CloneNotSupportedException, SparseMatrixException, SentinelLLException {
         SparseMatrix<LivingCell> next = (SparseMatrix<LivingCell>) this.boardGame.clone();
-        for (int i = this.boardGame.getStartingRow() - 1; i < this.boardGame.getRows() + 1; i++) {
-            for (int j = this.boardGame.getStartingColumn() - 1; j < this.boardGame.getColumns() + 1; j++) {
+        for (int i = this.boardGame.getStartingRow() - 1; i <= this.boardGame.getEndRow() + 1; i++) {
+            for (int j = this.boardGame.getStartingColumn() - 1; j <= this.boardGame.getEndColumn() + 1; j++) {
                 int neighbours = getNeighbours(i, j);
                 if ((!this.boardGame.getMatrix().existsSentinelNumber(i) || this.boardGame.getDataNode(i, j) == null) && neighbours == 3) {
                     next.resize(i, j);
