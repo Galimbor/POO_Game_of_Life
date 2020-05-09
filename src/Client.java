@@ -2,6 +2,8 @@ import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import static org.junit.Assert.assertEquals;
+
 public class Client {
 
     public static void main(String[] args) throws Exception {
@@ -12,7 +14,9 @@ public class Client {
             input.add(sc.nextLine());
         }
         SparseMatrix<LivingCell> game = new SparseMatrix<>(input);
-        game.showNextGenerations(gen);
+//        game.showNextGenerations(gen);
+        ArrayList<LivingCell> column1 = (ArrayList<LivingCell>)game.getWholeRow(1);
+        System.out.println(column1);
     }
 
 

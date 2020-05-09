@@ -14,9 +14,9 @@ public interface IMatrix<D,L> {
 
     public void setColumns(int columns) throws Exception;
 
-    public List<D> getWholeColumn(int column) throws SentinelLLException;
+    public List<L> getWholeColumn(int column) throws SentinelLLException;
 
-    public List<D> getWholeRow(int row) throws SentinelLLException;
+    public List<L> getWholeRow(int row) throws SentinelLLException;
 
     public void resize(int i, int j) throws SentinelLLException;
 

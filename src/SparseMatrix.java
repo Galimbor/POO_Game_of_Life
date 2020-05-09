@@ -199,11 +199,14 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public List<DataNode<L>> getWholeColumn(int column) throws SentinelLLException {
-        ArrayList<DataNode<L>> result = new ArrayList<>();
+    public List<L> getWholeColumn(int column) throws SentinelLLException {
+        ArrayList<L> result = new ArrayList<>();
         Node sentinel = matrix.getSentinel(column);
-        while (sentinel.getSouth() != sentinel)
-            result.add((DataNode<L>) sentinel.getSouth());
+        Node token = sentinel;
+        while (token.getSouth() != sentinel) {
+            result.add((L) token.getSouth());
+            token= token.getSouth();
+        }
         return result;
     }
 
@@ -214,11 +217,14 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public List<DataNode<L>> getWholeRow(int row) throws SentinelLLException {
-        ArrayList<DataNode<L>> result = new ArrayList<>();
+    public List<L> getWholeRow(int row) throws SentinelLLException {
+        ArrayList<L> result = new ArrayList<>();
         Node sentinel = matrix.getSentinel(row);
-        while (sentinel.getSouth() != sentinel)
-            result.add((DataNode<L>) sentinel.getEast());
+        Node token = sentinel;
+        while (token.getEast() != sentinel) {
+            result.add((L) token.getEast());
+            token = token.getEast();
+        }
         return result;
     }
 
@@ -228,7 +234,7 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
      * @param j
      * @return
      */
-    private int getNeighbours(int i, int j) throws SentinelLLException {
+    public int getNeighbours(int i, int j) throws SentinelLLException {
         int neighbours = 0;
         int minRow = i < startingRow ? startingRow : i - 1;
         int maxRow = i > (this.rows - 1) ? (this.rows - 1) : i + 1;
