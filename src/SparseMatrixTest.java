@@ -38,6 +38,55 @@ public class SparseMatrixTest {
     }
 
 
+    @Test
+    public void testGetElement0() throws SparseMatrixException, SentinelLLException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("111");
+        input.add("010");
+        input.add("000");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertEquals(test.getElement(1, 1).getClass(), DataNode.class);
+    }
+
+    @Test
+    public void testGetElement1() throws SparseMatrixException, SentinelLLException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("111");
+        input.add("100");
+        input.add("010");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        assertNull(test.getElement(1, 2));
+        assertNull(test.getElement(2, 2));
+        assertNotNull(test.getElement(0, 1));
+        assertNotNull(test.getElement(1, 0));
+    }
+
+
+    @Test
+    public void testAddDataNode0() throws SentinelLLException, SparseMatrixException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("000");
+        input.add("000");
+        input.add("000");
+        SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
+        test.addDataNode(1, 1, new LivingCell());
+        assertEquals(test.getElement(1, 1).getClass(), DataNode.class);
+        assertEquals(test.getElement(1, 1).getValue().getClass(), LivingCell.class);
+    }
+
+    @Test
+    public void testAddDataNode1() throws SentinelLLException, SparseMatrixException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("000");
+        input.add("000");
+        input.add("000");
+        SparseMatrix<Double> test = new SparseMatrix<>(input);
+        test.addDataNode(1, 1, 2.0);
+        assertEquals(test.getElement(1, 1).getClass(), DataNode.class);
+        assertEquals(test.getElement(1, 1).getValue().getClass(), Double.class);
+    }
+
+
     @Test(expected = SparseMatrixException.class)
     public void testDeleteDataNode0() throws SparseMatrixException, SentinelLLException {
         SparseMatrix<Integer> test = new SparseMatrix<>(0, 0, 2, 2);
@@ -76,6 +125,36 @@ public class SparseMatrixTest {
         test.deleteDataNode(1, 1);
     }
 
+    @Test
+    public void testNextGeneration0() throws CloneNotSupportedException, SparseMatrixException, SentinelLLException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("111");
+        input.add("100");
+        input.add("010");
+        SparseMatrix<Integer> test = new SparseMatrix<>(input);
+        SparseMatrix<Integer> nextTest = test.nextGeneration();
+        assertEquals(nextTest.getRows(), 3);
+        assertEquals(nextTest.getStartingRow(), -1);
+        assertEquals(nextTest.getStartingColumn(), 0);
+        assertEquals(nextTest.getColumns(), 3);
+        assertNotNull(nextTest.getElement(-1, 1));
+        assertNull(nextTest.getElement(-1, 0));
+    }
+
+    @Test
+    public void testNextGeneration1() throws CloneNotSupportedException, SparseMatrixException, SentinelLLException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("111");
+        SparseMatrix<Integer> test = new SparseMatrix<>(input);
+        SparseMatrix<Integer> nextTest = test.nextGeneration();
+        assertEquals(nextTest.getRows(), 2);
+        assertEquals(nextTest.getStartingRow(), -1);
+        assertEquals(nextTest.getStartingColumn(), 0);
+        assertEquals(nextTest.getColumns(), 3);
+        assertNotNull(nextTest.getElement(-1, 1));
+        assertNull(nextTest.getElement(0, 0));
+    }
+
 
     //generation == 0
     @Test(expected = SparseMatrixException.class)
@@ -89,6 +168,44 @@ public class SparseMatrixTest {
     public void testShowNextGenerations1() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(0, 0, 2, 2);
         test.showNextGenerations(-5);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testClone0() throws CloneNotSupportedException, SentinelLLException, SparseMatrixException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("111");
+        input.add("100");
+        input.add("010");
+        SparseMatrix<Integer> test = new SparseMatrix<>(input);
+        SparseMatrix<Integer> clone = (SparseMatrix<Integer>) test.clone();
+        clone.addDataNode(1, 1, 1);
+        assertNotEquals(test.getElement(1, 1), clone.getElement(1, 1));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testClone1() throws CloneNotSupportedException, SentinelLLException, SparseMatrixException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("11");
+        input.add("11");
+        SparseMatrix<Integer> test = new SparseMatrix<>(input);
+        SparseMatrix<Integer> clone = (SparseMatrix<Integer>) test.clone();
+        clone.deleteDataNode(1, 1);
+        assertNotEquals(test.getElement(1, 1), clone.getElement(1, 1));
+        assertNull(clone.getElement(1, 1));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testClone2() throws CloneNotSupportedException, SentinelLLException, SparseMatrixException {
+        ArrayList<String> input = new ArrayList<>();
+        input.add("000");
+        SparseMatrix<Integer> test = new SparseMatrix<>(input);
+        SparseMatrix<Integer> clone = (SparseMatrix<Integer>) test.clone();
+        clone.addDataNode(0, 0, 1);
+        assertNotEquals(test.getElement(0, 0), clone.getElement(0, 0));
+        assertNotEquals(clone.getElement(0, 0), null);
     }
 
     @Test
@@ -323,6 +440,5 @@ public class SparseMatrixTest {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
         assertEquals(test.nextGeneration().toString(), "0000\n0010\n0001\n0111\n");
     }
-
 
 }

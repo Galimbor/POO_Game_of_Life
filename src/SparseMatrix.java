@@ -363,7 +363,7 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
         SparseMatrix<L> output = (SparseMatrix<L>) this.clone();
         for (int i = 0; i < generations - 1; i++) {
             output = output.nextGeneration();
-            System.out.println(output);
+            System.out.println(output.toString());
         }
         System.out.print(output.nextGeneration());
     }
@@ -406,9 +406,10 @@ public class SparseMatrix<L> implements IMatrix<DataNode<L>, L>, Cloneable {
         for (int i = this.startingRow; i < this.rows; i++) {
             for (int j = this.startingColumn; j < this.columns; j++) {
                 try {
-                    if (this.getElement(i, j) == null)
+                    DataNode<L> element = getElement(i,j);
+                    if (element == null)
                         result = result.concat("0");
-                    else if (this.getElement(i, j).getClass() == DataNode.class) {
+                    else  {
                         result = result.concat("1");
                     }
                 } catch (SentinelLLException e) {
