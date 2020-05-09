@@ -1,10 +1,10 @@
 import java.util.List;
 
-public interface IMatrix<D,L> {
+public interface IMatrix<L> {
 
     public void setElement(int i, int j,L value) throws Exception;
 
-    public D getElement(int i, int j) throws SentinelLLException;
+    public L getElement(int i, int j) throws SentinelLLException;
 
     public int getRows();
 
