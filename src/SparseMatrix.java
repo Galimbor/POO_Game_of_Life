@@ -88,7 +88,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      * @pos Matrix with the sentinel nodes that range from the lowest value to the highest value.
      */
     public void setMatrix() throws SentinelLLException {
-        this.matrix = new SentinelLL();
+        this.sentinelLL = new SentinelLL();
         for (int i = Math.min(this.startingRow, startingColumn); i <= Math.max(this.endRow, this.endColumn); i++) {
             this.sentinelLL.addLast(i);
         }
@@ -165,7 +165,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     /***
      * Setter for endColumn field.
      * @pre endColumn higher then or equal to 0.
-     * @param column Represents the last column.
+     * @param endColumn Represents the last column.
      * @pos this.endColumn = endColumn.
      * @throws SparseMatrixException if there is no DataNode at the given column.
      */
@@ -512,7 +512,11 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     @SuppressWarnings("unchecked")
     protected Object clone() throws CloneNotSupportedException {
         SparseMatrix<L> newSparse = (SparseMatrix<L>) super.clone();
-        newSparse.setMatrix();
+        try {
+            newSparse.setMatrix();
+        } catch (SentinelLLException e) {
+            e.printStackTrace();
+        }
         for (int i = this.startingRow; i < this.endRow + 1; i++) {
             for (int j = this.startingColumn; j < this.endColumn + 1; j++) {
                 try {
