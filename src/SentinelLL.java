@@ -86,9 +86,10 @@ public class SentinelLL {
 
     /**
      * Returns the (non-null) SentinelNodeNode at the specified element index.
-     * @pre true
+     *
      * @param number Represents the index of which SentinelNode of the list it will return.
      * @return SentinelNode with the number that is passed as the argument.
+     * @pre true
      * @pre true
      */
     private SentinelNode returnNode(int number) throws SentinelLLException {
@@ -103,9 +104,10 @@ public class SentinelLL {
 
     /**
      * Verify if there is or there is not a sentinel node with the given number.
-     * @pre true.
+     *
      * @param number Represents the index of a SentinelNode
      * @return boolean that represents true or false, if exist or not a SentinelNode
+     * @pre true.
      * @pre true
      */
     public boolean contains(int number) {
@@ -124,15 +126,16 @@ public class SentinelLL {
 
     /**
      * Link a new SentinelNode with the number "e" to the beginning of the list.
+     *
+     * @param number - Represents the number of the SentinelNode to be linked.
      * @pre size higher than or equal to 1.
-     * @param e - Represents the number of the SentinelNode to be linked.
      * @pos size of list is increased.
      */
     //TODO review change  final SentinelNode f = head;
-    private void linkFirst(int e) throws SentinelLLException {
+    private void linkFirst(int number) throws SentinelLLException {
         if (size < 1)
             throw new SentinelLLException("Trying to linkFirst with size < 1");
-        SentinelLL.SentinelNode node = new SentinelNode(e);
+        SentinelLL.SentinelNode node = new SentinelNode(number);
         node.setEast(node);
         node.setSouth(node);
         node.next = head;
@@ -144,26 +147,28 @@ public class SentinelLL {
 
     /**
      * Inserts a new SentinelNode in the beginning of the list. It uses the helper method "linkFirst".
-     * @pre true.
-     * @param e - Represents the number of the SentinelNode to be inserted.
-     * @pos size of list is increased.
+     *
+     * @param number - Represents the number of the SentinelNode to be inserted.
      * @throws SentinelLLException if the size of list is less than 1.
+     * @pre true.
+     * @pos size of list is increased.
      */
-    public void addFirst(int e) throws SentinelLLException {
-        if (contains(e))
+    public void addFirst(int number) throws SentinelLLException {
+        if (contains(number))
             throw new SentinelLLException("Trying to add SentinelNode, it already exists");
-        linkFirst(e);
+        linkFirst(number);
     }
 
 
     /**
      * Link a new SentinelNode with the number "e" to the end of the list.
+     *
+     * @param number - Represents the number of the SentinelNode to be linked.
      * @pre true.
-     * @param e - Represents the number of the SentinelNode to be linked.
      */
-    private void linkLast(int e) {
+    private void linkLast(int number) {
         final SentinelNode l = tail;
-        SentinelLL.SentinelNode node = new SentinelNode(e);
+        SentinelLL.SentinelNode node = new SentinelNode(number);
         node.setSouth(node);
         node.setEast(node);
         tail = node;
@@ -179,27 +184,29 @@ public class SentinelLL {
 
     /**
      * Inserts a new SentinelNode in the end of the list. It uses the helper method "linkLast".
+     *
+     * @param number - Represents the number of the SentinelNode to be inserted.
      * @pre true.
-     * @param e - Represents the number of the SentinelNode to be inserted.
      * @pos size of list is increased.
      */
-    public void addLast(int e) throws SentinelLLException {
-        if (contains(e))
+    public void addLast(int number) throws SentinelLLException {
+        if (contains(number))
             throw new SentinelLLException("Trying to add SentinelNode, it already exists");
-        linkLast(e);
+        linkLast(number);
     }
 
     /**
      * Remove a SentinelNode of the list. It breaks the link of the given SentinelNode so the garbage collector can
      * safely remove the SentinelNode out of the memory.
-     * @param e - Represents the number of the SentinelNode to be removed.
+     *
+     * @param number - Represents the number of the SentinelNode to be removed.
      * @throws SentinelLLException if there is no SentinelNode in the list.
      */
-    public void remove(int e) throws SentinelLLException {
-        if (!contains(e))
+    public void remove(int number) throws SentinelLLException {
+        if (!contains(number))
             throw new SentinelLLException("trying to delete, SentinelNode not found");
         SentinelNode x = head;
-        while (x.getNext().number != e) {
+        while (x.getNext().number != number) {
             x = x.getNext();
         }
         if (x.next == getHead())
@@ -332,24 +339,25 @@ public class SentinelLL {
          */
         @Override
         public boolean hasNext() {
-            return nextIndex < size;
+            return nextIndex != current.getTail().getNumber();
         }
 
         /***
          * Get the next SentinelNode in the list.
-         * @return SentinelNode.F
+         * @return SentinelNode.
          */
         @Override
         public SentinelNode next() {
             SentinelNode result = null;
             try {
                 result = current.getNode(nextIndex);
+                nextIndex = result.next.getNumber();
             } catch (SentinelLLException e) {
                 System.out.println(e.toString());
             }
-            nextIndex++;
             return result;
         }
+
 
     }
 }

@@ -62,15 +62,15 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     /**
      * Constructor that it will take the following parameters.
      *
-     * @param startingRow Represents where the row starts
+     * @param startingRow    Represents where the row starts
      * @param startingColumn Represents where the column starts
-     * @param endRow Represents where the row ends
-     * @param endColumn Represents where the column ends
+     * @param endRow         Represents where the row ends
+     * @param endColumn      Represents where the column ends
+     * @throws SparseMatrixException if there is no DataNode at the given row or column.
+     * @throws SentinelLLException   if there is no SentinelNode.
      * @pre endRow and endColumn must be higher then or equal to 0. startingRow less then or equal to endRow,
      * startingColumn less then or equal to endColumn.
      * @pos new Object of SparseMatrix.
-     * @throws SparseMatrixException if there is no DataNode at the given row or column.
-     * @throws SentinelLLException if there is no SentinelNode.
      */
     public SparseMatrix(int startingRow, int startingColumn, int endRow, int endColumn) throws SparseMatrixException, SentinelLLException {
         setEndRow(endRow);
@@ -264,11 +264,12 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     /**
      * Setter for the position i,j on the sparse matrix. It will set the chosen position to given value. If there is
      * no DataNode on that position, it will initiate one with the given value.
-     * @pre true.
+     *
      * @param i     Represents the position i, in the sparse matrix ("row wise").
      * @param j     Represents the position j, in the sparse matrix ("column wise").
      * @param value generic type.
      * @throws SentinelLLException if there is no SentinelNode at the given position.
+     * @pre true.
      */
     public void setElement(int i, int j, L value) throws SentinelLLException {
         if (getDataNode(i, j) == null) {
@@ -281,8 +282,8 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     /**
      * Getter for the element stored in a DataNode. If the element does not exist it will throw an excpetion.
      *
-     * @param i     Represents the position i, in the sparse matrix ("row wise").
-     * @param j     Represents the position j, in the sparse matrix ("column wise").
+     * @param i Represents the position i, in the sparse matrix ("row wise").
+     * @param j Represents the position j, in the sparse matrix ("column wise").
      * @return L generic type.
      * @throws SentinelLLException   if there is no SentinelNode at the given position.
      * @throws SparseMatrixException if there is no DataNode at the given position.
@@ -393,17 +394,18 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      * but further, then the Sentinel Nodes needs to be added in between so is guaranteed there is no gap between one
      * sentinel node and the other.
      *
-     * @param i     Represents the position i, in the sparse matrix ("row wise").
-     * @param j     Represents the position j, in the sparse matrix ("column wise").
+     * @param i Represents the position i, in the sparse matrix ("row wise").
+     * @param j Represents the position j, in the sparse matrix ("column wise").
+     * @throws SentinelLLException if the size of the list is < 1 when trying to addFirst.
      * @pre true.
      * @pos No gap between Sentinel Nodes.
-     * @throws SentinelLLException if the size of the list is < 1 when trying to addFirst.
      */
 
     private void addRemainingSentinels(int i, int j) throws SentinelLLException {
         if (i > endRow) {
             for (int k = endRow + 1; k <= i; k++) {
-                this.sentinelLL.addLast(k);
+                if (!this.sentinelLL.contains(k))
+                    this.sentinelLL.addLast(k);
             }
         } else if (i < startingRow) {
             for (int k = startingRow - 1; k >= i; k--) {
