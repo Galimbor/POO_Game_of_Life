@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * a game of "n" generations.
  */
 
-public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
+public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>> {
     private SparseMatrix<LivingCell> matrix;
 
     /**
@@ -85,12 +85,12 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
      * @throws CloneNotSupportedException if it fails to create to create a deep copy of the matrix.
      * @throws SentinelLLException        if there is no SentinelNode at the given position.
      * @throws SparseMatrixException      if there is no DataNode at the given position.
-     * @throws BoardException             if generations less than 0.
+     * @throws SMBoardException             if generations less than 0.
      * @pre generations >= 0
      */
-    public void displayGenerations(int generations) throws CloneNotSupportedException, SentinelLLException, SparseMatrixException, BoardException {
+    public void displayGenerations(int generations) throws CloneNotSupportedException, SentinelLLException, SparseMatrixException, SMBoardException {
         if (generations <= 0)
-            throw new BoardException("Generations must be > 0");
+            throw new SMBoardException("Generations must be > 0");
         for (int i = 0; i < generations; i++) {
             this.nextGeneration();
             System.out.println(this);
@@ -188,6 +188,10 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
     }
 
 
+    /**
+     * @return String that represents the board composition much like as a matrix[rows][columns] with "0"s indicating
+     * dead cells and "1"s living cells.
+     */
     @Override
     public String toString() {
         String result = "";

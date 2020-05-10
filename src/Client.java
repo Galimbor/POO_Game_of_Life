@@ -17,7 +17,7 @@ public class Client {
             System.out.println(SLLe.toString());
         } catch (SparseMatrixException SMe) {
             System.out.println(SMe.toString());
-        } catch (BoardException Be) {
+        } catch (SMBoardException Be) {
             System.out.println(Be.toString());
         } catch (Exception E) {
             System.out.println(E.toString());

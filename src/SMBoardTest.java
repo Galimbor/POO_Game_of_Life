@@ -162,16 +162,16 @@ public class SMBoardTest {
 
 
     //generation == 0
-    @Test(expected = BoardException.class)
-    public void testShowNextGenerations0() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException, BoardException {
+    @Test(expected = SMBoardException.class)
+    public void testShowNextGenerations0() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException, SMBoardException {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(0, 0, 2, 2);
         SMBoard boardTest = new SMBoard(test);
         boardTest.displayGenerations(0);
     }
 
     //generation < 0
-    @Test(expected = BoardException.class)
-    public void testShowNextGenerations1() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException, BoardException {
+    @Test(expected = SMBoardException.class)
+    public void testShowNextGenerations1() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException, SMBoardException {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(0, 0, 2, 2);
         SMBoard boardTest = new SMBoard(test);
         boardTest.displayGenerations(-5);
