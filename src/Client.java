@@ -1,8 +1,5 @@
-import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import static org.junit.Assert.assertEquals;
 
 public class Client {
 
@@ -13,9 +10,26 @@ public class Client {
         while (sc.hasNextLine()) {
             input.add(sc.nextLine());
         }
-        Board board = new Board(input);
-        board.displayGenerations(gen);
-
+        try {
+            Board board = new Board(input);
+            board.displayGenerations(gen);
+        }
+        catch (SentinelLLException SLLe)
+        {
+            System.out.println(SLLe.toString());
+        }
+        catch (SparseMatrixException SMe)
+        {
+            System.out.println(SMe.toString());
+        }
+        catch (BoardException Be)
+        {
+            System.out.println(Be.toString());
+        }
+        catch (Exception E)
+        {
+            System.out.println(E.toString());;
+        }
     }
 
 

@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="input3" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="Client" />
+    <module name="TrabalhoPratico2" />
+    <option name="PROGRAM_PARAMETERS" value="input3.txt" />
+    <option name="REDIRECT_INPUT" value="true" />
+    <option name="INPUT_FILE" value="$PROJECT_DIR$/poo_tests/input3.txt" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

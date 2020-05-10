@@ -130,7 +130,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      */
     @Override
     public int getRows() {
-        return this.endRow - this.startingRow + 1;
+        return this.endRow - this.startingColumn + 1;
     }
 
     /***
@@ -386,7 +386,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
             for (int j = this.startingColumn; j < this.endColumn + 1; j++) {
                 try {
                     if (this.getDataNode(i, j) != null) {
-                        newSparse.setElement(i, j, (L) "add");
+                        newSparse.setElement(i, j, (L) new LivingCell()); //TODO
                     }
                 } catch (SentinelLLException e) {
                     System.out.println(e.toString());

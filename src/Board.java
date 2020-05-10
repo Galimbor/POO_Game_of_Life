@@ -29,10 +29,9 @@ public class Board {
         System.out.println(boardGame.toString());
     }
 
-    @SuppressWarnings("unchecked")
-    public void displayGenerations(int generations) throws CloneNotSupportedException, SentinelLLException, SparseMatrixException {
+    public void displayGenerations(int generations) throws CloneNotSupportedException, SentinelLLException, SparseMatrixException, BoardException {
         if (generations <= 0)
-            throw new SparseMatrixException("generations must be >= 0");
+            throw new BoardException("generations must be >= 0");
         for (int i = 0; i < generations - 1; i++) {
             nextGeneration();
             System.out.println(boardGame.toString());
@@ -63,9 +62,9 @@ public class Board {
     public int getNeighbours(int i, int j) throws SentinelLLException {
         int neighbours = 0;
         int minRow = i < this.boardGame.getStartingRow() ? this.boardGame.getStartingRow() : i - 1;
-        int maxRow = i > (this.boardGame.getRows() - 1) ? (this.boardGame.getRows() - 1) : i + 1;
+        int maxRow = i > (this.boardGame.getEndRow()) ? (this.boardGame.getEndRow()) : i + 1;
         int minCol = j < this.boardGame.getStartingColumn() ? this.boardGame.getStartingColumn() : j - 1;
-        int maxCol = j > (this.boardGame.getColumns() - 1) ? (this.boardGame.getColumns() - 1) : j + 1;
+        int maxCol = j > (this.boardGame.getEndColumn()) ? (this.boardGame.getEndColumn()) : j + 1;
 
         for (int k = minRow; k <= maxRow; k++) {
             for (int m = minCol; m <= maxCol; m++) {

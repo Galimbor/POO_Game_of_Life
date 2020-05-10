@@ -18,7 +18,7 @@ public interface IMatrix<L> {
 
     public List<L> getWholeRow(int row) throws SentinelLLException;
 
-    public void resize(int i, int j) throws SentinelLLException;
+    public void resize(int i, int j) throws SentinelLLException, SparseMatrixException;
 
     public String toString();
 

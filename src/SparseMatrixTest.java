@@ -152,9 +152,9 @@ public class SparseMatrixTest {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
         test.resize(-1, 0);
         assertEquals(test.getStartingRow(), -1);
-        assertEquals(test.getEndRow(), 2);
+        assertEquals(test.getRows(), 2);
         assertEquals(test.getStartingColumn(), 0);
-        assertEquals(test.getEndColumn(), 2);
+        assertEquals(test.getColumns(), 2);
         assertEquals(test.getRows(),4);
         assertEquals(test.getColumns(),3);
     }
@@ -168,9 +168,9 @@ public class SparseMatrixTest {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
         test.resize(0, 3);
         assertEquals(test.getStartingRow(), 0);
-        assertEquals(test.getEndRow(), 2);
+        assertEquals(test.getRows(), 2);
         assertEquals(test.getStartingColumn(), 0);
-        assertEquals(test.getEndColumn(), 3);
+        assertEquals(test.getColumns(), 3);
         assertEquals(test.getRows(),3);
         assertEquals(test.getColumns(),4);
     }
@@ -184,9 +184,9 @@ public class SparseMatrixTest {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
         test.resize(0, -1);
         assertEquals(test.getStartingRow(), 0);
-        assertEquals(test.getEndRow(), 2);
+        assertEquals(test.getRows(), 2);
         assertEquals(test.getStartingColumn(), -1);
-        assertEquals(test.getEndColumn(), 2);
+        assertEquals(test.getColumns(), 2);
         assertEquals(test.getRows(),3);
         assertEquals(test.getColumns(),4);
     }
@@ -200,9 +200,9 @@ public class SparseMatrixTest {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
         test.resize(3, 2);
         assertEquals(test.getStartingRow(), 0);
-        assertEquals(test.getEndRow(), 3);
+        assertEquals(test.getRows(), 3);
         assertEquals(test.getStartingColumn(), 0);
-        assertEquals(test.getEndColumn(), 2);
+        assertEquals(test.getColumns(), 2);
         assertEquals(test.getRows(),4);
         assertEquals(test.getColumns(),3);
     }
@@ -219,9 +219,9 @@ public class SparseMatrixTest {
         test.resize(3, -1);
         test.resize(2, 3);
         assertEquals(test.getStartingRow(), -1);
-        assertEquals(test.getEndRow(), 3);
+        assertEquals(test.getRows(), 3);
         assertEquals(test.getStartingColumn(), -1);
-        assertEquals(test.getEndColumn(), 3);
+        assertEquals(test.getColumns(), 3);
         assertEquals(test.getRows(),5);
         assertEquals(test.getColumns(),5);
     }

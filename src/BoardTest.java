@@ -88,16 +88,16 @@ public class BoardTest {
 
 
     //generation == 0
-    @Test(expected = SparseMatrixException.class)
-    public void testShowNextGenerations0() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+    @Test(expected = BoardException.class)
+    public void testShowNextGenerations0() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException, BoardException {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(0, 0, 2, 2);
         Board boardTest = new Board(test);
         boardTest.displayGenerations(0);
     }
 
     //generation < 0
-    @Test(expected = SparseMatrixException.class)
-    public void testShowNextGenerations1() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException {
+    @Test(expected = BoardException.class)
+    public void testShowNextGenerations1() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException, BoardException {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(0, 0, 2, 2);
         Board boardTest = new Board(test);
         boardTest.displayGenerations(-5);
