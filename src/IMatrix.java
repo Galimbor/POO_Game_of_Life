@@ -1,7 +1,7 @@
 import java.util.List;
 
 /**
- * Interface IMatrix has some of must have methods for any kind of matrices.
+ * Interface IMatrix declares some "must have" methods for any kind of matrices.
  *
  * @param <L> Indicates what type the matrix will be.
  */

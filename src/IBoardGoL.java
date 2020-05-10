@@ -1,5 +1,5 @@
 /**
- * Interface IBoardGoL. Methods that will be needed for the board of game of life.
+ * Interface IBoardGoL. Declare methods that will be needed for the board of Conway's Game of Life.
  *
  * @param <M> the type parameter
  */
@@ -17,7 +17,7 @@ public interface IBoardGoL<M extends IMatrix> {
     /**
      * Setter for the matrix
      *
-     * @param matrix Represents the board of game of life.
+     * @param matrix Represents the board of Conway's Game of Life.
      */
     void setMatrix(M matrix);
 

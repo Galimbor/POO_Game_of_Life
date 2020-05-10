@@ -17,7 +17,7 @@ public class SentinelLLException extends Exception {
     }
 
     /**
-     * Converts the SentinelLLException to a string representation.
+     * Converts the SentinelLLException to a String representation.
      * @return String
      */
     @Override

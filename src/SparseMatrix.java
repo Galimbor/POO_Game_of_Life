@@ -6,7 +6,7 @@ import java.util.List;
  * SparseMatrix is the data structure that only stores the non-zero values, saving a lot of memory.
  * It implements the Interface IMatrix and Cloneable.
  * It has the following data members
- * - matrix, which is a SentinelLL (Sentinel Node Linked List)
+ * - sentinelLL, which is a SentinelLL (Sentinel Node Linked List)
  * - endRows, which is an int that represents where the sparse matrix finish ("row wise").
  * - endColumns,  which is an int that represents where the sparse matrix finish ("column wise")
  * - startingRow, which is an int that represents where the sparse matrix starts ("row wise")
@@ -26,7 +26,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      * console and create a sparse matrix from that.
      * @pre Each string of the array list must contain only "0" or "1".
      * @param input ArrayList of strings
-     * @pos new Object of SparseMatrix, this.rows and this.columns higher then or equal to 0. as well this.startingRow
+     * @pos new Object of SparseMatrix, this.rows and this.columns higher than or equal to 0. as well startingRow
      * and this startingColumn equal to 0.
      * @throws SentinelLLException if there is no SentinelNode at the given position.
      * @throws SparseMatrixException if there is no DataNode at the given position.
@@ -51,6 +51,10 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
                 for (int j = 0; j < this.endColumn + 1; j++) {
                     if (line[j].equals("1")) {
                         setElement(i, j, (L) new LivingCell());
+                    } else if (line[j].equals("0")) {
+                        assert (true); //DO NOTHING
+                    } else {
+                        throw new SparseMatrixException("Matrix can only contain \"0\"s and \"1\"s");
                     }
                 }
             }
@@ -60,14 +64,14 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     /**
      * Constructor that it will take the following parameters.
      *
-     * @param startingRow    Represents where the row starts
-     * @param startingColumn Represents where the column starts
-     * @param endRow         Represents where the row ends
-     * @param endColumn      Represents where the column ends
+     * @param startingRow    Represents the index of the starting row
+     * @param startingColumn Represents the index of the starting column
+     * @param endRow         Represents the index of the last row
+     * @param endColumn      Represents the index of the last column
      * @throws SparseMatrixException if there is no DataNode at the given row or column.
      * @throws SentinelLLException   if there is no SentinelNode.
-     * @pre endRow and endColumn must be higher then or equal to 0. startingRow less then or equal to endRow,
-     * startingColumn less then or equal to endColumn.
+     * @pre endRow and endColumn must be higher than or equal to 0. startingRow less than or equal to endRow,
+     * startingColumn less than or equal to endColumn.
      * @pos new Object of SparseMatrix.
      */
     public SparseMatrix(int startingRow, int startingColumn, int endRow, int endColumn) throws SparseMatrixException, SentinelLLException {
@@ -79,9 +83,10 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     }
 
     /***
-     * Setter for the matrix field. It creates a new SentinelLL, and it will add the sentinel nodes to it. For the
-     * matrix we will have the max between rows and columns as our highest value sentinel node and it will start with
-     * min between startingRow and startingColumn as our lowest value sentinel node.
+     * Setter for the matrix field. It creates a new sentinelLL, and it will add the sentinel nodes to it. The number of
+     * sentinel nodes to be added is equal to the maximum of the numbers of rows and columns in the matrix, to do this
+     * addition we will start from the minimum startingRow and startingColumn and add sentinel nodes until the maximum of
+     * endingRow and endingColumn, since we are going to deal with negative indexes.
      * @pre true.
      * @pos Matrix with the sentinel nodes that range from the lowest value to the highest value.
      */
@@ -93,10 +98,9 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     }
 
 
-
     /***
      * Setter for endRow field.
-     * @pre endRow higher then or equal to 0.
+     * @pre endRow higher than or equal to 0.
      * @param endRow Represents where the last row.
      * @pos this.endRow = endRow.
      * @throws SparseMatrixException if there is no DataNode at the given row.
@@ -110,7 +114,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
 
     /***
      * Setter for endColumn field.
-     * @pre endColumn higher then or equal to 0.
+     * @pre endColumn higher than or equal to 0.
      * @param endColumn Represents the last column.
      * @pos this.endColumn = endColumn.
      * @throws SparseMatrixException if there is no DataNode at the given column.
@@ -124,7 +128,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
 
     /***
      * Setter for startingRow field.
-     * @pre startingRow less than or equal to endRow AND startingRow higher then or equal to 0.
+     * @pre startingRow less than or equal to endRow AND startingRow higher than or equal to 0.
      * @param startingRow Represents the first row.
      * @pos this.startingRow = startingRow.
      * @throws SparseMatrixException if there is no DataNode at the given row.
@@ -137,7 +141,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
 
     /***
      * Setter for startingColumn field.
-     * @pre startingColumn less than or equal to endColumn AND startingRow higher then or equal to .0
+     * @pre startingColumn less than or equal to endColumn AND startingRow higher than or equal to .0
      * @param startingColumn Represents the first column.
      * @pos this.startingColumn = startingColumn.
      * @throws SparseMatrixException if there is no DataNode at the given column.
@@ -158,7 +162,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     }
 
     /***
-     * Getter for rows. It is calculated by subtracting the end row by starting row.
+     * Getter for number of rows. It is calculated by subtracting the end row by starting row.
      * @return Represents how many rows the sparse matrix has at a given point.
      */
     public int getRows() {
@@ -166,7 +170,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     }
 
     /***
-     * Getter for columns. It is calculated by subtracting the end column by starting column.
+     * Getter for number of columns. It is calculated by subtracting the end column by starting column.
      * @return Represents how many columns the sparse matrix has at a given point.
      */
     public int getColumns() {
@@ -226,15 +230,14 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     }
 
     /**
-     * Getter for the element stored in a DataNode. If the element does not exist it will throw an excpetion.
+     * Getter for the element stored in a DataNode. If the element does not exist it will throw an exception.
      *
      * @param i Represents the position i, in the sparse matrix ("row wise").
      * @param j Represents the position j, in the sparse matrix ("column wise").
      * @return L generic type.
      * @throws SentinelLLException   if there is no SentinelNode at the given position.
-     * @throws SparseMatrixException if there is no DataNode at the given position.
+     * @throws SparseMatrixException if there is no Element at the given position.
      */
-    @SuppressWarnings("unchecked")
     public L getElement(int i, int j) throws SentinelLLException, SparseMatrixException {
         DataNode<L> result = getDataNode(i, j);
         if (result == null)
@@ -251,7 +254,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      * - Loops start till the end of the row, meaning the node will point back to the currentRow sentinel node.
      * - Create a DataNode (east of the previously one) and check if is on the same column as the given argument.
      * - If it is, that is our DataNode, otherwise we change our token and keep looking east.
-     * - If we get in the end and havent found any DataNode the result is null.
+     * - If we get in the end and haven't found any DataNode the result is null.
      * @param i     Represents the position i, in the sparse matrix ("row wise").
      * @param j     Represents the position j, in the sparse matrix ("column wise").
      * @return DataNode.
@@ -469,7 +472,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
             for (int j = this.startingColumn; j < this.endColumn + 1; j++) {
                 try {
                     if (this.getDataNode(i, j) != null) {
-                        newSparse.setElement(i, j, (L) new LivingCell()); //TODO
+                        newSparse.setElement(i, j, (L) new LivingCell());
                     }
                 } catch (SentinelLLException e) {
                     System.out.println(e.toString());
@@ -505,11 +508,11 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     }
 
 
-    /*******************************************************
+    /* *************************************************** *
      *                                                     *
      *              The Data Node class                    *
      *                                                     *
-     *******************************************************/
+     * *************************************************** */
 
     /***
      * Our DataNode Class holds information such as the int "i" and "j" that represents the position of the DataNode in
@@ -532,9 +535,9 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
          * class. Also it takes a position i,j and a value as well, and set those fields with the setters for each
          * one of them.
          * @param south Node that represents the next non-zero data ("column wise") or the sentinel node if there is
-         *              none DataNode on the same column.
+         *                  none DataNode on the same column.
          * @param east Node that represents the next non-zero data ("row wise") or the sentinel node if there is
-         *          *              none DataNode on the same row.
+         *                  none DataNode on the same row.
          * @param i     Represents the position i, in the sparse matrix ("row wise").
          * @param j     Represents the position j, in the sparse matrix ("column wise").
          * @param value generic type

@@ -125,7 +125,7 @@ public class SentinelLL {
 
 
     /**
-     * Link a new SentinelNode with the number "e" to the beginning of the list.
+     * Creates a Setinel Node with a given number sets him as head of the list, making the necessary links.
      *
      * @param number - Represents the number of the SentinelNode to be linked.
      * @pre size higher than or equal to 1.
@@ -138,15 +138,16 @@ public class SentinelLL {
         SentinelLL.SentinelNode node = new SentinelNode(number);
         node.setEast(node);
         node.setSouth(node);
-        node.next = head;
+        node.setNext(head);
         head = node;
-        tail.next = head;
+        tail.setNext(head);
         size++;
     }
 
 
     /**
-     * Inserts a new SentinelNode in the beginning of the list. It uses the helper method "linkFirst".
+     * Inserts a new SentinelNode in the beginning of the list. Checks if exists one with the same number already, if so
+     * launches an exception, otherwise uses the linkFirst to add it to the list.
      *
      * @param number - Represents the number of the SentinelNode to be inserted.
      * @throws SentinelLLException if the size of list is less than 1.
@@ -161,7 +162,7 @@ public class SentinelLL {
 
 
     /**
-     * Link a new SentinelNode with the number "e" to the end of the list.
+     * Creates a Sentinel Node with a given number and links it to the last Sentinel Node in the list.
      *
      * @param number - Represents the number of the SentinelNode to be linked.
      * @pre true.
@@ -174,16 +175,17 @@ public class SentinelLL {
         tail = node;
         if (l == null) {
             head = node;
-            node.next = node;
+            node.setNext(node);
         } else {
-            l.next = node;
-            node.next = head;
+            l.setNext(node);
+            node.setNext(head);
         }
         size++;
     }
 
     /**
-     * Inserts a new SentinelNode in the end of the list. It uses the helper method "linkLast".
+     * Inserts a new SentinelNode in the end of the list. Checks if exists one with the same number already, if so
+     * launches an exception, otherwise uses the linkLast to add it to the list.
      *
      * @param number - Represents the number of the SentinelNode to be inserted.
      * @pre true.
@@ -196,7 +198,7 @@ public class SentinelLL {
     }
 
     /**
-     * Remove a SentinelNode of the list. It breaks the link of the given SentinelNode so the garbage collector can
+     * Remove a SentinelNode from the list. It breaks the link of the given SentinelNode, so the garbage collector can
      * safely remove the SentinelNode out of the memory.
      *
      * @param number - Represents the number of the SentinelNode to be removed.
@@ -213,7 +215,7 @@ public class SentinelLL {
             setHead(getHead().next);
         if (x.next == getTail())
             setTail(x);
-        x.next = x.getNext().next;
+        x.next.setNext(x.getNext().next);
         size--;
     }
 
@@ -237,10 +239,10 @@ public class SentinelLL {
     /***
      * Our SentinelNode Class the following information:
      * - number: which is the index of the SentinelNode,
-     * - next: which is the next SentinelNode of the list, and the last one will point to the first, forming then a
+     * - next: which is the next SentinelNode of the list and the last one will point to the first, therefore forming
      * circular linked list.
      *
-     * Being a subclass of Node, it also holds the Node south and Node east.
+     * Being a subclass of Node, it also holds the fields Node south and Node east.
      * Both of these Nodes can be explained with the following paragraph.
      *  - "are references to either the next non zero data node or to a sentinel node. The E of the last data node in a
      *  given row points back to the sentinel node of its row. Similarly, S of the last data node in a given column
