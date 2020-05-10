@@ -351,7 +351,7 @@ public class SparseMatrixTest {
         input.add("000");
         input.add("000");
         SparseMatrix<LivingCell> test = new SparseMatrix<>(input);
-        assertEquals(test.toString(),"000\n000\n000\n");
+        assertEquals(test.toString(),"");
     }
 
     @Test
@@ -361,7 +361,10 @@ public class SparseMatrixTest {
         input.add("010");
         input.add("010");
         SparseMatrix<Integer> test = new SparseMatrix<>(input);
-        assertEquals(test.toString(),"111\n010\n010\n");
+        assertEquals(test.toString(),"LivingCell on position 0,0\n" +
+                "LivingCell on position 0,1\n" +
+                "LivingCell on position 1,1\n" +
+                "LivingCell on position 2,1\n");
     }
 
     @Test
@@ -371,7 +374,9 @@ public class SparseMatrixTest {
         input.add("101");
         input.add("010");
         SparseMatrix<Double> test = new SparseMatrix<>(input);
-        assertEquals(test.toString(),"010\n101\n010\n");
+        assertEquals(test.toString(),"LivingCell on position 1,0\n" +
+                "LivingCell on position 0,1\n" +
+                "LivingCell on position 2,1\n");
     }
 
     @Test
@@ -380,6 +385,6 @@ public class SparseMatrixTest {
         input.add("01");
         input.add("10");
         SparseMatrix<String> test = new SparseMatrix<>(input);
-        assertEquals(test.toString(),"01\n10\n");
+        assertEquals(test.toString(),"LivingCell on position 1,0\n");
     }
 }

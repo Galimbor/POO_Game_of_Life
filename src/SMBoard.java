@@ -92,10 +92,10 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
         if (generations <= 0)
             throw new BoardException("Generations must be > 0");
         for (int i = 0; i < generations; i++) {
-            nextGeneration();
-            System.out.println(this.matrix);
+            this.nextGeneration();
+            System.out.println(this);
         }
-        displayBoard();
+        System.out.print(this);
     }
 
     /**
@@ -187,4 +187,24 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
         setMatrix(next);
     }
 
+    @Override
+    public String toString() {
+        String result = "";
+        for (int i = this.getMatrix().getStartingRow(); i < this.getMatrix().getEndRow() + 1; i++) {
+            for (int j = this.getMatrix().getStartingColumn(); j < this.getMatrix().getEndColumn() + 1; j++) {
+                try {
+                    Node element = this.getMatrix().getDataNode(i, j);
+                    if (element == null)
+                        result = result.concat("0");
+                    else {
+                        result = result.concat("1");
+                    }
+                } catch (SentinelLLException e) {
+                    e.printStackTrace();
+                }
+            }
+            result = result.concat("\n");
+        }
+        return result;
+    }
 }

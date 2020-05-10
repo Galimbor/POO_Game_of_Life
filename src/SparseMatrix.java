@@ -486,22 +486,22 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      * @return string that represents the sparse matrix.
      */
     @Override
+    @SuppressWarnings("unchecked")
     public String toString() {
         String result = "";
-        for (int i = this.startingRow; i < this.endRow + 1; i++) {
-            for (int j = this.startingColumn; j < this.endColumn + 1; j++) {
-                try {
-                    DataNode<L> element = getDataNode(i, j);
-                    if (element == null)
-                        result = result.concat("0");
-                    else {
-                        result = result.concat("1");
-                    }
-                } catch (SentinelLLException e) {
-                    e.printStackTrace();
-                }
+        for (int i = startingColumn; i < endColumn; i++) {
+            Node sentinel = null;
+            try {
+                sentinel = matrix.getNode(i);
+            } catch (SentinelLLException e) {
+                e.printStackTrace();
             }
-            result = result.concat("\n");
+            Node token = sentinel;
+            while (token.getSouth() != sentinel) {
+                DataNode<L> data = (DataNode<L>) token.getSouth();
+                result = result.concat(data.value.toString() + " on position " + data.getI() + "," + data.getJ() + "\n");
+                token = token.getSouth();
+            }
         }
         return result;
     }
@@ -630,6 +630,4 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
                     "\n}";
         }
     }
-
-
 }
