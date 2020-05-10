@@ -8,7 +8,7 @@ public class BoardException extends Exception {
 
     /**
      * Inherit the methods of the super class Exception and set the message field.
-     * @param message
+     * @param message Message of the exception.
      */
     public BoardException(String message) {
         super();
@@ -16,7 +16,7 @@ public class BoardException extends Exception {
     }
 
     /**
-     * toString method that return the boardExcpetion message.
+     * Converts the boardException to a string representation.
      * @return String
      */
     @Override

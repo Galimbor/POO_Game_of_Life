@@ -1,10 +1,10 @@
 import java.util.Iterator;
 
 /***
- * Data Structure of Sentinel Linked List. It is a linked list of Sentinel Nodes. Has the following fields:
- * - SentinelNode head -> Represents the first SentinelNode of the current list
- * - SentinelNode tail -> Represents the last SentinelNode of the current list
- * - size -> Represents the actual size of the list
+ * Data Structure named Sentinel Linked List. It is a circular linked list of Sentinel Nodes. Has the following fields:
+ * - SentinelNode head: Represents the first SentinelNode of the current list
+ * - SentinelNode tail: Represents the last SentinelNode of the current list
+ * - size: Represents the actual size of the list
  */
 public class SentinelLL{
 
@@ -14,7 +14,9 @@ public class SentinelLL{
     private int size;
 
     /***
+     * @pre true.
      * Constructor for the linked list.
+     * @pos SentinelLL is initialized.
      */
     public SentinelLL() {
 
@@ -22,9 +24,9 @@ public class SentinelLL{
 
     /***
      * Setter for the head field.
-     * @pre true
-     * @param head
-     * @pos head field is set
+     * @pre true.
+     * @param head SentinelNode that will be the head of the list.
+     * @pos head field is set.
      */
     public void setHead(SentinelNode head) {
         this.head = head;
@@ -32,9 +34,9 @@ public class SentinelLL{
 
     /***
      * Setter for the tail field.
-     * @pre true
-     * @param tail
-     * @pos tail field is set
+     * @pre true.
+     * @param tail SentinelNode that will be the tail of the list.
+     * @pos tail field is set.
      */
     public void setTail(SentinelNode tail) {
         this.tail = tail;
@@ -44,7 +46,8 @@ public class SentinelLL{
 
     /***
      * Getter for the head field.
-     * @return this.head
+     * @pre true.
+     * @return this.head.
      */
     public SentinelNode getHead() {
         return head;
@@ -52,14 +55,16 @@ public class SentinelLL{
 
     /***
      * Getter for the tail field.
-     * @return this.tail
+     * @pre true.
+     * @return this.tail.
      */
     public SentinelNode getTail() {
         return tail;
     }
 
     /***
-     * Getter for the size property
+     * Getter for the size property.
+     * @pre true.
      * @return this.size
      */
     public int getSize() {
@@ -68,11 +73,11 @@ public class SentinelLL{
 
 
     /**
-     * Returns the element at the specified position in this list.
+     * Returns the element at the specified position in the list.
      *
-     * @param number of the SentinelNode to return
-     * @return the SentinelNode at the specified position in this list
-     * @throws IndexOutOfBoundsException if number is not valid.
+     * @param number Number of the SentinelNode to be returned.
+     * @return the SentinelNode at the specified position in this list.
+     * @throws SentinelLLException if there is no SentinelNode at the given position.
      */
 
     public SentinelNode getNode(int number) throws SentinelLLException {
@@ -83,7 +88,7 @@ public class SentinelLL{
     /**
      * Returns the (non-null) SentinelNodeNode at the specified element index.
      * @pre true
-     * @param number - int that represent the index of which SentinelNode of the list it will return.
+     * @param number Represents the index of which SentinelNode of the list it will return.
      * @return SentinelNode with the number that is passed as the argument.
      */
     private SentinelNode returnNode(int number) throws SentinelLLException {
@@ -98,8 +103,8 @@ public class SentinelLL{
 
     /**
      * Verify if there is or there is not a sentinel node with the given number.
-     * @pre true
-     * @param number
+     * @pre true.
+     * @param number Represents the index of a SentinelNode
      * @return boolean that represents true or false, if exist or not a SentinelNode
      */
     public boolean contains(int number) {
@@ -118,8 +123,8 @@ public class SentinelLL{
 
     /**
      * Link a new SentinelNode with the number "e" to the beginning of the list.
-     * @pre size >= 1
-     * @param e - int that represents the number of the SentinelNode to be linked.
+     * @pre size higher than or equal to 1.
+     * @param e - Represents the number of the SentinelNode to be linked.
      * @pos size of list is increased.
      */
     //TODO review change  final SentinelNode f = head;
@@ -138,9 +143,10 @@ public class SentinelLL{
 
     /**
      * Inserts a new SentinelNode in the beginning of the list. It uses the helper method "linkFirst".
-     * @pre true
-     * @param e - int that represents the number of the SentinelNode to be inserted
+     * @pre true.
+     * @param e - Represents the number of the SentinelNode to be inserted.
      * @pos size of list is increased.
+     * @throws SentinelLLException if the size of list is less than 1.
      */
     public void addFirst(int e) throws SentinelLLException{
         linkFirst(e);
@@ -149,8 +155,8 @@ public class SentinelLL{
 
     /**
      * Link a new SentinelNode with the number "e" to the end of the list.
-     * @pre true
-     * @param e - int that represents the number of the SentinelNode to be linked.
+     * @pre true.
+     * @param e - Represents the number of the SentinelNode to be linked.
      * @pos size of list is increased.
      */
     private void linkLast(int e) {
@@ -170,9 +176,9 @@ public class SentinelLL{
     }
 
     /**
-     * Inserts a new SentinelNode in the ebd of the list. It uses the helper method "linkLast".
-     * @pre true
-     * @param e - int that represents the number of the SentinelNode to be inserted
+     * Inserts a new SentinelNode in the end of the list. It uses the helper method "linkLast".
+     * @pre true.
+     * @param e - Represents the number of the SentinelNode to be inserted.
      * @pos size of list is increased.
      */
     public void addLast(int e) {
@@ -182,8 +188,8 @@ public class SentinelLL{
     /**
      * Remove a SentinelNode of the list. It breaks the link of the given SentinelNode so the garbage collector can
      * safely remove the SentinelNode out of the memory.
-     * @param e - int that represents the number of the SentinelNode to be removed
-     * @throws SentinelLLException if there is no SentinelNode on the list.
+     * @param e - Represents the number of the SentinelNode to be removed.
+     * @throws SentinelLLException if there is no SentinelNode in the list.
      */
     public void remove(int e) throws SentinelLLException {
         if (!contains(e))
@@ -202,8 +208,8 @@ public class SentinelLL{
 
     /**
      * Return this Sentinel Linked List.
-     * @pre true
-     * @return this SentinelLL
+     * @pre true.
+     * @return this.
      */
     private SentinelLL self() {
         return this;
@@ -218,8 +224,8 @@ public class SentinelLL{
 
     /***
      * Our SentinelNode Class the following information:
-     * - number -> which acts like an id for the SentinelNode,
-     * - next -> which is the next SentinelNode of the list, and the last one will point to the first, forming then a
+     * - number: which is the index of the SentinelNode,
+     * - next: which is the next SentinelNode of the list, and the last one will point to the first, forming then a
      * circular linked list.
      *
      * Being a subclass of Node, it also holds the Node south and Node east.
@@ -235,16 +241,20 @@ public class SentinelLL{
         private final int number;
 
         /***
-         *
-         * @param number
+         * Constructor for the SentinelNode.
+         * @pre true
+         * @param number Represents the index of the SentinelNode.
+         * @pos this.number = number.
          */
         public SentinelNode(int number) {
             this.number = number;
         }
 
         /***
-         *
-         * @param east
+         * Setter for east field. It uses the super class setter.
+         * @pre true.
+         * @param east Non-zero node.
+         * @pos this.east = east.
          */
         @Override
         public void setEast(Node east) {
@@ -256,33 +266,38 @@ public class SentinelLL{
         }
 
         /***
-         *
-         * @param south
+         * Setter for the south field. It uses the super class setter.
+         * @pre true.
+         * @param south Non-zero node.
+         * @pos this.south = south.
          */
         @Override
         public void setSouth(Node south) {
             super.setSouth(south);
         }
 
+
         /***
-         *
-         * @param next
+         * Setter for the next field.
+         * @pre true.
+         * @param next Non-zero node.
+         * @pos this.next = next.
          */
         public void setNext(SentinelNode next) {
             this.next = next;
         }
 
         /***
-         *
-         * @return
+         * Getter for the number field.
+         * @return this.number.
          */
         public int getNumber() {
             return number;
         }
 
         /***
-         *
-         * @return
+         * Converts SentinelNodes to a string representation.
+         * @return Representation of the SentinelNode.
          */
         @Override
         public String toString() {
@@ -293,8 +308,12 @@ public class SentinelLL{
         }
     }
 
+
     /***
-     *
+     * Sentinel Linked List Iterator, class that implements the Iterator interface.
+     * Has the following fields:
+     * - current: Represents a instance of the SentinelLLIterator
+     * - nextIndex: Represents the index of the next sentinel node in the list.
      */
     private class SentinelLLIterator implements Iterator<SentinelNode> {
 
@@ -303,8 +322,8 @@ public class SentinelLL{
         private int nextIndex =  head.getNumber();
 
         /***
-         *
-         * @return
+         * Check to see if there is a next Sentinel Node in the list, based on the current Sentinel.
+         * @return true or false.
          */
         @Override
         public boolean hasNext() {
@@ -312,8 +331,8 @@ public class SentinelLL{
         }
 
         /***
-         *
-         * @return
+         * Get the next SentinelNode in the list.
+         * @return SentinelNode.F
          */
         @Override
         public SentinelNode next() {

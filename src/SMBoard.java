@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
 /**
- * The board has one field and that is the matrix, that will be using a SparseMatrix as its data structure. On a sparse
- * matrix it only stores the non-zero values, with this idea it can save a lot of space. The user
- * will be able to resize the board, add and remove new cells, display the board at any given generation and simulate
- * a game of "n" generations.
+ * Board of the game with the implementation of a Sparse Matrix.
+ * The board has one field and that is the matrix.
+ * The user will be able to resize the board, add and remove new cells and
+ * simulate a game of "n" generations.
  */
 
 public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
@@ -14,10 +14,11 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
      * Constructor for the Board given an ArrayList as the argument. It will take the ArrayList of strings and create
      * the sparse matrix from it.
      *
+     * @pre Each string of the array list must contain only "0" or "1".
+     * @param input ArrayList of Strings.
+     * @pos this.matrix is set.
      * @throws SentinelLLException   if there is no SentinelNode at the given position.
      * @throws SparseMatrixException if there is no DataNode at the given position.
-     * @pre Each string of the array list must contain only "0" or "1".
-     * @pos this.matrix is set.
      */
     public SMBoard(ArrayList<String> input) throws SparseMatrixException, SentinelLLException {
         setMatrix(input);
@@ -25,8 +26,9 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
 
     /**
      * Constructor for the Board with an sparse matrix as argument.
-     *
-     * @param matrix SparseMatrix
+     * @pre true.
+     * @param matrix SparseMatrix of living cells.
+     * @ppos this.matrix is set.
      */
     public SMBoard(SparseMatrix<LivingCell> matrix) {
         setMatrix(matrix);
@@ -34,8 +36,7 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
 
     /**
      * Getter for the matrix field.
-     *
-     * @return this.matrix
+     * @return this.matrix.
      */
     public SparseMatrix<LivingCell> getMatrix() {
         return matrix;
@@ -45,10 +46,10 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
      * Setter for the matrix field.
      *
      * @param input ArrayList of strings
-     * @throws SentinelLLException
-     * @throws SparseMatrixException
      * @pre Each string of the array list must contain only "0" or "1".
      * @pos this.matrix is set.
+     * @throws SentinelLLException if there is no SentinelNode at the given position.
+     * @throws SparseMatrixException if there is no DataNode at the given position.
      */
     public void setMatrix(ArrayList<String> input) throws SentinelLLException, SparseMatrixException {
         this.matrix = new SparseMatrix<>(input);
@@ -59,8 +60,8 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
      * Setter for the matrix field with a SparseMatrix as argument.
      *
      * @param matrix SparseMatrix of living cells
-     * @pre true
-     * @pos this.matrix is set
+     * @pre true.
+     * @pos this.matrix is set.
      */
     public void setMatrix(SparseMatrix<LivingCell> matrix) {
         this.matrix = matrix;
@@ -78,15 +79,14 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
 
 
     /**
-     * Simulate and display n generations. Given an int generations argument it will simulate and display all the
-     * generations of the game until the chosen generation.
-     *
-     * @param generations int
+     * Simulate and display "n" generations. Given a generation in the argument it will simulate and display all the
+     * generations of the game until then.
+     * @pre generations higher then or equal to 0
+     * @param generations Represents the end generation.
      * @throws CloneNotSupportedException if it fails to create to create a deep copy of the matrix.
      * @throws SentinelLLException        if there is no SentinelNode at the given position.
      * @throws SparseMatrixException      if there is no DataNode at the given position.
      * @throws BoardException             if generations less than 0.
-     * @pre generations >= 0
      */
     public void displayGenerations(int generations) throws CloneNotSupportedException, SentinelLLException, SparseMatrixException, BoardException {
         if (generations <= 0)
@@ -101,9 +101,9 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
     /**
      * Add a DataNode of living cell to the given position.
      *
-     * @param i int that represents the position on the sparse matrix ("row wise")
-     * @param j int that represents the position on the sparse matrix ("column wise")
-     * @return true if the operation was successfully
+     * @param i Represents the position i, in the sparse matrix ("row wise").
+     * @param j Represents the position j, in the sparse matrix ("column wise").
+     * @return true if the operation was done successfully.
      * @throws SentinelLLException if there is no SentinelNode at the given position.
      * @pre true
      */
@@ -116,8 +116,8 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
     /**
      * Remove a DataNode of the given position.
      *
-     * @param i int that represents the position on the sparse matrix ("row wise")
-     * @param j int that represents the position on the sparse matrix ("column wise")
+     * @param i Represents the position i, in the sparse matrix ("row wise").
+     * @param j Represents the position j, in the sparse matrix ("column wise").
      * @return true if the operation was successfully.
      * @throws SentinelLLException   if there is no SentinelNode at the given position.
      * @throws SparseMatrixException if there is no DataNode at the given position.
@@ -134,9 +134,9 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
      * Method is used to check the neighbours of a given position. It will return an int that represents how many
      * living neighbours a DataNode has. We will be calculating the superior and inferior limit so we dont have any
      * indexOutOfBound error.
-     * @param i int that represents the position on the sparse matrix ("row wise")
-     * @param j int that represents the position on the sparse matrix ("column wise")
-     * @return int that represents how many living neighbours a DataNode has.
+     * @param i Represents the position i, in the sparse matrix ("row wise").
+     * @param j Represents the position j, in the sparse matrix ("column wise").
+     * @return How many living neighbours a DataNode has.
      */
     public int getNeighbours(int i, int j) throws SentinelLLException {
         int neighbours = 0;
@@ -188,6 +188,10 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
     }
 
 
+    /**
+     * Converts the board to a string representation.
+     * @return String representation of the board.
+     */
     @Override
     public String toString() {
         String result = "";

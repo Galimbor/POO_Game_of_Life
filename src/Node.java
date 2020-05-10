@@ -1,6 +1,6 @@
 /***
- * Abstract class. Super class of SentinelNode and DataNode. It has the constructor to set the Node south and Node
- * east.
+ * Abstract and Super class of SentinelNode and DataNode. Setters and getters of south and east node will be "given"
+ * to it's subclasses.
  */
 abstract class Node {
     protected Node south;
@@ -8,8 +8,10 @@ abstract class Node {
 
     /***
      * Constructor for Node subclasses.
-     * @param south - Node that represents next non-zero value (DataNode) or SentinelNode. ("column wise")
-     * @param east - Node that represents next non-zero value (DataNode) or SentinelNode. ("row wise")
+     * @pre true.
+     * @param south - Represents next non-zero value (DataNode) or SentinelNode. ("column wise").
+     * @param east - Represents next non-zero value (DataNode) or SentinelNode. ("row wise").
+     * @pos Node south and Node east are set.
      */
     public Node(Node south, Node east) {
         setSouth(south);
@@ -18,6 +20,8 @@ abstract class Node {
 
     /***
      * Constructor without arguments.
+     * @pre true
+     * @pos a instance of a Node subclass is initialized.
      */
     public Node() {
 
@@ -25,9 +29,9 @@ abstract class Node {
 
     /**
      * Setter for south field.
-     * @pre true
-     * @param south
-     * @pos this.south = south
+     * @pre true.
+     * @param south Points to the next non-zero value (DataNode) or SentinelNode. ("column wise").
+     * @pos this.south = south.
      */
     public void setSouth(Node south) {
         this.south = south;
@@ -35,8 +39,8 @@ abstract class Node {
 
     /***
      * Setter for east field.
-     * @pre true
-     * @param east
+     * @pre true.
+     * @param east Points to the next non-zero value (DataNode) or SentinelNode. ("row wise").
      * @pos this.east = east
      */
     public void setEast(Node east) {
@@ -45,8 +49,8 @@ abstract class Node {
 
     /***
      * Getter for south field.
-     * @pre true
-     * @return this.south
+     * @pre true.
+     * @return this.south.
      */
     public Node getSouth() {
         return south;
@@ -54,16 +58,16 @@ abstract class Node {
 
     /***
      * Getter for east field.
-     * @pre true
-     * @return this.east
+     * @pre true.
+     * @return this.east.
      */
     public Node getEast() {
         return east;
     }
 
     /***
-     * toString method of Node subclasses.
-     * @return
+     * Converts the node to a string.
+     * @return Representation of a node in a string.
      */
     @Override
     public String toString() {
