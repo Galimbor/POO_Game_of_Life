@@ -81,12 +81,4 @@ public interface IMatrix<L> {
      */
     void resize(int i, int j) throws Exception;
 
-
-    /**
-     * Converts the matrix to string.
-     *
-     * @return Representation of matrix.
-     * @pre true
-     */
-    String toString();
 }
