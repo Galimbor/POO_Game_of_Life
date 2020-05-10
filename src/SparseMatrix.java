@@ -43,7 +43,6 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
         setEndColumn(input.get(0).split("").length - 1);
         setStartingRow(0);
         setStartingColumn(0);
-        setSentinelLL(input);
         setSentinelLL();
         Iterator<String> iterator = input.iterator();
         while (iterator.hasNext()) {
@@ -93,32 +92,6 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
         }
     }
 
-
-    /***
-     * Setter for the matrix field with the parameter of an array list of strings. Here we will be expecting the
-     * input from the console to be converted into an array list and then it will come as the argument for this
-     * method. First of all we will be initializing the sentinel nodes, then we will be adding the data nodes where
-     * it should have one, given the input. After that we should have our sparse matrix filled with data nodes.
-     * @pre true
-     * @param input
-     * @pos Matrix field with all the initial sentinel nodes and data nodes properly set.
-     * @throws SentinelLLException if there is no SentinelNode.
-     */
-    @SuppressWarnings("unchecked")
-    public void setSentinelLL(ArrayList<String> input) throws SentinelLLException {
-        this.setSentinelLL();
-        Iterator<String> iterator = input.iterator();
-        while (iterator.hasNext()) {
-            for (int i = 0; i < this.endRow + 1; i++) {
-                String[] line = iterator.next().split("");
-                for (int j = 0; j < this.endColumn + 1; j++) {
-                    if (line[j].equals("1")) {
-                        setElement(i, j, (L) new LivingCell());
-                    }
-                }
-            }
-        }
-    }
 
 
     /***
