@@ -1,103 +1,180 @@
 import java.util.ArrayList;
 
+/**
+ * The board has one field and that is the matrix, that will be using a SparseMatrix as its data structure. On a sparse
+ * matrix it only stores the non-zero values, with this idea it can save a lot of space. The user
+ * will be able to resize the board, add and remove new cells, display the board at any given generation and simulate
+ * a game of "n" generations.
+ */
 
 public class Board {
-    private SparseMatrix<LivingCell> boardGame;
+    private SparseMatrix<LivingCell> matrix;
 
+    /**
+     * Constructor for the Board given an ArrayList as the argument. It will take the ArrayList of strings and create
+     * the sparse matrix from it.
+     * @pre Each string of the array list must contain only "0" or "1".
+     * @throws SentinelLLException if there is no SentinelNode at the given position.
+     * @throws SparseMatrixException if there is no DataNode at the given position.
+     * @pos this.matrix is set.
+     */
     public Board(ArrayList<String> input) throws SparseMatrixException, SentinelLLException {
-        setBoardGame(input);
+        setMatrix(input);
     }
 
+    /**
+     * Constructor for the Board with an sparse matrix as argument.
+     * @param matrix SparseMatrix
+     */
     public Board(SparseMatrix<LivingCell> matrix) {
-        setBoardGame(matrix);
+        setMatrix(matrix);
     }
 
-    public SparseMatrix<LivingCell> getBoardGame() {
-        return boardGame;
+    /**
+     * Getter for the matrix field.
+     * @return this.matrix
+     */
+    public SparseMatrix<LivingCell> getMatrix() {
+        return matrix;
     }
 
-    public void setBoardGame(ArrayList<String> input) throws SentinelLLException, SparseMatrixException {
-        this.boardGame = new SparseMatrix<>(input);
+    /**
+     * Setter for the matrix field.
+     * @param input ArrayList of strings
+     * @pre Each string of the array list must contain only "0" or "1".
+     * @throws SentinelLLException
+     * @throws SparseMatrixException
+     * @pos this.matrix is set.
+     */
+    public void setMatrix(ArrayList<String> input) throws SentinelLLException, SparseMatrixException {
+        this.matrix = new SparseMatrix<>(input);
     }
 
 
-    public void setBoardGame(SparseMatrix<LivingCell> matrix) {
-        this.boardGame = matrix;
+    /**
+     * Setter for the matrix field with a SparseMatrix as argument.
+     * @pre true
+     * @param matrix SparseMatrix of living cells
+     * @pos this.matrix is set
+     */
+    public void setMatrix(SparseMatrix<LivingCell> matrix) {
+        this.matrix = matrix;
     }
 
+    /**
+     * Display the current state of the board to the console.
+     * @pre true
+     * @pos board is displayed on the console
+     */
+    public void displayBoard() {
+        System.out.println(this.matrix);
+    }
 
+    /**
+     * Simulate and display n generations. Given an int generations argument it will simulate and display all the
+     * generations of the game until the chosen generation.
+     * @pre generations >= 0
+     * @param generations int
+     * @throws CloneNotSupportedException if it fails to create to create a deep copy of the matrix.
+     * @throws SentinelLLException if there is no SentinelNode at the given position.
+     * @throws SparseMatrixException if there is no DataNode at the given position.
+     * @throws BoardException if generations less than 0.
+     */
     public void displayGenerations(int generations) throws CloneNotSupportedException, SentinelLLException, SparseMatrixException, BoardException {
         if (generations <= 0)
             throw new BoardException("Generations must be > 0");
-        for (int i = 0; i < generations - 1; i++) {
+        for (int i = 0; i < generations; i++) {
             nextGeneration();
-            System.out.println(this.boardGame);
+            System.out.println(this.matrix);
         }
-        System.out.print(nextGeneration());
+        displayBoard();
     }
 
-
+    /**
+     * Add a DataNode of living cell to the given position.
+     * @pre true
+     * @param i int that represents the position on the sparse matrix ("row wise")
+     * @param j int that represents the position on the sparse matrix ("column wise")
+     * @return true if the operation was successfully
+     * @throws SentinelLLException if there is no SentinelNode at the given position.
+     */
     public boolean add(int i, int j) throws SentinelLLException {
-        boardGame.resize(i, j);
-        boardGame.setElement(i, j, new LivingCell());
+        matrix.resize(i, j);
+        matrix.setElement(i, j, new LivingCell());
         return true;
     }
 
+    /**
+     * Remove a DataNode of the given position.
+     * @pre true
+     * @param i int that represents the position on the sparse matrix ("row wise")
+     * @param j int that represents the position on the sparse matrix ("column wise")
+     * @return true if the operation was successfully.
+     * @throws SentinelLLException if there is no SentinelNode at the given position.
+     * @throws SparseMatrixException if there is no DataNode at the given position.
+     */
     public boolean remove(int i, int j) throws SentinelLLException, SparseMatrixException {
-        boardGame.resize(i, j);
-        if (boardGame.getElement(i, j) != null)
-            boardGame.deleteDataNode(i, j);
+        matrix.resize(i, j);
+        if (matrix.getElement(i, j) != null)
+            matrix.deleteDataNode(i, j);
         return true;
     }
 
     /***
-     *
-     * @param i
-     * @param j
-     * @return
+     * Method is used to check the neighbours of a given position. It will return an int that represents how many
+     * living neighbours a DataNode has. We will be calculating the superior and inferior limit so we dont have any
+     * indexOutOfBound error.
+     * @param i int that represents the position on the sparse matrix ("row wise")
+     * @param j int that represents the position on the sparse matrix ("column wise")
+     * @return int that represents how many living neighbours a DataNode has.
      */
     public int getNeighbours(int i, int j) throws SentinelLLException {
         int neighbours = 0;
-        int minRow = i < this.boardGame.getStartingRow() ? this.boardGame.getStartingRow() : i - 1;
-        int maxRow = i > (this.boardGame.getEndRow()) ? (this.boardGame.getEndRow()) : i + 1;
-        int minCol = j < this.boardGame.getStartingColumn() ? this.boardGame.getStartingColumn() : j - 1;
-        int maxCol = j > (this.boardGame.getEndColumn()) ? (this.boardGame.getEndColumn()) : j + 1;
+        int minRow = i < this.matrix.getStartingRow() ? this.matrix.getStartingRow() : i - 1;
+        int maxRow = i > (this.matrix.getEndRow()) ? (this.matrix.getEndRow()) : i + 1;
+        int minCol = j < this.matrix.getStartingColumn() ? this.matrix.getStartingColumn() : j - 1;
+        int maxCol = j > (this.matrix.getEndColumn()) ? (this.matrix.getEndColumn()) : j + 1;
 
         for (int k = minRow; k <= maxRow; k++) {
             for (int m = minCol; m <= maxCol; m++) {
-                if (this.boardGame.getMatrix().existsSentinelNumber(k) && this.boardGame.getDataNode(k, m) != null) {
+                if (this.matrix.getMatrix().existsSentinelNumber(k) && this.matrix.getDataNode(k, m) != null) {
                     neighbours++;
                 }
             }
         }
-        if (this.boardGame.getMatrix().existsSentinelNumber(i) && this.boardGame.getDataNode(i, j) != null)
-            neighbours--;
+        if (this.matrix.getMatrix().existsSentinelNumber(i) && this.matrix.getDataNode(i, j) != null)
+            neighbours--; //neighbours does not count for the datanode of the given position.
 
         return neighbours;
     }
 
     /***
-     *
-     * @return
-     * @throws CloneNotSupportedException
+     * Simulates the next generation of the game. Decides which DataNode must be deleted our added.
+     *  - IF there is a DataNode and the number of living neighbours is 2 or 3, then the cell lives in
+     *  the new generation, it will be deleted otherwise.
+     *  - If there is not a DataNode and the number of living neighbours is 3 then will be added a new DataNode in the
+     *  new generation, it remains without a DataNode otherwise.
+     *  It will update the state of the matrix.
+     * @throws CloneNotSupportedException if if fails to do the deep copy.
+     * @throws SparseMatrixException if there is no DataNode at the given position.
+     * @throws SentinelLLException if there is no SentinelNode at the given position.
      */
     @SuppressWarnings("unchecked")
-    public SparseMatrix<LivingCell> nextGeneration() throws CloneNotSupportedException, SparseMatrixException, SentinelLLException {
-        SparseMatrix<LivingCell> next = (SparseMatrix<LivingCell>) this.boardGame.clone();
-        for (int i = this.boardGame.getStartingRow() - 1; i <= this.boardGame.getEndRow() + 1; i++) {
-            for (int j = this.boardGame.getStartingColumn() - 1; j <= this.boardGame.getEndColumn() + 1; j++) {
+    public void nextGeneration() throws CloneNotSupportedException, SparseMatrixException, SentinelLLException {
+        SparseMatrix<LivingCell> next = (SparseMatrix<LivingCell>) this.matrix.clone();
+        for (int i = this.matrix.getStartingRow() - 1; i <= this.matrix.getEndRow() + 1; i++) {
+            for (int j = this.matrix.getStartingColumn() - 1; j <= this.matrix.getEndColumn() + 1; j++) {
                 int neighbours = getNeighbours(i, j);
-                if ((!this.boardGame.getMatrix().existsSentinelNumber(i) || this.boardGame.getDataNode(i, j) == null) && neighbours == 3) {
+                if ((!this.matrix.getMatrix().existsSentinelNumber(i) || this.matrix.getDataNode(i, j) == null) && neighbours == 3) {
                     next.resize(i, j);
                     next.addDataNode(i, j, new LivingCell());
-                } else if (this.boardGame.getMatrix().existsSentinelNumber(i) && (this.boardGame.getDataNode(i, j) != null) && (neighbours < 2 || neighbours > 3)) {
+                } else if (this.matrix.getMatrix().existsSentinelNumber(i) && (this.matrix.getDataNode(i, j) != null) && (neighbours < 2 || neighbours > 3)) {
                     next.deleteDataNode(i, j);
                 }
             }
         }
 
-        setBoardGame(next);
-        return next;
+        setMatrix(next);
     }
 
 }

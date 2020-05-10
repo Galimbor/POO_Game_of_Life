@@ -28,6 +28,8 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      * @param input - ArrayList of strings
      * @pos new Object of SparseMatrix, this.rows and this.columns >= 0. as well this.startingRow and this
      * .startingColumn = 0.
+     * @throws SentinelLLException if there is no SentinelNode at the given position.
+     * @throws SparseMatrixException if there is no DataNode at the given position.
      */
     public SparseMatrix(ArrayList<String> input) throws SparseMatrixException, SentinelLLException {
         for (int i = 0; i < input.size() - 1; i++) {
@@ -215,8 +217,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     /**
      * Setter for the position i,j on the sparse matrix. It will set the chosen position to given value. If there is
      * no DataNode on that position, it will initiate one with the given value.
-     * TODO
-     * @pre
+     * @pre true
      * @param i int that represents the position on the sparse matrix ("row wise")
      * @param j int that represents the position on the sparse matrix ("column wise")
      * @param value generic type.
@@ -283,8 +284,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
 
     /***
      * Getter for the whole chosen column. It will return an array list of DataNode.
-     * TODO
-     * @pre
+     * @pre true
      * @param column int that represents which column it will return.
      * @return ArrayList that contains DataNode of the chosen column.
      * @throws SentinelLLException if there is no SentinelNode at the given column.
@@ -304,8 +304,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
 
     /***
      * Getter for the whole chosen row. It will return an array list of DataNode.
-     * TODO
-     * @pre
+     * @pre true
      * @param row int that represents which row it will return.
      * @return ArrayList that contains DataNode of the chosen row.
      * @throws SentinelLLException if there is no SentinelNode at the given row.
@@ -436,7 +435,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      * Here we will go through the DataNodes till the end and then add a new DataNode, therefore if there is no
      * DataNode on the same row we will add right there. Same apply for the column. East and South will be properly set
      * at the end.
-     * @pre TODO
+     * @pre true
      * @param i int that represents the position on the sparse matrix ("row wise")
      * @param j int that represents the position on the sparse matrix ("column wise")
      * @throws SentinelLLException if there is no SentinelNode on the chosen position
@@ -468,9 +467,8 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
 
 
     /***
-     * TODO
-     * Clone for the sparse matrix data structure.
-     * @return
+     * Clone for the sparse matrix data structure. It creates a deep copy of the sparse matrix that is called.
+     * @return SparseMatrix object
      * @throws CloneNotSupportedException
      */
     @SuppressWarnings("unchecked")
