@@ -147,12 +147,12 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
 
         for (int k = minRow; k <= maxRow; k++) {
             for (int m = minCol; m <= maxCol; m++) {
-                if (this.matrix.getMatrix().contains(k) && this.matrix.getDataNode(k, m) != null) {
+                if (this.matrix.getSentinelLL().contains(k) && this.matrix.getDataNode(k, m) != null) {
                     neighbours++;
                 }
             }
         }
-        if (this.matrix.getMatrix().contains(i) && this.matrix.getDataNode(i, j) != null)
+        if (this.matrix.getSentinelLL().contains(i) && this.matrix.getDataNode(i, j) != null)
             neighbours--; //neighbours does not count for the datanode of the given position.
 
         return neighbours;
@@ -175,10 +175,10 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
         for (int i = this.matrix.getStartingRow() - 1; i <= this.matrix.getEndRow() + 1; i++) {
             for (int j = this.matrix.getStartingColumn() - 1; j <= this.matrix.getEndColumn() + 1; j++) {
                 int neighbours = getNeighbours(i, j);
-                if ((!this.matrix.getMatrix().contains(i) || this.matrix.getDataNode(i, j) == null) && neighbours == 3) {
+                if ((!this.matrix.getSentinelLL().contains(i) || this.matrix.getDataNode(i, j) == null) && neighbours == 3) {
                     next.resize(i, j);
                     next.addDataNode(i, j, new LivingCell());
-                } else if (this.matrix.getMatrix().contains(i) && (this.matrix.getDataNode(i, j) != null) && (neighbours < 2 || neighbours > 3)) {
+                } else if (this.matrix.getSentinelLL().contains(i) && (this.matrix.getDataNode(i, j) != null) && (neighbours < 2 || neighbours > 3)) {
                     next.deleteDataNode(i, j);
                 }
             }
