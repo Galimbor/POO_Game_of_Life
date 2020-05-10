@@ -1,7 +1,10 @@
 import java.util.Iterator;
 
 /***
- *
+ * Data Structure of Sentinel Linked List. It is a linked list of Sentinel Nodes. Has the following fields:
+ * - SentinelNode head -> Represents the first SentinelNode of the current list
+ * - SentinelNode tail -> Represents the last SentinelNode of the current list
+ * - size -> Represents the actual size of the list
  */
 public class SentinelLL {
 
@@ -10,58 +13,52 @@ public class SentinelLL {
     private int size;
 
     /***
-     *
+     * Constructor for the linked list.
      */
     public SentinelLL() {
 
     }
 
     /***
-     *
+     * Setter for the head field.
+     * @pre true
      * @param head
+     * @pos head field is set
      */
     public void setHead(SentinelNode head) {
         this.head = head;
     }
 
     /***
-     *
+     * Setter for the tail field.
+     * @pre true
      * @param tail
+     * @pos tail field is set
      */
     public void setTail(SentinelNode tail) {
         this.tail = tail;
     }
 
-    /***
-     *
-     * @param size
-     */
-    public void setSize(int size) throws SentinelLLException {
-        if (size < 0) {
-            throw new SentinelLLException("size < 0");
-        }
-        this.size = size;
-    }
 
     /***
-     *
-     * @return
+     * Getter for the head field.
+     * @return this.head
      */
     public SentinelNode getHead() {
         return head;
     }
 
     /***
-     *
-     * @return
+     * Getter for the tail field.
+     * @return this.tail
      */
     public SentinelNode getTail() {
         return tail;
     }
 
     /***
-     *
-     * @return
+     * Getter for the size property
+     * @return this.size
      */
     public int getSize() {
         return size;
@@ -83,18 +80,26 @@ public class SentinelLL {
 
     /**
      * Returns the (non-null) SentinelNodeNode at the specified element index.
+     * @pre true
+     * @param number - int that represent the index of which SentinelNode of the list it will return.
+     * @return SentinelNode with the number that is passed as the argument.
      */
-    private SentinelNode returnSentinelNode(int index) throws SentinelLLException {
+    private SentinelNode returnSentinelNode(int number) throws SentinelLLException {
         SentinelNode x = head;
         for (int i = 0; i < this.size; i++) {
-            if (x.getNumber() == index)
+            if (x.getNumber() == number)
                 return x;
             x = x.next;
         }
         throw new SentinelLLException("SentinelNode not found");
     }
 
-
+    /**
+     * Verify if there is or there is not a sentinel node with the given number.
+     * @pre true
+     * @param number
+     * @return boolean that represents true or false, if exist or not a SentinelNode
+     */
     public boolean existsSentinelNumber(int number) {
         SentinelNode x = head;
         boolean result = false;
@@ -110,8 +115,10 @@ public class SentinelLL {
 
 
     /**
-     * Links e as first element.
-     * There needs to already be an element here. Might change this later.
+     * Link a new SentinelNode with the number "e" to the beginning of the list.
+     * @pre true
+     * @param e - int that represents the number of the SentinelNode to be linked.
+     * @pos size of list is increased.
      */
     //TODO review change  final SentinelNode f = head;
     private void linkFirst(int e) {
@@ -126,9 +133,10 @@ public class SentinelLL {
 
 
     /**
-     * Inserts the specified element at the beginning of this list.
-     *
-     * @param e the element to add
+     * Inserts a new SentinelNode in the beginning of the list. It uses the helper method "linkFirst".
+     * @pre true
+     * @param e - int that represents the number of the SentinelNode to be inserted
+     * @pos size of list is increased.
      */
     public void addFirst(int e) {
         linkFirst(e);
@@ -136,7 +144,10 @@ public class SentinelLL {
 
 
     /**
-     * Links "e" as last element of the list.
+     * Link a new SentinelNode with the number "e" to the end of the list.
+     * @pre true
+     * @param e - int that represents the number of the SentinelNode to be linked.
+     * @pos size of list is increased.
      */
     private void linkLast(int e) {
         final SentinelNode l = tail;
@@ -154,10 +165,22 @@ public class SentinelLL {
         size++;
     }
 
+    /**
+     * Inserts a new SentinelNode in the ebd of the list. It uses the helper method "linkLast".
+     * @pre true
+     * @param e - int that represents the number of the SentinelNode to be inserted
+     * @pos size of list is increased.
+     */
     public void addLast(int e) {
         linkLast(e);
     }
 
+    /**
+     * Remove a SentinelNode of the list. It breaks the link of the given SentinelNode so the garbage collector can
+     * safely remove the SentinelNode out of the memory.
+     * @param e - int that represents the number of the SentinelNode to be removed
+     * @throws SentinelLLException if there is no SentinelNode on the list.
+     */
     public void remove(int e) throws SentinelLLException {
         if (!existsSentinelNumber(e))
             throw new SentinelLLException("trying to delete, SentinelNode not found");
@@ -172,7 +195,11 @@ public class SentinelLL {
         x.next = x.getNext().next;
     }
 
-
+    /**
+     * Return this Sentinel Linked List.
+     * @pre true
+     * @return this SentinelLL
+     */
     private SentinelLL self() {
         return this;
     }
@@ -185,13 +212,20 @@ public class SentinelLL {
      *******************************************************/
 
     /***
+     * Our SentinelNode Class the following information:
+     * - number -> which acts like an id for the SentinelNode,
+     * - next -> which is the next SentinelNode of the list, and the last one will point to the first, forming then a
+     * circular linked list.
      *
+     * Being a subclass of Node, it also holds the Node south and Node east.
+     * Both of these Nodes can be explained with the following paragraph.
+     *  - "are references to either the next non zero data node or to a sentinel node. The E of the last data node in a
+     *  given row points back to the sentinel node of its row. Similarly, S of the last data node in a given column
+     *  points back to the sentinel node of its column." - Professor Joao Valente Oliveira.
+     *  Where S and E indicates "south" and "east" respectively.
      */
     private static class SentinelNode extends Node {
 
-        /***
-         *
-         */
         private SentinelNode next;
         private final int number;
 
