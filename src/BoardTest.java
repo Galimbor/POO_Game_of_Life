@@ -7,7 +7,6 @@ import static org.junit.Assert.*;
 public class BoardTest {
 
 
-
     @Test
     public void testGetNeighbours0() throws SentinelLLException, SparseMatrixException {
         ArrayList<String> input = new ArrayList<>();
@@ -66,7 +65,7 @@ public class BoardTest {
         input.add("010");
         Board test = new Board(input);
         SparseMatrix<LivingCell> nextTest = test.nextGeneration();
-        assertEquals(nextTest.getRows(), 3);
+        assertEquals(nextTest.getRows(), 4);
         assertEquals(nextTest.getStartingRow(), -1);
         assertEquals(nextTest.getStartingColumn(), 0);
         assertEquals(nextTest.getColumns(), 3);
@@ -79,7 +78,7 @@ public class BoardTest {
         input.add("111");
         Board test = new Board(input);
         SparseMatrix<LivingCell> nextTest = test.nextGeneration();
-        assertEquals(nextTest.getRows(), 2);
+        assertEquals(nextTest.getRows(), 3);
         assertEquals(nextTest.getStartingRow(), -1);
         assertEquals(nextTest.getStartingColumn(), 0);
         assertEquals(nextTest.getColumns(), 3);
@@ -335,5 +334,4 @@ public class BoardTest {
         Board test = new Board(input);
         assertEquals(test.nextGeneration().toString(), "0000\n0010\n0001\n0111\n");
     }
-
 }

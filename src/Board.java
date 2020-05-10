@@ -8,7 +8,7 @@ public class Board {
         setBoardGame(input);
     }
 
-    public Board(SparseMatrix<LivingCell> matrix) throws SparseMatrixException, SentinelLLException {
+    public Board(SparseMatrix<LivingCell> matrix) {
         setBoardGame(matrix);
     }
 
@@ -25,16 +25,13 @@ public class Board {
         this.boardGame = matrix;
     }
 
-    public void displayBoard() {
-        System.out.println(boardGame.toString());
-    }
 
     public void displayGenerations(int generations) throws CloneNotSupportedException, SentinelLLException, SparseMatrixException, BoardException {
         if (generations <= 0)
-            throw new BoardException("generations must be >= 0");
+            throw new BoardException("Generations must be > 0");
         for (int i = 0; i < generations - 1; i++) {
             nextGeneration();
-            System.out.println(boardGame.toString());
+            System.out.println(this.boardGame);
         }
         System.out.print(nextGeneration());
     }

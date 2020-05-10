@@ -130,7 +130,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      */
     @Override
     public int getRows() {
-        return this.endRow - this.startingColumn + 1;
+        return this.endRow - this.startingRow + 1;
     }
 
     /***
