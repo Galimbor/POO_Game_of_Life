@@ -187,6 +187,7 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
         setMatrix(next);
     }
 
+
     @Override
     public String toString() {
         String result = "";
@@ -208,3 +209,4 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
         return result;
     }
 }
+

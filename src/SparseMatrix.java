@@ -353,7 +353,9 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      * @param j int that represents till which position will need a sentinel node ("column wise")
      * @pre true
      * @pos No gap between Sentinel Nodes.
+     * @throws SentinelLLException if the size of the list is < 1 when trying to addFirst
      */
+
     private void addRemainingSentinels(int i, int j) {
         if (i > endRow) {
             for (int k = endRow + 1; k <= i; k++) {
@@ -383,8 +385,9 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      * needed as well.
      * @param i int that represents the position on the sparse matrix ("row wise")
      * @param j int that represents the position on the sparse matrix ("column wise")
+     * @throws SentinelLLException if the size of the list is < 1 when trying to addFirst in addRemainingSentinels
      */
-    public void resize(int i, int j) {
+    public void resize(int i, int j) throws SentinelLLException {
         addRemainingSentinels(i, j);
         redefineBorders(i, j);
     }

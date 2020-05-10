@@ -118,12 +118,14 @@ public class SentinelLL{
 
     /**
      * Link a new SentinelNode with the number "e" to the beginning of the list.
-     * @pre true
+     * @pre size >= 1
      * @param e - int that represents the number of the SentinelNode to be linked.
      * @pos size of list is increased.
      */
     //TODO review change  final SentinelNode f = head;
-    private void linkFirst(int e) {
+    private void linkFirst(int e) throws SentinelLLException {
+        if(size < 1)
+            throw new SentinelLLException("Trying to linkFirst with size < 1");
         SentinelLL.SentinelNode node = new SentinelNode(e);
         node.setEast(node);
         node.setSouth(node);
@@ -140,7 +142,7 @@ public class SentinelLL{
      * @param e - int that represents the number of the SentinelNode to be inserted
      * @pos size of list is increased.
      */
-    public void addFirst(int e) {
+    public void addFirst(int e) throws SentinelLLException{
         linkFirst(e);
     }
 
@@ -195,6 +197,7 @@ public class SentinelLL{
         if (x.next == getTail())
             setTail(x);
         x.next = x.getNext().next;
+        size--;
     }
 
     /**
@@ -226,7 +229,7 @@ public class SentinelLL{
      *  points back to the sentinel node of its column." - Professor Joao Valente Oliveira.
      *  Where S and E indicates "south" and "east" respectively.
      */
-    private static class SentinelNode extends Node {
+    public static class SentinelNode extends Node {
 
         private SentinelNode next;
         private final int number;
@@ -283,10 +286,10 @@ public class SentinelLL{
          */
         @Override
         public String toString() {
-            return "SentinelNode{" +
-                    "next=" + next +
-                    ", number=" + number +
-                    '}';
+            return "SentinelNode{ " +
+                    "number = " +
+                    number +
+                    " }";
         }
     }
 
