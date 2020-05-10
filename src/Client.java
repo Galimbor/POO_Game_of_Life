@@ -10,6 +10,8 @@ public class Client {
         while (sc.hasNextLine()) {
             input.add(sc.nextLine());
         }
+
+
         try {
             Board board = new Board(input);
             board.displayGenerations(gen);
@@ -30,6 +32,8 @@ public class Client {
         {
             System.out.println(E.toString());;
         }
+
+
     }
 
 
