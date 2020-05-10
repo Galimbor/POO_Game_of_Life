@@ -15,7 +15,7 @@ import java.util.List;
  * @param <L>
  */
 public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
-    private SentinelLL matrix;
+    private SentinelLL sentinelLL;
     private int endRow;
     private int endColumn;
     private int startingRow;
@@ -84,9 +84,9 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      * @pos Matrix with the sentinel nodes that range from the lowest value to the highest value.
      */
     public void setMatrix() throws SentinelLLException {
-        this.matrix = new SentinelLL();
+        this.sentinelLL = new SentinelLL();
         for (int i = Math.min(this.startingRow, startingColumn); i <= Math.max(this.endRow, this.endColumn); i++) {
-            this.matrix.addLast(i);
+            this.sentinelLL.addLast(i);
         }
     }
 
@@ -150,8 +150,8 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      * Getter for matrix field.
      * @return SentinelLL matrix
      */
-    public SentinelLL getMatrix() {
-        return this.matrix;
+    public SentinelLL getSentinelLL() {
+        return this.sentinelLL;
     }
 
     /***
@@ -256,11 +256,11 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      */
     @SuppressWarnings("unchecked")
     public DataNode<L> getDataNode(int i, int j) throws SentinelLLException {
-        if (!matrix.contains(i)) {
+        if (!sentinelLL.contains(i)) {
             throw new SentinelLLException("Sentinel Node does not exist!");
         }
-        Node currentRow = this.matrix.getNode(i);
-        Node token = this.matrix.getNode(i);
+        Node currentRow = this.sentinelLL.getNode(i);
+        Node token = this.sentinelLL.getNode(i);
         DataNode<LivingCell> result = null;
         while (token.getEast() != currentRow) {
             DataNode<LivingCell> data = (DataNode<LivingCell>) token.getEast();
@@ -283,7 +283,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     @SuppressWarnings("unchecked")
     public List<L> getWholeColumn(int column) throws SentinelLLException {
         ArrayList<L> result = new ArrayList<>();
-        Node sentinel = matrix.getNode(column);
+        Node sentinel = sentinelLL.getNode(column);
         Node token = sentinel;
         while (token.getSouth() != sentinel) {
             result.add((L) token.getSouth());
@@ -302,7 +302,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     @SuppressWarnings("unchecked")
     public List<L> getWholeRow(int row) throws SentinelLLException {
         ArrayList<L> result = new ArrayList<>();
-        Node sentinel = matrix.getNode(row);
+        Node sentinel = sentinelLL.getNode(row);
         Node token = sentinel;
         while (token.getEast() != sentinel) {
             result.add((L) token.getEast());
@@ -347,24 +347,24 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     private void addRemainingSentinels(int i, int j) throws SentinelLLException {
         if (i > endRow) {
             for (int k = endRow + 1; k <= i; k++) {
-                if (!this.matrix.contains(k))
-                    this.matrix.addLast(k);
+                if (!this.sentinelLL.contains(k))
+                    this.sentinelLL.addLast(k);
             }
         } else if (i < startingRow) {
             for (int k = startingRow - 1; k >= i; k--) {
-                if (!this.matrix.contains(k))
-                    this.matrix.addFirst(k);
+                if (!this.sentinelLL.contains(k))
+                    this.sentinelLL.addFirst(k);
             }
         }
         if (j > endColumn) {
             for (int k = endColumn + 1; k <= j; k++) {
-                if (!this.matrix.contains(k))
-                    this.matrix.addLast(k);
+                if (!this.sentinelLL.contains(k))
+                    this.sentinelLL.addLast(k);
             }
         } else if (j < startingColumn) {
             for (int k = startingColumn - 1; k >= j; k--) {
-                if (!this.matrix.contains(k))
-                    this.matrix.addFirst(k);
+                if (!this.sentinelLL.contains(k))
+                    this.sentinelLL.addFirst(k);
             }
         }
     }
@@ -396,12 +396,12 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
         DataNode<LivingCell> node = (DataNode<LivingCell>) getDataNode(i, j);
         if (node == null)
             throw new SparseMatrixException("Trying to delete, DataNode not found");
-        Node currentRow = this.matrix.getNode(node.getI());
+        Node currentRow = this.sentinelLL.getNode(node.getI());
         while (currentRow.getEast() != node) {
             currentRow = currentRow.east;
         }
         currentRow.setEast(node.east);
-        Node currentColumn = this.matrix.getNode(node.getJ());
+        Node currentColumn = this.sentinelLL.getNode(node.getJ());
         while (currentColumn.getSouth() != node) {
             currentColumn = currentColumn.south;
         }
@@ -420,7 +420,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      */
     @SuppressWarnings("unchecked")
     public void addDataNode(int i, int j, L content) throws SentinelLLException {
-        Node row = this.matrix.getNode(i);
+        Node row = this.sentinelLL.getNode(i);
         if (row.getEast() == row) {
             row.setEast(new DataNode<>(null, row, i, j, content));
         } else {
@@ -430,7 +430,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
             }
             data.setEast(new DataNode<>(null, data.getEast(), i, j, content));
         }
-        Node column = this.matrix.getNode(j);
+        Node column = this.sentinelLL.getNode(j);
         if (column.south == column) {
             DataNode<L> result = getDataNode(i, j);
             column.setSouth(result);
@@ -485,7 +485,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
         for (int i = startingRow; i < endRow + 1; i++) {
             Node sentinel = null;
             try {
-                sentinel = matrix.getNode(i);
+                sentinel = sentinelLL.getNode(i);
             } catch (SentinelLLException e) {
                 e.printStackTrace();
             }
