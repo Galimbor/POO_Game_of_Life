@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNotEquals;
 public class SentinelLLTest {
 
     @Test
-    public void testGetSize() {
+    public void testGetSize() throws SentinelLLException {
         SentinelLL test = new SentinelLL();
         test.addLast(0);
         assertEquals(1, test.getSize());
@@ -57,7 +57,7 @@ public class SentinelLLTest {
     }
 
     @Test
-    public void testContains() {
+    public void testContains() throws SentinelLLException {
         SentinelLL test = new SentinelLL();
         test.addLast(0);
         test.addLast(1);

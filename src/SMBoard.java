@@ -8,6 +8,7 @@ import java.util.ArrayList;
  */
 
 public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>> {
+
     private SparseMatrix<LivingCell> matrix;
 
     /**
@@ -66,16 +67,6 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>> {
         this.matrix = matrix;
     }
 
-    /**
-     * Display the current state of the board to the console.
-     *
-     * @pre true
-     * @pos board is displayed on the console
-     */
-    public void displayBoard() {
-        System.out.println(this.matrix);
-    }
-
 
     /**
      * Simulate and display n generations. Given an int generations argument it will simulate and display all the
@@ -85,7 +76,7 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>> {
      * @throws CloneNotSupportedException if it fails to create to create a deep copy of the matrix.
      * @throws SentinelLLException        if there is no SentinelNode at the given position.
      * @throws SparseMatrixException      if there is no DataNode at the given position.
-     * @throws SMBoardException             if generations less than 0.
+     * @throws SMBoardException           if generations less than 0.
      * @pre generations >= 0
      */
     public void displayGenerations(int generations) throws CloneNotSupportedException, SentinelLLException, SparseMatrixException, SMBoardException {

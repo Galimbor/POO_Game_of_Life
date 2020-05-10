@@ -21,7 +21,6 @@ public class Client {
             System.out.println(Be.toString());
         } catch (Exception E) {
             System.out.println(E.toString());
-            ;
         }
     }
 }

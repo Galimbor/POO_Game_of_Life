@@ -61,10 +61,10 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     /**
      * Constructor that it will take the following parameters.
      *
-     * @param startingRow represents the starting index of rows
+     * @param startingRow    represents the starting index of rows
      * @param startingColumn represents the starting index of columns
-     * @param endRow represents the last index of rows
-     * @param endColumn represents the last index of columns
+     * @param endRow         represents the last index of rows
+     * @param endColumn      represents the last index of columns
      * @pre endRow and endColumn must be >= 0. startingRow <= endRow, startingColumn <= endColumn.
      * @pos new Object of SparseMatrix.
      */
@@ -347,11 +347,13 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     private void addRemainingSentinels(int i, int j) throws SentinelLLException {
         if (i > endRow) {
             for (int k = endRow + 1; k <= i; k++) {
-                this.matrix.addLast(k);
+                if (!this.matrix.contains(k))
+                    this.matrix.addLast(k);
             }
         } else if (i < startingRow) {
             for (int k = startingRow - 1; k >= i; k--) {
-                this.matrix.addFirst(k);
+                if (!this.matrix.contains(k))
+                    this.matrix.addFirst(k);
             }
         }
         if (j > endColumn) {
@@ -480,7 +482,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     @SuppressWarnings("unchecked")
     public String toString() {
         String result = "";
-        for (int i = startingColumn; i < endColumn; i++) {
+        for (int i = startingRow; i < endRow + 1; i++) {
             Node sentinel = null;
             try {
                 sentinel = matrix.getNode(i);
@@ -488,10 +490,10 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
                 e.printStackTrace();
             }
             Node token = sentinel;
-            while (token.getSouth() != sentinel) {
-                DataNode<L> data = (DataNode<L>) token.getSouth();
+            while (token.getEast() != sentinel) {
+                DataNode<L> data = (DataNode<L>) token.getEast();
                 result = result.concat(data.value.toString() + " on position " + data.getI() + "," + data.getJ() + "\n");
-                token = token.getSouth();
+                token = token.getEast();
             }
         }
         return result;
@@ -514,7 +516,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      *  Where S and E indicates "south" and "east" respectively.
      * @param <L>
      */
-    private static class DataNode<L> extends Node {
+    public static class DataNode<L> extends Node {
 
         private L value;
         private int i;
@@ -527,7 +529,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
          * @param south Node that represents the next non-zero data ("column wise") or the sentinel node if there is
          *              none DataNode on the same column.
          * @param east Node that represents the next non-zero data ("row wise") or the sentinel node if there is
-         *          *              none DataNode on the same row.
+         *             none DataNode on the same row.
          * @param i int that represents the position on the sparse matrix ("row wise")
          * @param j int that represents the position on the sparse matrix ("column wise")
          * @param value generic type
@@ -541,7 +543,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
 
         /***
          * Setter for the i field.
-         * @param i
+         * @param i index of row
          * @pos this.i = i
          */
         public void setI(int i) {
@@ -550,7 +552,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
 
         /***
          * Setter for the j field.
-         * @param j
+         * @param j index of column
          * @pos this.j = j
          */
         public void setJ(int j) {
@@ -559,7 +561,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
 
         /***
          * Setter for the value field.
-         * @param value
+         * @param value content
          * @pos this.value = value
          */
         public void setValue(L value) {
@@ -592,7 +594,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
 
         /***
          * Setter for the south field. Uses the super class constructor.
-         * @param south
+         * @param south represents the node to its south
          */
         @Override
         public void setSouth(Node south) {
@@ -601,7 +603,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
 
         /***
          * Setter for the east field. Uses the super class constructor.
-         * @param east
+         * @param east represents the node to its east
          */
         @Override
         public void setEast(Node east) {
