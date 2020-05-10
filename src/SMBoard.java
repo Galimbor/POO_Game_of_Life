@@ -82,9 +82,10 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>> {
     public void displayGenerations(int generations) throws CloneNotSupportedException, SentinelLLException, SparseMatrixException, SMBoardException {
         if (generations <= 0)
             throw new SMBoardException("Generations must be > 0");
-        for (int i = 0; i < generations; i++) {
-            this.nextGeneration();
+        this.nextGeneration();
+        for (int i = 0; i < generations - 1; i++) {
             System.out.println(this);
+            this.nextGeneration();
         }
         System.out.print(this);
     }
