@@ -10,31 +10,18 @@ public class Client {
         while (sc.hasNextLine()) {
             input.add(sc.nextLine());
         }
-
-
         try {
-            Board board = new Board(input);
+            IBoardGoL<SparseMatrix<LivingCell>> board = new SMBoard(input);
             board.displayGenerations(gen);
-        }
-        catch (SentinelLLException SLLe)
-        {
+        } catch (SentinelLLException SLLe) {
             System.out.println(SLLe.toString());
-        }
-        catch (SparseMatrixException SMe)
-        {
+        } catch (SparseMatrixException SMe) {
             System.out.println(SMe.toString());
-        }
-        catch (BoardException Be)
-        {
+        } catch (BoardException Be) {
             System.out.println(Be.toString());
+        } catch (Exception E) {
+            System.out.println(E.toString());
+            ;
         }
-        catch (Exception E)
-        {
-            System.out.println(E.toString());;
-        }
-
-
     }
-
-
 }

@@ -6,7 +6,8 @@ import java.util.Iterator;
  * - SentinelNode tail -> Represents the last SentinelNode of the current list
  * - size -> Represents the actual size of the list
  */
-public class SentinelLL {
+public class SentinelLL{
+
 
     private SentinelNode head;
     private SentinelNode tail;
@@ -38,6 +39,7 @@ public class SentinelLL {
     public void setTail(SentinelNode tail) {
         this.tail = tail;
     }
+
 
 
     /***
@@ -73,8 +75,8 @@ public class SentinelLL {
      * @throws IndexOutOfBoundsException if number is not valid.
      */
 
-    public SentinelNode getSentinel(int number) throws SentinelLLException {
-        return returnSentinelNode(number);
+    public SentinelNode getNode(int number) throws SentinelLLException {
+        return returnNode(number);
     }
 
 
@@ -84,7 +86,7 @@ public class SentinelLL {
      * @param number - int that represent the index of which SentinelNode of the list it will return.
      * @return SentinelNode with the number that is passed as the argument.
      */
-    private SentinelNode returnSentinelNode(int number) throws SentinelLLException {
+    private SentinelNode returnNode(int number) throws SentinelLLException {
         SentinelNode x = head;
         for (int i = 0; i < this.size; i++) {
             if (x.getNumber() == number)
@@ -100,7 +102,7 @@ public class SentinelLL {
      * @param number
      * @return boolean that represents true or false, if exist or not a SentinelNode
      */
-    public boolean existsSentinelNumber(int number) {
+    public boolean contains(int number) {
         SentinelNode x = head;
         boolean result = false;
         for (int i = 0; i < this.size; i++) {
@@ -182,10 +184,10 @@ public class SentinelLL {
      * @throws SentinelLLException if there is no SentinelNode on the list.
      */
     public void remove(int e) throws SentinelLLException {
-        if (!existsSentinelNumber(e))
+        if (!contains(e))
             throw new SentinelLLException("trying to delete, SentinelNode not found");
         SentinelNode x = head;
-        while (x.getNext().getNumber() != e) {
+        while (x.getNext().number != e) {
             x = x.getNext();
         }
         if (x.next == getHead())
@@ -295,7 +297,7 @@ public class SentinelLL {
 
         private final SentinelLL current = self();
 
-        private int nextIndex = head.getNumber();
+        private int nextIndex =  head.getNumber();
 
         /***
          *
@@ -314,7 +316,7 @@ public class SentinelLL {
         public SentinelNode next() {
             SentinelNode result = null;
             try {
-                result = current.getSentinel(nextIndex);
+                result = current.getNode(nextIndex);
             } catch (SentinelLLException e) {
                 System.out.println(e.toString());
             }

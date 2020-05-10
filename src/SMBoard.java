@@ -7,31 +7,34 @@ import java.util.ArrayList;
  * a game of "n" generations.
  */
 
-public class Board {
+public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
     private SparseMatrix<LivingCell> matrix;
 
     /**
      * Constructor for the Board given an ArrayList as the argument. It will take the ArrayList of strings and create
      * the sparse matrix from it.
-     * @pre Each string of the array list must contain only "0" or "1".
-     * @throws SentinelLLException if there is no SentinelNode at the given position.
+     *
+     * @throws SentinelLLException   if there is no SentinelNode at the given position.
      * @throws SparseMatrixException if there is no DataNode at the given position.
+     * @pre Each string of the array list must contain only "0" or "1".
      * @pos this.matrix is set.
      */
-    public Board(ArrayList<String> input) throws SparseMatrixException, SentinelLLException {
+    public SMBoard(ArrayList<String> input) throws SparseMatrixException, SentinelLLException {
         setMatrix(input);
     }
 
     /**
      * Constructor for the Board with an sparse matrix as argument.
+     *
      * @param matrix SparseMatrix
      */
-    public Board(SparseMatrix<LivingCell> matrix) {
+    public SMBoard(SparseMatrix<LivingCell> matrix) {
         setMatrix(matrix);
     }
 
     /**
      * Getter for the matrix field.
+     *
      * @return this.matrix
      */
     public SparseMatrix<LivingCell> getMatrix() {
@@ -40,10 +43,11 @@ public class Board {
 
     /**
      * Setter for the matrix field.
+     *
      * @param input ArrayList of strings
-     * @pre Each string of the array list must contain only "0" or "1".
      * @throws SentinelLLException
      * @throws SparseMatrixException
+     * @pre Each string of the array list must contain only "0" or "1".
      * @pos this.matrix is set.
      */
     public void setMatrix(ArrayList<String> input) throws SentinelLLException, SparseMatrixException {
@@ -53,8 +57,9 @@ public class Board {
 
     /**
      * Setter for the matrix field with a SparseMatrix as argument.
-     * @pre true
+     *
      * @param matrix SparseMatrix of living cells
+     * @pre true
      * @pos this.matrix is set
      */
     public void setMatrix(SparseMatrix<LivingCell> matrix) {
@@ -63,6 +68,7 @@ public class Board {
 
     /**
      * Display the current state of the board to the console.
+     *
      * @pre true
      * @pos board is displayed on the console
      */
@@ -70,15 +76,17 @@ public class Board {
         System.out.println(this.matrix);
     }
 
+
     /**
      * Simulate and display n generations. Given an int generations argument it will simulate and display all the
      * generations of the game until the chosen generation.
-     * @pre generations >= 0
+     *
      * @param generations int
      * @throws CloneNotSupportedException if it fails to create to create a deep copy of the matrix.
-     * @throws SentinelLLException if there is no SentinelNode at the given position.
-     * @throws SparseMatrixException if there is no DataNode at the given position.
-     * @throws BoardException if generations less than 0.
+     * @throws SentinelLLException        if there is no SentinelNode at the given position.
+     * @throws SparseMatrixException      if there is no DataNode at the given position.
+     * @throws BoardException             if generations less than 0.
+     * @pre generations >= 0
      */
     public void displayGenerations(int generations) throws CloneNotSupportedException, SentinelLLException, SparseMatrixException, BoardException {
         if (generations <= 0)
@@ -92,11 +100,12 @@ public class Board {
 
     /**
      * Add a DataNode of living cell to the given position.
-     * @pre true
+     *
      * @param i int that represents the position on the sparse matrix ("row wise")
      * @param j int that represents the position on the sparse matrix ("column wise")
      * @return true if the operation was successfully
      * @throws SentinelLLException if there is no SentinelNode at the given position.
+     * @pre true
      */
     public boolean add(int i, int j) throws SentinelLLException {
         matrix.resize(i, j);
@@ -106,12 +115,13 @@ public class Board {
 
     /**
      * Remove a DataNode of the given position.
-     * @pre true
+     *
      * @param i int that represents the position on the sparse matrix ("row wise")
      * @param j int that represents the position on the sparse matrix ("column wise")
      * @return true if the operation was successfully.
-     * @throws SentinelLLException if there is no SentinelNode at the given position.
+     * @throws SentinelLLException   if there is no SentinelNode at the given position.
      * @throws SparseMatrixException if there is no DataNode at the given position.
+     * @pre true
      */
     public boolean remove(int i, int j) throws SentinelLLException, SparseMatrixException {
         matrix.resize(i, j);
@@ -137,12 +147,12 @@ public class Board {
 
         for (int k = minRow; k <= maxRow; k++) {
             for (int m = minCol; m <= maxCol; m++) {
-                if (this.matrix.getMatrix().existsSentinelNumber(k) && this.matrix.getDataNode(k, m) != null) {
+                if (this.matrix.getMatrix().contains(k) && this.matrix.getDataNode(k, m) != null) {
                     neighbours++;
                 }
             }
         }
-        if (this.matrix.getMatrix().existsSentinelNumber(i) && this.matrix.getDataNode(i, j) != null)
+        if (this.matrix.getMatrix().contains(i) && this.matrix.getDataNode(i, j) != null)
             neighbours--; //neighbours does not count for the datanode of the given position.
 
         return neighbours;
@@ -165,10 +175,10 @@ public class Board {
         for (int i = this.matrix.getStartingRow() - 1; i <= this.matrix.getEndRow() + 1; i++) {
             for (int j = this.matrix.getStartingColumn() - 1; j <= this.matrix.getEndColumn() + 1; j++) {
                 int neighbours = getNeighbours(i, j);
-                if ((!this.matrix.getMatrix().existsSentinelNumber(i) || this.matrix.getDataNode(i, j) == null) && neighbours == 3) {
+                if ((!this.matrix.getMatrix().contains(i) || this.matrix.getDataNode(i, j) == null) && neighbours == 3) {
                     next.resize(i, j);
                     next.addDataNode(i, j, new LivingCell());
-                } else if (this.matrix.getMatrix().existsSentinelNumber(i) && (this.matrix.getDataNode(i, j) != null) && (neighbours < 2 || neighbours > 3)) {
+                } else if (this.matrix.getMatrix().contains(i) && (this.matrix.getDataNode(i, j) != null) && (neighbours < 2 || neighbours > 3)) {
                     next.deleteDataNode(i, j);
                 }
             }
