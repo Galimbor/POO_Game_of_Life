@@ -1,10 +1,12 @@
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 public class SentinelLLTest {
+
     @Test
-    public void getSize() {
+    public void testGetSize() throws SentinelLLException {
         SentinelLL test = new SentinelLL();
         test.addLast(0);
         assertEquals(1, test.getSize());
@@ -55,7 +57,7 @@ public class SentinelLLTest {
     }
 
     @Test
-    public void testContains() {
+    public void testContains() throws SentinelLLException {
         SentinelLL test = new SentinelLL();
         test.addLast(0);
         test.addLast(1);
@@ -63,26 +65,26 @@ public class SentinelLLTest {
         test.addLast(10);
         test.addLast(11);
 
-        assert(test.contains(0));
-        assert(test.contains(11));
-        assert(test.contains(10));
-        assert(test.contains(2));
+        assert (test.contains(0));
+        assert (test.contains(11));
+        assert (test.contains(10));
+        assert (test.contains(2));
 
-        assert(!test.contains(3));
-        assert(!test.contains(4));
-        assert(!test.contains(5));
-        assert(!test.contains(12));
+        assert (!test.contains(3));
+        assert (!test.contains(4));
+        assert (!test.contains(5));
+        assert (!test.contains(12));
 
     }
 
     @Test(expected = SentinelLLException.class)
-    public void addFirst0() throws SentinelLLException {
+    public void testAddFirst0() throws SentinelLLException {
         SentinelLL test = new SentinelLL();
         test.addFirst(0);
     }
 
     @Test
-    public void addFirst1() throws SentinelLLException {
+    public void testAddFirst1() throws SentinelLLException {
         SentinelLL test = new SentinelLL();
         test.addLast(0);
         test.addFirst(3);
@@ -97,7 +99,7 @@ public class SentinelLLTest {
     }
 
     @Test
-    public void addLast() throws SentinelLLException {
+    public void testAddLast() throws SentinelLLException {
         SentinelLL test = new SentinelLL();
         test.addLast(0);
         assertEquals(0, test.getTail().getNumber());
@@ -112,7 +114,7 @@ public class SentinelLLTest {
     }
 
     @Test(expected = SentinelLLException.class)
-    public void remove0() throws SentinelLLException {
+    public void testRemove0() throws SentinelLLException {
         SentinelLL test = new SentinelLL();
         test.addLast(0);
         test.addLast(1);
@@ -121,7 +123,7 @@ public class SentinelLLTest {
     }
 
     @Test(expected = SentinelLLException.class)
-    public void remove1() throws SentinelLLException {
+    public void testRemove1() throws SentinelLLException {
         SentinelLL test = new SentinelLL();
         test.addLast(0);
         test.addLast(1);
@@ -130,7 +132,7 @@ public class SentinelLLTest {
     }
 
     @Test
-    public void remove2() throws SentinelLLException {
+    public void testRemove2() throws SentinelLLException {
         SentinelLL test = new SentinelLL();
         test.addLast(0);
         test.addLast(2);
@@ -152,15 +154,15 @@ public class SentinelLLTest {
     }
 
     /*
-       *
-       *
-       * SentinelNode Class Test
-       *
-       *
+     *
+     *
+     * SentinelNode Class Test
+     *
+     *
      */
 
     @Test
-    public void getNext() throws SentinelLLException {
+    public void testGetNext() throws SentinelLLException {
         SentinelLL test = new SentinelLL();
         test.addLast(0);
         test.addLast(1);
@@ -199,7 +201,6 @@ public class SentinelLLTest {
         String expected3 = "SentinelNode{ number = -2 }";
         assertEquals(expected3, node2.toString());
     }
-
 
 
 }

@@ -7,7 +7,8 @@ import java.util.ArrayList;
  * simulate a game of "n" generations.
  */
 
-public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
+public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>> {
+
     private SparseMatrix<LivingCell> matrix;
 
     /**
@@ -67,16 +68,6 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
         this.matrix = matrix;
     }
 
-    /**
-     * Display the current state of the board to the console.
-     *
-     * @pre true
-     * @pos board is displayed on the console
-     */
-    public void displayBoard() {
-        System.out.println(this.matrix);
-    }
-
 
     /**
      * Simulate and display "n" generations. Given a generation in the argument it will simulate and display all the
@@ -88,12 +79,13 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
      * @throws SparseMatrixException      if there is no DataNode at the given position.
      * @throws BoardException             if generations less than 0.
      */
-    public void displayGenerations(int generations) throws CloneNotSupportedException, SentinelLLException, SparseMatrixException, BoardException {
+    public void displayGenerations(int generations) throws CloneNotSupportedException, SentinelLLException, SparseMatrixException, SMBoardException {
         if (generations <= 0)
-            throw new BoardException("Generations must be > 0");
-        for (int i = 0; i < generations; i++) {
-            this.nextGeneration();
+            throw new SMBoardException("Generations must be > 0");
+        this.nextGeneration();
+        for (int i = 0; i < generations - 1; i++) {
             System.out.println(this);
+            this.nextGeneration();
         }
         System.out.print(this);
     }
@@ -190,7 +182,8 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>>{
 
     /**
      * Converts the board to a string representation.
-     * @return String representation of the board.
+     * @return String that represents the board composition much like as a matrix[rows][columns] with "0"s indicating
+     * dead cells and "1"s living cells.
      */
     @Override
     public String toString() {

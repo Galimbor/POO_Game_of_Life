@@ -6,78 +6,77 @@ import static org.junit.Assert.*;
 
 public class SMBoardTest {
 
-    @Test (expected = SparseMatrixException.class)
-    public void testContructor0() throws SparseMatrixException,SentinelLLException {
+    @Test(expected = SparseMatrixException.class)
+    public void testContructor0() throws SparseMatrixException, SentinelLLException {
         ArrayList<String> input = new ArrayList<>();
-        SMBoard test = new SMBoard(input);
+        new SMBoard(input);
     }
 
     @Test
-    public void testContructor1() throws SparseMatrixException,SentinelLLException {
+    public void testContructor1() throws SparseMatrixException, SentinelLLException {
         ArrayList<String> input = new ArrayList<>();
         input.add("1");
-        SparseMatrix<LivingCell> matrixTest= new SparseMatrix<>(input);
+        SparseMatrix<LivingCell> matrixTest = new SparseMatrix<>(input);
         SMBoard test = new SMBoard(matrixTest);
-        assertEquals(test.getMatrix(),matrixTest);
+        assertEquals(test.getMatrix(), matrixTest);
     }
 
     @Test
-    public void testAdd0() throws SparseMatrixException,SentinelLLException {
+    public void testAdd0() throws SparseMatrixException, SentinelLLException {
         ArrayList<String> input = new ArrayList<>();
         input.add("1");
         SMBoard test = new SMBoard(input);
-        test.add(3,3);
-        assertEquals(test.getMatrix().getElement(3,3).getClass(),LivingCell.class);
+        test.add(3, 3);
+        assertEquals(test.getMatrix().getElement(3, 3).getClass(), LivingCell.class);
     }
 
     @Test
-    public void testAdd1() throws SparseMatrixException,SentinelLLException {
+    public void testAdd1() throws SparseMatrixException, SentinelLLException {
         ArrayList<String> input = new ArrayList<>();
         input.add("1");
         SMBoard test = new SMBoard(input);
-        test.add(20,20);
-        assertEquals(test.getMatrix().getElement(20,20).getClass(),LivingCell.class);
+        test.add(20, 20);
+        assertEquals(test.getMatrix().getElement(20, 20).getClass(), LivingCell.class);
     }
 
     @Test
-    public void testAdd2() throws SparseMatrixException,SentinelLLException {
+    public void testAdd2() throws SparseMatrixException, SentinelLLException {
         ArrayList<String> input = new ArrayList<>();
         input.add("11");
         input.add("01");
         SMBoard test = new SMBoard(input);
-        test.add(-2,-2);
-        assertEquals(test.getMatrix().getElement(-2,-2).getClass(),LivingCell.class);
+        test.add(-2, -2);
+        assertEquals(test.getMatrix().getElement(-2, -2).getClass(), LivingCell.class);
     }
 
     @Test
-    public void testRemove0() throws SparseMatrixException,SentinelLLException {
+    public void testRemove0() throws SparseMatrixException, SentinelLLException {
         ArrayList<String> input = new ArrayList<>();
         input.add("111");
         input.add("100");
         input.add("010");
         SMBoard test = new SMBoard(input);
-        test.remove(0,1);
-        assertNull(test.getMatrix().getDataNode(0,1));
+        test.remove(0, 1);
+        assertNull(test.getMatrix().getDataNode(0, 1));
     }
 
-    @Test (expected = SparseMatrixException.class)
-    public void testRemove1() throws SparseMatrixException,SentinelLLException {
+    @Test(expected = SparseMatrixException.class)
+    public void testRemove1() throws SparseMatrixException, SentinelLLException {
         ArrayList<String> input = new ArrayList<>();
         input.add("111");
         SMBoard test = new SMBoard(input);
-        test.remove(1,1);
+        test.remove(1, 1);
     }
 
 
-    @Test (expected = SparseMatrixException.class)
-    public void testRemove2() throws SparseMatrixException,SentinelLLException {
+    @Test(expected = SparseMatrixException.class)
+    public void testRemove2() throws SparseMatrixException, SentinelLLException {
         ArrayList<String> input = new ArrayList<>();
         input.add("1");
         SMBoard test = new SMBoard(input);
-        test.remove(0,0);
-        test.getMatrix().getElement(0,0);
+        test.remove(0, 0);
+        test.getMatrix().getElement(0, 0);
     }
-
 
 
     @Test
@@ -151,8 +150,8 @@ public class SMBoardTest {
         input.add("111");
         SMBoard test = new SMBoard(input);
         test.nextGeneration();
-        assertEquals(test.getMatrix().getElement(1,1).getClass(),LivingCell.class);
-        assertNull(test.getMatrix().getDataNode(0,0));
+        assertEquals(test.getMatrix().getElement(1, 1).getClass(), LivingCell.class);
+        assertNull(test.getMatrix().getDataNode(0, 0));
         assertEquals(test.getMatrix().getRows(), 3);
         assertEquals(test.getMatrix().getStartingRow(), -1);
         assertEquals(test.getMatrix().getStartingColumn(), 0);
@@ -162,16 +161,16 @@ public class SMBoardTest {
 
 
     //generation == 0
-    @Test(expected = BoardException.class)
-    public void testShowNextGenerations0() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException, BoardException {
+    @Test(expected = SMBoardException.class)
+    public void testDisplayGenerations0() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException, SMBoardException {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(0, 0, 2, 2);
         SMBoard boardTest = new SMBoard(test);
         boardTest.displayGenerations(0);
     }
 
     //generation < 0
-    @Test(expected = BoardException.class)
-    public void testShowNextGenerations1() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException, BoardException {
+    @Test(expected = SMBoardException.class)
+    public void testDisplayGenerations1() throws SentinelLLException, SparseMatrixException, CloneNotSupportedException, SMBoardException {
         SparseMatrix<LivingCell> test = new SparseMatrix<>(0, 0, 2, 2);
         SMBoard boardTest = new SMBoard(test);
         boardTest.displayGenerations(-5);

@@ -8,7 +8,8 @@ public class SentinelLLException extends Exception {
 
     /**
      * Inherit the methods of the super class Exception and set the message field.
-     * @param message Message of the exception.
+     *
+     * @param message message to be printed along with toString method, for readability's sake.
      */
     public SentinelLLException(String message) {
         super();

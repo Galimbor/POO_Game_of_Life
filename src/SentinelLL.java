@@ -6,7 +6,7 @@ import java.util.Iterator;
  * - SentinelNode tail: Represents the last SentinelNode of the current list
  * - size: Represents the actual size of the list
  */
-public class SentinelLL{
+public class SentinelLL {
 
 
     private SentinelNode head;
@@ -41,7 +41,6 @@ public class SentinelLL{
     public void setTail(SentinelNode tail) {
         this.tail = tail;
     }
-
 
 
     /***
@@ -90,6 +89,7 @@ public class SentinelLL{
      * @pre true
      * @param number Represents the index of which SentinelNode of the list it will return.
      * @return SentinelNode with the number that is passed as the argument.
+     * @pre true
      */
     private SentinelNode returnNode(int number) throws SentinelLLException {
         SentinelNode x = head;
@@ -106,6 +106,7 @@ public class SentinelLL{
      * @pre true.
      * @param number Represents the index of a SentinelNode
      * @return boolean that represents true or false, if exist or not a SentinelNode
+     * @pre true
      */
     public boolean contains(int number) {
         SentinelNode x = head;
@@ -129,7 +130,7 @@ public class SentinelLL{
      */
     //TODO review change  final SentinelNode f = head;
     private void linkFirst(int e) throws SentinelLLException {
-        if(size < 1)
+        if (size < 1)
             throw new SentinelLLException("Trying to linkFirst with size < 1");
         SentinelLL.SentinelNode node = new SentinelNode(e);
         node.setEast(node);
@@ -148,7 +149,9 @@ public class SentinelLL{
      * @pos size of list is increased.
      * @throws SentinelLLException if the size of list is less than 1.
      */
-    public void addFirst(int e) throws SentinelLLException{
+    public void addFirst(int e) throws SentinelLLException {
+        if (contains(e))
+            throw new SentinelLLException("Trying to add SentinelNode, it already exists");
         linkFirst(e);
     }
 
@@ -157,7 +160,6 @@ public class SentinelLL{
      * Link a new SentinelNode with the number "e" to the end of the list.
      * @pre true.
      * @param e - Represents the number of the SentinelNode to be linked.
-     * @pos size of list is increased.
      */
     private void linkLast(int e) {
         final SentinelNode l = tail;
@@ -181,7 +183,9 @@ public class SentinelLL{
      * @param e - Represents the number of the SentinelNode to be inserted.
      * @pos size of list is increased.
      */
-    public void addLast(int e) {
+    public void addLast(int e) throws SentinelLLException {
+        if (contains(e))
+            throw new SentinelLLException("Trying to add SentinelNode, it already exists");
         linkLast(e);
     }
 
@@ -208,8 +212,9 @@ public class SentinelLL{
 
     /**
      * Return this Sentinel Linked List.
-     * @pre true.
-     * @return this.
+     *
+     * @return this SentinelLL
+     * @pre true
      */
     private SentinelLL self() {
         return this;
@@ -319,7 +324,7 @@ public class SentinelLL{
 
         private final SentinelLL current = self();
 
-        private int nextIndex =  head.getNumber();
+        private int nextIndex = head.getNumber();
 
         /***
          * Check to see if there is a next Sentinel Node in the list, based on the current Sentinel.

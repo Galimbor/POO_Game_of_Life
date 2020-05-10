@@ -7,9 +7,6 @@ public interface IBoardGoL<M extends IMatrix> {
     void setMatrix(M matrix);
 
 
-    void displayBoard();
-
-
     void displayGenerations(int generations) throws Exception;
 
 
@@ -23,4 +20,5 @@ public interface IBoardGoL<M extends IMatrix> {
 
 
     void nextGeneration() throws Exception;
+
 }

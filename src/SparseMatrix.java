@@ -31,6 +31,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      * @throws SentinelLLException if there is no SentinelNode at the given position.
      * @throws SparseMatrixException if there is no DataNode at the given position.
      */
+    @SuppressWarnings("unchecked")
     public SparseMatrix(ArrayList<String> input) throws SparseMatrixException, SentinelLLException {
         if (input.size() == 0)
             throw new SparseMatrixException("Input is empty");
@@ -43,6 +44,19 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
         setStartingRow(0);
         setStartingColumn(0);
         setSentinelLL(input);
+        setMatrix(input);
+        setMatrix();
+        Iterator<String> iterator = input.iterator();
+        while (iterator.hasNext()) {
+            for (int i = 0; i < this.endRow + 1; i++) {
+                String[] line = iterator.next().split("");
+                for (int j = 0; j < this.endColumn + 1; j++) {
+                    if (line[j].equals("1")) {
+                        setElement(i, j, (L) new LivingCell());
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -73,12 +87,13 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      * @pre true.
      * @pos Matrix with the sentinel nodes that range from the lowest value to the highest value.
      */
-    public void setMatrix() {
-        this.sentinelLL = new SentinelLL();
+    public void setMatrix() throws SentinelLLException {
+        this.matrix = new SentinelLL();
         for (int i = Math.min(this.startingRow, startingColumn); i <= Math.max(this.endRow, this.endColumn); i++) {
             this.sentinelLL.addLast(i);
         }
     }
+
 
     /***
      * Setter for the sentinelLL field with the parameter of an array list of strings. Here we will be expecting the
@@ -107,6 +122,33 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     }
 
     /***
+     * Setter for the matrix field with the parameter of an array list of strings. Here we will be expecting the
+     * input from the console to be converted into an array list and then it will come as the argument for this
+     * method. First of all we will be initializing the sentinel nodes, then we will be adding the data nodes where
+     * it should have one, given the input. After that we should have our sparse matrix filled with data nodes.
+     * @pre true
+     * @param input
+     * @pos Matrix field with all the initial sentinel nodes and data nodes properly set.
+     * @throws SentinelLLException if there is no SentinelNode.
+     */
+    @SuppressWarnings("unchecked")
+    public void setMatrix(ArrayList<String> input) throws SentinelLLException {
+        setMatrix();
+        Iterator<String> iterator = input.iterator();
+        while (iterator.hasNext()) {
+            for (int i = 0; i < this.endRow + 1; i++) {
+                String[] line = iterator.next().split("");
+                for (int j = 0; j < this.endColumn + 1; j++) {
+                    if (line[j].equals("1")) {
+                        setElement(i, j, (L) new LivingCell());
+                    }
+                }
+            }
+        }
+    }
+
+
+    /***
      * Setter for endRow field.
      * @pre endRow higher then or equal to 0.
      * @param endRow Represents where the last row.
@@ -127,11 +169,11 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      * @pos this.endColumn = endColumn.
      * @throws SparseMatrixException if there is no DataNode at the given column.
      */
-    public void setEndColumn(int column) throws SparseMatrixException {
-        if (column < 0) {
+    public void setEndColumn(int endColumn) throws SparseMatrixException {
+        if (endColumn < 0) {
             throw new SparseMatrixException("endColumn < 0");
         }
-        this.endColumn = column;
+        this.endColumn = endColumn;
     }
 
     /***
@@ -365,7 +407,8 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
             }
         } else if (i < startingRow) {
             for (int k = startingRow - 1; k >= i; k--) {
-                this.sentinelLL.addFirst(k);
+                if (!this.sentinelLL.contains(k))
+                    this.sentinelLL.addFirst(k);
             }
         }
         if (j > endColumn) {
@@ -492,7 +535,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     @SuppressWarnings("unchecked")
     public String toString() {
         String result = "";
-        for (int i = startingColumn; i < endColumn; i++) {
+        for (int i = startingRow; i < endRow + 1; i++) {
             Node sentinel = null;
             try {
                 sentinel = sentinelLL.getNode(i);
@@ -500,10 +543,10 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
                 e.printStackTrace();
             }
             Node token = sentinel;
-            while (token.getSouth() != sentinel) {
-                DataNode<L> data = (DataNode<L>) token.getSouth();
+            while (token.getEast() != sentinel) {
+                DataNode<L> data = (DataNode<L>) token.getEast();
                 result = result.concat(data.value.toString() + " on position " + data.getI() + "," + data.getJ() + "\n");
-                token = token.getSouth();
+                token = token.getEast();
             }
         }
         return result;
@@ -526,7 +569,7 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      *  Where S and E indicates "south" and "east" respectively.
      * @param <L>
      */
-    private static class DataNode<L> extends Node {
+    public static class DataNode<L> extends Node {
 
         private L value;
         private int i;

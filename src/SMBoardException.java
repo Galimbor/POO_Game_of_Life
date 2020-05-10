@@ -2,15 +2,15 @@
  * Exception for the SMBoard class in case violates the contract made by SMBoard.
  */
 
-public class BoardException extends Exception {
+public class SMBoardException extends Exception {
 
     private final String message;
 
     /**
      * Inherit the methods of the super class Exception and set the message field.
-     * @param message Message of the exception.
+     * @param message message to be printed along with toString method, for readability's sake.
      */
-    public BoardException(String message) {
+    public SMBoardException(String message) {
         super();
         this.message = message;
     }
