@@ -32,6 +32,8 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
      * @throws SparseMatrixException if there is no DataNode at the given position.
      */
     public SparseMatrix(ArrayList<String> input) throws SparseMatrixException, SentinelLLException {
+        if (input.size() == 0)
+            throw new SparseMatrixException("Input is empty");
         for (int i = 0; i < input.size() - 1; i++) {
             if (input.get(i).split("").length != input.get(i + 1).split("").length)
                 throw new SparseMatrixException("Matrix format is incorrect");
@@ -342,36 +344,35 @@ public class SparseMatrix<L> implements IMatrix<L>, Cloneable {
     }
 
 
-
     /**
      * A helper function to the resize method. If the sparse matrix needs to be resized not only for the outer border
      * but further, then the Sentinel Nodes needs to be added in between so is guaranteed there is no gap between one
      * sentinel node and the other.
      *
-     * @param n int that represents till which position will need a sentinel node ("row wise")
-     * @param m int that represents till which position will need a sentinel node ("column wise")
+     * @param i int that represents till which position will need a sentinel node ("row wise")
+     * @param j int that represents till which position will need a sentinel node ("column wise")
      * @pre true
      * @pos No gap between Sentinel Nodes.
      */
-    private void addRemainingSentinels(int n, int m) {
-        if (n > endRow) {
-            for (int i = endRow + 1; i <= n; i++) {
-                this.matrix.addLast(i);
+    private void addRemainingSentinels(int i, int j) {
+        if (i > endRow) {
+            for (int k = endRow + 1; k <= i; k++) {
+                this.matrix.addLast(k);
             }
-        } else if (n < startingRow) {
-            for (int i = startingRow - 1; i >= n; i--) {
-                this.matrix.addFirst(i);
+        } else if (i < startingRow) {
+            for (int k = startingRow - 1; k >= i; k--) {
+                this.matrix.addFirst(k);
             }
         }
-        if (m > endColumn) {
-            for (int i = endColumn + 1; i <= m; i++) {
-                if (!this.matrix.contains(i))
-                    this.matrix.addLast(i);
+        if (j > endColumn) {
+            for (int k = endColumn + 1; k <= j; k++) {
+                if (!this.matrix.contains(k))
+                    this.matrix.addLast(k);
             }
-        } else if (m < startingColumn) {
-            for (int i = startingColumn - 1; i >= m; i--) {
-                if (!this.matrix.contains(i))
-                    this.matrix.addFirst(i);
+        } else if (j < startingColumn) {
+            for (int k = startingColumn - 1; k >= j; k--) {
+                if (!this.matrix.contains(k))
+                    this.matrix.addFirst(k);
             }
         }
     }

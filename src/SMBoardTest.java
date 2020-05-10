@@ -1,11 +1,11 @@
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import static org.junit.Assert.*;
 
 public class SMBoardTest {
+
 
     @Test
     public void testGetNeighbours0() throws SentinelLLException, SparseMatrixException {
