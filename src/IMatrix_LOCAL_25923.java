@@ -5,11 +5,7 @@ import java.util.List;
  * @param <L> Indicates what type the matrix will be.
  */
 
-
 public interface IMatrix<L> {
-
-
-
 
     /**
      * Set element "value" of generic type to the given position i,j.
@@ -19,9 +15,8 @@ public interface IMatrix<L> {
      * @param value - Value to be set on the given position.
      * @throws Exception if anything goes wrong
      */
-    void setElement(int i, int j, L value) throws Exception;
+    void setElement(int i, int j,L value) throws Exception;
 
-    int getRows();
 
     /**
      * Get the element on the given position i,j.
@@ -33,15 +28,12 @@ public interface IMatrix<L> {
      */
     L getElement(int i, int j) throws Exception;
 
-    int getColumns();
-
     /**
      * Get the number of rows in the matrix.
      * @pre true.
      * @return Number of rows, which is higher then or equal to 0.
      */
     int getRows();
-
 
     /**
      * Get the number of columns of the matrix.
@@ -59,7 +51,6 @@ public interface IMatrix<L> {
      */
     List<L> getWholeColumn(int column) throws Exception;
 
-
     /**
      * Get a list that contains the values of the whole row.
      * @pre true.
@@ -76,9 +67,6 @@ public interface IMatrix<L> {
      * @throws Exception if contract is broken.
      */
     void resize(int i, int j) throws Exception;
-
-
-
 
     /**
      * Converts the matrix to string.

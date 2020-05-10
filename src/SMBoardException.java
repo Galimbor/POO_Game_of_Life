@@ -16,7 +16,7 @@ public class SMBoardException extends Exception {
     }
 
     /**
-     * toString method that return the boardExcpetion message.
+     * Converts the boardException to a string representation.
      * @return String
      */
     @Override
