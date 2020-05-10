@@ -131,7 +131,6 @@ public class SentinelLL {
      * @pre size higher than or equal to 1.
      * @pos size of list is increased.
      */
-    //TODO review change  final SentinelNode f = head;
     private void linkFirst(int number) throws SentinelLLException {
         if (size < 1)
             throw new SentinelLLException("Trying to linkFirst with size < 1");
@@ -230,7 +229,7 @@ public class SentinelLL {
     }
 
 
-    /*******************************************************
+    /* ******************************************************
      *                                                     *
      *              The  Sentinel Node class               *
      *                                                     *

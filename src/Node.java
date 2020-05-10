@@ -41,7 +41,7 @@ abstract class Node {
      * Setter for east field.
      * @pre true.
      * @param east Points to the next non-zero value (DataNode) or SentinelNode. ("row wise").
-     * @pos this.east = east
+     * @pos this.east = east.
      */
     public void setEast(Node east) {
         this.east = east;
@@ -50,7 +50,7 @@ abstract class Node {
     /***
      * Getter for south field.
      * @pre true.
-     * @return this.south.
+     * @return this.south
      */
     public Node getSouth() {
         return south;
