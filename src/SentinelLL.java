@@ -1,4 +1,5 @@
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /***
  * Data Structure named Sentinel Linked List. It is a circular linked list of Sentinel Nodes. Has the following fields:
@@ -333,6 +334,7 @@ public class SentinelLL {
         private final SentinelLL current = self();
 
         private int nextIndex = head.getNumber();
+
 
         /***
          * Check to see if there is a next Sentinel Node in the list, based on the current Sentinel.

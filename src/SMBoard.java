@@ -33,6 +33,7 @@ public class SMBoard implements IBoardGoL<SparseMatrix<LivingCell>> {
      */
     public SMBoard(SparseMatrix<LivingCell> matrix) {
         setMatrix(matrix);
+
     }
 
     /**
