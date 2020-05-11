@@ -1,5 +1,4 @@
 import java.util.Iterator;
-import java.util.LinkedList;
 
 /***
  * Data Structure named Sentinel Linked List. It is a circular linked list of Sentinel Nodes. Has the following fields:
@@ -327,13 +326,13 @@ public class SentinelLL {
      * Sentinel Linked List Iterator, class that implements the Iterator interface.
      * Has the following fields:
      * - current: Represents a instance of the SentinelLLIterator
-     * - nextIndex: Represents the index of the next sentinel node in the list.
+     * - nextNumber: Represents the index of the next sentinel node in the list.
      */
     private class SentinelLLIterator implements Iterator<SentinelNode> {
 
         private final SentinelLL current = self();
 
-        private int nextIndex = head.getNumber();
+        private int nextNumber = head.getNumber();
 
 
         /***
@@ -342,7 +341,7 @@ public class SentinelLL {
          */
         @Override
         public boolean hasNext() {
-            return nextIndex != current.getTail().getNumber();
+            return nextNumber != current.getTail().getNumber();
         }
 
         /***
@@ -353,8 +352,8 @@ public class SentinelLL {
         public SentinelNode next() {
             SentinelNode result = null;
             try {
-                result = current.getNode(nextIndex);
-                nextIndex = result.next.getNumber();
+                result = current.getNode(nextNumber);
+                nextNumber = result.next.getNumber();
             } catch (SentinelLLException e) {
                 System.out.println(e.toString());
             }
