@@ -8,7 +8,7 @@ This project is the implementation of the game "Game of Life", developed in Java
  
 + Open a directory where you would like to store the project.
 + Open a terminal window on that directory.
-+ Run `git clone https://github.com/Bidinho/POO2.git`.
++ Run `git clone https://github.com/Galimbor/POO_Game_of_Life.git`.
 + Open IntelliJ IDEA.
 + Install git and github* plugins and restart IntelliJ.
 + Open -> POO2    You're going to work here.
